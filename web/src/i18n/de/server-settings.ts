@@ -37,9 +37,9 @@ export const serverSettings: Messages["serverSettings"] = {
     OPENPARCELS_QUIET_WINDOW:
       "Paketdienste zwischen 00:00 und 06:00 Uhr Ortszeit nicht abfragen. Ausschalten, um die ganze Nacht abzufragen.",
     OPENPARCELS_EMAIL_ROUTING:
-      "E-Mails von den eigenen Absenderdomains eines Anbieters an diesen Anbieter geben, sobald der empfangende Mailserver den Absender bestätigt hat (DKIM oder DMARC). Aus: Die gemeinsamen E-Mail-Regeln lesen jede E-Mail.",
+      "E-Mails von den eigenen Absenderdomains eines Providers an diesen Provider geben, sobald der empfangende Mailserver den Absender bestätigt hat (DKIM oder DMARC). Aus: Die gemeinsamen E-Mail-Regeln lesen jede E-Mail.",
     OPENPARCELS_PROVIDER_ISOLATION:
-      "Wo die eingebauten Anbieter laufen: off lässt sie im Prozess des Servers laufen; pool lässt sie gemeinsam in einem eigenen Prozess unter dem Berechtigungsmodell von Node laufen, der Netzwerk, Anmeldedaten und Sitzungen nur über den Server erreicht, einen Aufruf nach dem anderen. Pool kostet einen weiteren Prozess (etwa 60 MB).",
+      "Wo die eingebauten Provider laufen: off lässt sie im Prozess des Servers laufen; pool lässt sie gemeinsam in einem eigenen Prozess unter dem Berechtigungsmodell von Node laufen, der Netzwerk, Anmeldedaten und Sitzungen nur über den Server erreicht, einen Aufruf nach dem anderen. Pool kostet einen weiteren Prozess (etwa 60 MB).",
     OPENPARCELS_ARCHIVE_DAYS:
       "Tage nach der Zustellung, bis ein Paket archiviert wird und seine Rohdaten vom Paketdienst verworfen werden.",
     OPENPARCELS_DELETE_DAYS:

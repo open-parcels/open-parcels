@@ -137,7 +137,7 @@ export const connections: Messages["connections"] = {
     rate_limited: "Der Paketdienst hat uns gebeten, langsamer zu machen.",
     captcha: "Der Paketdienst hat ein Captcha gezeigt; sechs Stunden Pause.",
     invalid_config: "Die Einstellungen der Verbindung können nicht funktionieren.",
-    provider_missing: "Der Anbieter dieser Verbindung ist nicht installiert.",
+    provider_missing: "Der Provider dieser Verbindung ist nicht installiert.",
     update_failed: "Die letzte Aktualisierung ist fehlgeschlagen; neuer Versuch später.",
     provider_idle: "Nichts nachzuschlagen.",
     inbox_sign_in_rejected:

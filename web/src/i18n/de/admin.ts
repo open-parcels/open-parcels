@@ -11,7 +11,7 @@ export const admin: Messages["admin"] = {
       scheduler: "Planer",
       event_stream: "Live-Ereignisstrom",
       backups: "Sicherungen",
-      consumers: "Ausgaben",
+      consumers: "Consumer",
     },
     service: "Dienst",
     version: (version: string, commit: string | null, since: string) =>

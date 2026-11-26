@@ -8,7 +8,7 @@ export const shell: Messages["shell"] = {
     returns: "Rücksendungen",
     calendar: "Kalender",
     connections: "Verbindungen",
-    consumers: "Ausgaben",
+    consumers: "Consumer",
     tokens: "API-Tokens",
     status: "Status",
     settings: "Einstellungen",

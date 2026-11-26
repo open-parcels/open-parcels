@@ -1,14 +1,14 @@
 import type { Messages } from "../messages";
 
-/** "Ausgabe" for Consumer is a proposal that waits for the owner (docs/glossary.md). */
+/** "Consumer" stays English in German texts (docs/glossary.md). */
 export const consumers: Messages["consumers"] = {
-  title: "Ausgaben",
+  title: "Consumer",
   intro:
-    "Ausgaben schicken Benachrichtigungen über deine Pakete an einen Dienst deiner Wahl: ein ntfy-Thema, eine E-Mail-Adresse, einen Webhook oder Apprise.",
-  add: "Ausgabe hinzufügen",
-  empty: "Noch keine Ausgaben.",
-  pickerSearch: "Ausgaben suchen",
-  pickerHeading: "Ausgaben",
+    "Consumer schicken Benachrichtigungen über deine Pakete an einen Dienst deiner Wahl: ein ntfy-Thema, eine E-Mail-Adresse, einen Webhook oder Apprise.",
+  add: "Consumer hinzufügen",
+  empty: "Noch keine Consumer.",
+  pickerSearch: "Consumer suchen",
+  pickerHeading: "Consumer",
   editTitle: (label: string) => `${label} bearbeiten`,
   name: "Name",
   enabled: "Benachrichtigungen senden",
@@ -49,7 +49,7 @@ export const consumers: Messages["consumers"] = {
   language: "Sprache",
   languages: { en: "Englisch", de: "Deutsch" },
   save: "Speichern",
-  addButton: "Ausgabe hinzufügen",
+  addButton: "Consumer hinzufügen",
   cancel: "Abbrechen",
   edit: "Bearbeiten",
   remove: "Entfernen",

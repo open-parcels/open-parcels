@@ -25,18 +25,18 @@ const NOT_FOUND: Readonly<Record<NotFoundResource, ErrorText>> = {
   setting: () => "Diese Einstellung gibt es nicht.",
   pictures: () => "Es gibt keine Artikelbilder.",
   job: () => "Der Auftrag wurde nicht gefunden.",
-  consumer: () => "Die Ausgabe wurde nicht gefunden.",
+  consumer: () => "Der Consumer wurde nicht gefunden.",
 };
 
 const INVALID_CONNECTION: Readonly<Record<InvalidConnectionReason, ErrorText>> = {
   inbox_kind: () => "Postfächer werden mit dem Postfach-Formular hinzugefügt.",
   inbox_fields: () => "Das Postfach braucht einen Server, einen Benutzernamen und ein Passwort.",
-  unknown_provider: (p) => `Es gibt keinen Anbieter namens ${param(p, "provider")}.`,
+  unknown_provider: (p) => `Es gibt keinen Provider namens ${param(p, "provider")}.`,
   no_such_kind: (p) => `${param(p, "provider")} kann so nicht verwendet werden.`,
   secret_mismatch: (p) => `Die Anmeldedaten passen nicht zu ${param(p, "provider")}.`,
   invalid_fields: (p) => `Bitte diese Felder prüfen: ${param(p, "fields")}.`,
   no_such_sign_in: (p) => `${param(p, "provider")} hat keine solche Anmeldung.`,
-  no_tracking_provider: (p) => `Es gibt keinen Anbieter, der ${param(p, "provider")} verfolgt.`,
+  no_tracking_provider: (p) => `Es gibt keinen Provider, der ${param(p, "provider")} verfolgt.`,
   provider: (p) =>
     withDetail("Mit diesen Einstellungen kann die Verbindung nicht funktionieren.", p),
 };
@@ -124,7 +124,7 @@ export const errors: ErrorTexts = {
     invalid_input: (p) => withDetail("Prüfe deine Eingaben.", p),
     job_running: () => "Diese Verbindung hat schon einen laufenden Auftrag.",
     job_state: () => "Das geht im aktuellen Zustand des Auftrags nicht.",
-    invalid_consumer: (p) => withDetail("Prüfe die Einstellungen und Regeln der Ausgabe.", p),
+    invalid_consumer: (p) => withDetail("Prüfe die Einstellungen und Regeln des Consumers.", p),
   },
   http: (status) => `Der Server hat mit Fehler ${String(status)} geantwortet.`,
 };

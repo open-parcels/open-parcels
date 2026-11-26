@@ -93,6 +93,12 @@ The web UI is in English and German (`web/src/i18n`). These are the official Ger
 terms above; use exactly these in German texts. Terms without a row here keep a plain German word
 chosen once in `web/src/i18n/de/` and are added here when they matter.
 
+**Provider and Consumer stay English** in German texts (owner decision 2026-11-26), so bug reports
+and feature requests use the same word in every language and can be searched across them. They are
+masculine and keep German grammar around them: "der Provider", "des Providers", "die Provider";
+"der Consumer", "des Consumers", "die Consumer", "Consumer hinzufügen". A map's tile provider is a
+different thing and stays "Kachelanbieter" ("eigener Anbieter").
+
 | Term | German UI term |
 | --- | --- |
 | Parcel | Paket |
@@ -111,7 +117,7 @@ chosen once in `web/src/i18n/de/` and are added here when they matter.
 | Item | Artikel |
 | Event | Ereignis |
 | Live event | Live-Ereignis |
-| Provider | Anbieter |
+| Provider | Provider (der Provider, die Provider) |
 | Action | Aktion |
 | Job | Auftrag |
 | Fallback service | Ausweichdienst |
@@ -122,7 +128,7 @@ chosen once in `web/src/i18n/de/` and are added here when they matter.
 | Receiving / Sending | Empfang / Versand |
 | Backup | Sicherung |
 | Theme / Mode | Design / Modus |
-| Consumer | Ausgabe (**proposal, waits for the owner's confirmation**; used in `web/src/i18n/de/` until then) |
+| Consumer | Consumer (der Consumer, die Consumer) |
 | Notification / Notification rule | Benachrichtigung / Benachrichtigungsregel |
 | Quiet hours | Ruhezeit |
 | Digest | Zusammenfassung |

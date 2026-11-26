@@ -72,7 +72,7 @@ const de: Texts = {
       : `${shop} hat ${amount} erstattet.`,
   digest: (count) => (count === 1 ? "1 Paket-Neuigkeit" : `${String(count)} Paket-Neuigkeiten`),
   testTitle: "Testbenachrichtigung",
-  testBody: "open-parcels erreicht diese Ausgabe.",
+  testBody: "open-parcels erreicht diesen Consumer.",
   viewParcel: "Paket ansehen",
 };
 

@@ -128,7 +128,7 @@ export const settings: Messages["settings"] = {
     confirmArchivedEvents:
       "Die Sendungsereignisse archivierter Pakete löschen? Die Pakete bleiben.",
     confirmRaw:
-      "Die Rohantworten der Paketdienste löschen? Sie helfen nur bei der Fehlersuche in einem Anbieter.",
+      "Die Rohantworten der Paketdienste löschen? Sie helfen nur bei der Fehlersuche in einem Provider.",
     confirmCache: {
       images: "Den Bilder-Cache leeren? Er füllt sich von selbst wieder.",
       tiles: "Den Kartenkachel-Cache leeren? Er füllt sich von selbst wieder.",
