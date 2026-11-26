@@ -72,6 +72,34 @@ every endpoint stays under 200 ms p95.
 
 Server memory: 229 MB after start, 241 MB after all runs (peak 241 MB).
 
+### Re-measured with the parcel list searched, sorted and paged in SQL (NAS, 384 MB, 2 CPUs, 2026-11-26)
+
+Same seed and runs, load 4–5. The web UI's parcel page is now 200 parcels on the way (it was
+1000 rows of every parcel); the search, sort and count rows are new. Every endpoint stays under
+200 ms p95.
+
+| Endpoint | p50 / p95 / max ms | KB |
+| --- | --- | --- |
+| parcels, first page (100) | 19 / 29 / 40 | 203 |
+| parcels, web UI page (200 on the way) | 9 / 13 / 17 | 91 |
+| parcels + archived, search and sort by name (200) | 37 / 52 / 77 | 400 |
+| parcels + archived, sort by expected, page at offset 4000 | 62 / 97 / 105 | 397 |
+| parcel counts | 33 / 57 / 235 | 1 |
+| parcels + archived, page at offset 5000 | 22 / 39 / 45 | 204 |
+| parcels, status filter | 6 / 13 / 20 | 21 |
+| parcels + archived, carrier filter | 19 / 29 / 32 | 202 |
+| parcels, active (map) | 10 / 18 / 22 | 91 |
+| orders, open (100) | 46 / 65 / 161 | 101 |
+| orders, web UI page (500) | 46 / 77 / 81 | 101 |
+| orders, all, page at offset 2000 | 60 / 107 / 113 | 178 |
+| returns, open | 9 / 22 / 27 | 3 |
+| calendar, six weeks | 44 / 57 / 80 | 80 |
+| status | 2 / 2 / 2 | 2 |
+| sync from the start (one page) | 37 / 54 / 58 | 228 |
+| sync since a cursor | 37 / 44 / 54 | 220 |
+
+Server memory: 247 MB after start, 245 MB after all runs (peak 263 MB).
+
 ## What changed
 
 - **Visibility check** (`db/visibility.ts`): "shown unless every connection is disabled" was two
@@ -81,9 +109,15 @@ Server memory: 229 MB after start, 241 MB after all runs (peak 241 MB).
 - **Sort index** `parcels_updated (updated_at desc, id)` (migration 0028): deep pages walk the
   index instead of sorting all parcels.
 - **Order list**: sorted by plain string comparison instead of `localeCompare`.
-- **Web UI**: the parcel table and the order grid draw 200 rows or cards and a "Show 200 more"
-  button; search, sort and counts still cover the whole list. Chosen over a virtualised table:
+- **Web UI**: the parcel table and the order grid load one server page of 200 rows or cards and a
+  "Show more" button; the count reads "200+" while more follow. Chosen over a virtualised table:
   no new dependency, rows stay real table rows for screen readers and the browser's find.
+- **Parcel list** (`parcels/list-query.ts`): the Show filter, carrier, search (`q`, every word in
+  the tracking number, label, carrier, status, item names or order) and sort (`sort`, one column)
+  run in SQL. The default sort still walks `parcels_updated`; other sorts sort the filtered rows
+  (97 ms p95 at offset 4000 of all 10,000). `GET /api/v1/parcels/counts` gives the Connections
+  page and the carrier filter their numbers in three grouped queries; the map asks only for the
+  parcels on the way (`active=true`).
 
 ## Left as it is
 
@@ -93,9 +127,8 @@ Server memory: 229 MB after start, 241 MB after all runs (peak 241 MB).
   write, connection toggle and the 30-day rule for orders without parcels. A test holds the SQL
   and `order-lifecycle.ts` to the same answers on 300 generated orders. Re-measured on
   2026-11-26 (above): 48–67 ms p95. Not yet measured on the Pi.
-- The web UI still loads every page of parcels and orders (search and counts run in the browser).
-  With the default views (archived left out) that is a few hundred rows; "Include archived" loads
-  all 10,000 parcels (~4 MB of JSON).
+- The map still loads every parcel on the way (about 100 at this scale, 91 KB). Not yet measured
+  on the Pi.
 
 ## Regression test
 
