@@ -8,8 +8,8 @@
     "node": ">=26"
   },
   "openParcelsProviders": {
-    "version": "1.0.0",
-    "sha256": "a5505cdbeaba2bf95dff754106137913acc62b5ba1bda264dcba1b1af2f084c0"
+    "version": "1.0.1",
+    "sha256": "ba6b561de2e43d70fc32f1a375a66e75caf2025a2b9a41661470ee96dbf35b73"
   },
   "scripts": {
     "dev": "tsx watch src/main.ts",
