@@ -26,7 +26,12 @@ export class RateLimitedError extends ProviderError {
   }
 }
 
-/** The carrier put a captcha in front of us. We never try to solve it; we pause the connection instead. */
+/**
+ * The carrier put a challenge meant for a person in front of us (image, audio, a scored "I am not
+ * a robot" box). We never solve, outsource or bypass it; we pause the connection instead. A proof
+ * of work every client computes (Mój DHL's Altcha) is not one: a provider may compute it, bounded
+ * in CPU and time, and says so where the user switches it on (OP-108, owner decision 2026-11-26).
+ */
 export class CaptchaError extends ProviderError {
   override readonly name = "CaptchaError";
 }

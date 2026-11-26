@@ -35,10 +35,6 @@ Groups 1–24 are shipped (see `DONE.md`). Left, optional:
 - [ ] Performance follow-ups (`docs/performance.md`, "Left as it is"): the parcel list is
       searched, sorted, counted and paged in SQL, the map and the Connections page read only what
       they show (NAS, 2026-11-26). Left: measure on the Pi
-- [ ] Privacy, owner decision (no behaviour changed): without logging in, the read-only view
-      shows the inbox email addresses and connection labels such as "amazon.de · <name>".
-      Decide whether readers should see them, see them masked, or need the reader password
-      for them
 - [ ] Release 2.0.0: changelog, tags `2.0.0`, `2.0`, `latest` on Docker Hub and GHCR, website and
       Unraid template switched from `:dev` to `:latest`, HA app on the release
 - [ ] Make `ghcr.io/open-parcels/open-parcels` public (owner click) and switch docs to it
@@ -95,8 +91,6 @@ image are shipped (see `DONE.md`). Left:
       via the `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button)
 - [ ] Providers page: installed / available tabs, tier badges, install from URL, auto-update
       (on for built-in and verified, opt-in for custom and community)
-- [ ] OP-108: decide on the DHL Poland proof-of-work (owner; options with pros and cons in
-      [`docs/audit-rewrite-items.md`](../docs/audit-rewrite-items.md))
 - [ ] Audit rewrite items, rest (item → test → status in `docs/audit-rewrite-items.md`):
   - OP-088: replace "401/403/400/422/409/redirect/missing list = not found" in Trunkrs, Paack,
     Colisweb, Hermes, DHL Iberia, GLS NA and BOX NOW by each carrier's own not-found marker from a
@@ -137,8 +131,7 @@ image are shipped (see `DONE.md`). Left:
       consumer, built-in ntfy, email (SMTP), webhook (HMAC-signed) and Apprise consumers, "Send
       test notification", last delivery on the Status page, the Consumers page
 - [ ] Consumers, rest: installable consumers through the registry (they run in the sandbox,
-      `sandboxedConsumer`), the return-by reminder (needs a schedule), the owner's confirmation of
-      the German term "Ausgabe" (`docs/glossary.md`)
+      `sandboxedConsumer`), the return-by reminder (needs a schedule)
 
 ## 4. Returns follow-ups
 

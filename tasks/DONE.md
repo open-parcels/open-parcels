@@ -4,6 +4,12 @@ Shipped work, newest first, with the commit that shipped it.
 
 ## 2026-11-26
 
+- Owner decisions: "Provider" and "Consumer" stay English in German texts (glossary, web UI,
+  server texts); without a login the API and live events name connections and consumers only by
+  their provider or consumer, without labels, addresses or settings (`api/privacy.ts`); OP-108
+  decided as option C plus D (proof of work disclosed in the region setting and README; with a
+  DHL API key the official API answers Polish parcels and no proof of work is computed)
+
 - TODO §2 and §2b leftovers: the Status page's database error is a code with English and German
   texts (`database.error`, was the driver's message in `database.detail`); the HA integration's
   return sensor attributes and return events word drop-off and cost in HA's language; dialogs

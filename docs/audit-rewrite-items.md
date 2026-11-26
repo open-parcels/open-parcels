@@ -43,7 +43,7 @@ and not checked here.
 | OP-105 | Provider HTTP sent headers on cross-host redirects; the follow mode had no allow-list or own cap | Fixed by the manifest work: every hop goes through one loop with the manifest's allow-list, credential headers are dropped when the host changes | `unit/http.test.ts` "does not send credentials on to another host (OP-105)", "reaches only the hosts the manifest allows, on every redirect hop too" |
 | OP-106 | Free carrier text passed to `reportUnknown` (16 providers) | Open | none yet: needs a kit `reportKey` and its use in each provider |
 | OP-107 | Stored tracking links carry the recipient's postcode; PostNL stored a link the carrier chose | Partly: PostNL keeps its link only for `postnl.nl` over https | `postnl.test.ts` "lists the shipments …"; the postcode note for the README is open |
-| OP-108 | The DHL Poland back end solves the carrier's proof-of-work challenge | Owner's decision, see below | `dhl-pl.test.ts` "Altcha proof of work" pins the bounds |
+| OP-108 | The DHL Poland back end solves the carrier's proof-of-work challenge | Decided 2026-11-26: option C plus D, see below | `dhl-pl.test.ts` "Altcha proof of work" pins the bounds, "DHL Poland with a key for DHL's official API" the skip |
 | OP-109 | Provider definitions differ where the contract expects one way | Partly: registration now checks the manifest against the code (kinds, secrets, live, User-Agent, hosts, email); history order, `pickupPoint` only with `pickup`, the secret of a keyless provider and InPost's tracking flow are not checked | `unit/manifest.test.ts`; the rest open |
 | OP-110 | Token requests and session binding written out per provider | Open (L) | none yet; OP-085 and OP-086 themselves are fixed (`tasks/DONE.md`) |
 | OP-111 | The tracking loop copied instead of `trackEach` in 35 providers; no batch variant | Open | none yet |
@@ -62,7 +62,27 @@ and not checked here.
 
 ## OP-108: the DHL Poland proof-of-work
 
-**For the owner to decide.** Nothing here is decided; the code is unchanged.
+**Decided by the owner on 2026-11-26: option C, plus D as an option.**
+
+- **C:** the provider keeps computing Mój DHL's proof of work, bounded as below, and never solves,
+  outsources or bypasses a challenge meant for a person; `CaptchaError`'s comment states the rule.
+  The region setting's description (English and German) and the README's privacy section name the
+  proof of work and its CPU cost (up to 2,000,000 SHA-256 hashes, at most 4 s per lookup).
+- **D:** a DHL tracking connection with the user's key for DHL's official tracking API (the
+  existing optional "DHL API key" sign-in) skips Mój DHL and its proof of work; the official API
+  answers Polish parcels itself. Research (2026-11-26, public docs only, no key): the key is the
+  one of DHL's "Shipment Tracking - Unified" API (developer.dhl.com, `GET
+  https://api-eu.dhl.com/track/shipments?trackingNumber=…`, header `DHL-API-Key`), whose `service`
+  values include `parcel-pl` (DHL Parcel Poland); omitting `service` searches all of them. The key and
+  its quota and terms come from developer.dhl.com, which the user accepts when applying (its pages
+  refuse automated reading, so the terms were not quoted here); the provider already paces the
+  host at one call per 6 s. DHL Parcel Poland's own WebAPI v2
+  (`dhl24.com.pl/webapi2`, SOAP, `getTrackAndTraceInfo`) needs a DHL24 business contract login,
+  not a key, so it is not used. The test fixture is shaped after the Unified API's documented
+  example with made-up values. Polish account sign-in (SMS) has no official API and keeps the
+  proof of work.
+
+The options as they were put to the owner:
 
 **What the code does.** Mój DHL puts an Altcha challenge in front of its public tracking lookup
 and its SMS sign-in: the page fetches a salt and a SHA-256 target, the browser searches for the

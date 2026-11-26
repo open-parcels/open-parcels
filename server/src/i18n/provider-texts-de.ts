@@ -78,7 +78,7 @@ export const PROVIDER_TEXTS_DE: Readonly<Record<string, string>> = Object.fromEn
   ["Check senders (DKIM/DMARC)", "Absender prüfen (DKIM/DMARC)"],
   [
     "Off only if your mail server adds no Authentication-Results header: emails then reach a shop's or carrier's provider by the sender's domain alone, which a forged sender can fake.",
-    "Nur ausschalten, wenn dein Mailserver keinen Authentication-Results-Header einfügt: E-Mails erreichen den Anbieter eines Shops oder Paketdienstes dann allein über die Absenderdomain, die ein gefälschter Absender vortäuschen kann.",
+    "Nur ausschalten, wenn dein Mailserver keinen Authentication-Results-Header einfügt: E-Mails erreichen den Provider eines Shops oder Paketdienstes dann allein über die Absenderdomain, die ein gefälschter Absender vortäuschen kann.",
   ],
   ["Yes", "Ja"],
   ["No", "Nein"],
@@ -142,6 +142,10 @@ export const PROVIDER_TEXTS_DE: Readonly<Record<string, string>> = Object.fromEn
   ["Language of bpost's event texts.", "Sprache der Ereignistexte von bpost."],
   // DHL
   ["Regions", "Regionen"],
+  [
+    "Regional DHL networks to ask as well. PL: Mój DHL's public lookup asks every client to compute a proof of work first (up to 2,000,000 SHA-256 hashes, at most 4 seconds of CPU per lookup), which open-parcels does; it never answers a challenge meant for a person. With a DHL API key (optional sign-in) Polish parcels come from DHL's official API instead, without the proof of work.",
+    "Regionale DHL-Netze, die zusätzlich gefragt werden. PL: Die öffentliche Abfrage von Mój DHL verlangt von jedem Client zuerst einen Arbeitsnachweis (bis zu 2.000.000 SHA-256-Hashes, höchstens 4 Sekunden Rechenzeit je Abfrage), den open-parcels berechnet; eine Abfrage, die sich an einen Menschen richtet, beantwortet es nie. Mit einem DHL-API-Schlüssel (optionale Anmeldung) kommen polnische Pakete stattdessen aus der offiziellen API von DHL, ohne Arbeitsnachweis.",
+  ],
   ["Account", "Konto"],
   ["DHL Netherlands account", "DHL-Konto Niederlande"],
   ["Mój DHL account", "Mój-DHL-Konto"],

@@ -54,6 +54,11 @@ it logs every session out. Changing the reader password logs readers out. Home A
 counts as the admin. API tokens keep their scopes: `read` reads, `write` or `admin` may change
 things, and only `admin` manages tokens and server settings.
 
+**Without a login** (no `OPENPARCELS_PASSWORD`), the server answers parcels, orders and returns
+but not whose accounts they come from: connections and consumers are named by their provider or
+consumer ("Amazon", "Inbox"), without account names, inbox addresses or settings, in the API and
+live events alike. A login (reader or admin) or an API token sees them.
+
 **Upgrading** from a version with a single owner password: nothing to do. The owner password
 becomes the admin password (still hashed, shown as "saved in UI"), open sessions stay logged in as
 admin, and reading is open until `OPENPARCELS_PASSWORD` is set. To keep reading private as before,
@@ -74,6 +79,12 @@ otherwise only to these:
 - **Map tiles** are fetched by the server from the map provider you choose and cached. Built-in
   layers' addresses can be changed (`OPENPARCELS_MAP_OSM_URL`, `OPENPARCELS_MAP_TOPO_URL`,
   `OPENPARCELS_MAP_EOX_URL`); the satellite layer is for non-commercial use only.
+- **DHL Poland** (region `PL` of a DHL tracking connection, **off** by default): Mój DHL's public
+  lookup asks every client for a proof of work before it answers. open-parcels computes it (up to
+  2,000,000 SHA-256 hashes, at most 4 seconds of CPU per lookup, a noticeable cost on a Raspberry
+  Pi) and never answers a challenge meant for a person. With your own key for DHL's official
+  tracking API (optional sign-in of the DHL tracking connection), Polish parcels come from that API
+  instead and no proof of work is computed.
 
 What each service receives, its terms and how to switch to your own:
 [`docs/third-party-services.md`](docs/third-party-services.md). Set `OPENPARCELS_CONTACT_EMAIL`
