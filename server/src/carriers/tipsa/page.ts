@@ -4,6 +4,7 @@
  * the allow-list below are read, and the recipient's name, address, contact and notes never are.
  */
 import {
+  own,
   cleanText,
   UnexpectedResponseError,
   walkHtml,
@@ -169,7 +170,7 @@ class PageReader implements HtmlHandler {
         : this.#section === SECTION_DELIVERY
           ? READ_DELIVERY
           : {};
-    const key = table[label];
+    const key = own(table, label);
     if (key !== undefined && !(key in this.fields)) {
       this.fields[key] = value;
     }

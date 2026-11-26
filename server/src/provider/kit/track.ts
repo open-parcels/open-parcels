@@ -47,12 +47,18 @@ export function asTracked(found: ParcelSnapshot, tracked: string): ParcelSnapsho
   if (found.trackingNumber === tracked) {
     return found;
   }
+  // An empty echo or the same code spelled differently is no reference of its own (OP-100).
+  const echo = found.trackingNumber.trim();
+  const ownNumber = echo !== "" && spelling(echo) !== spelling(tracked);
   return {
     ...found,
     trackingNumber: tracked,
-    externalRef: found.externalRef ?? found.trackingNumber,
+    externalRef: found.externalRef ?? (ownNumber ? echo : null),
   };
 }
+
+/** A code's comparable form, as the engine compares codes: upper case, no spaces, dashes or dots. */
+const spelling = (code: string): string => code.toUpperCase().replace(/[\s.-]/gu, "");
 
 /**
  * The carrier's own number for a tracked parcel, as the external reference: null when it is

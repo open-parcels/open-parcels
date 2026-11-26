@@ -80,8 +80,41 @@ image are shipped (see `DONE.md`). Left:
       via the `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button)
 - [ ] Providers page: installed / available tabs, tier badges, install from URL, auto-update
       (on for built-in and verified, opt-in for custom and community)
-- [ ] Port the audit's "rewrite" items (OP-088 … OP-139) as acceptance tests of the new kit
-- [ ] OP-108: decide on the DHL Poland proof-of-work
+- [ ] OP-108: decide on the DHL Poland proof-of-work (owner; options with pros and cons in
+      [`docs/audit-rewrite-items.md`](../docs/audit-rewrite-items.md))
+- [ ] Audit rewrite items, rest (item → test → status in `docs/audit-rewrite-items.md`):
+  - OP-088: replace "401/403/400/422/409/redirect/missing list = not found" in Trunkrs, Paack,
+    Colisweb, Hermes, DHL Iberia, GLS NA and BOX NOW by each carrier's own not-found marker from a
+    recorded answer; one 403-page test per provider
+  - OP-093: record one real answer per carrier (BRT history with `eventDateAndTimeZoneId`, GOFO's
+    European routes, CTT, CTT Express, GLS DE/NA, Better Trucks, Poste Italiane, Pošta Slovenije,
+    Posten Bring, Nova Post), decide the zone and write the evidence into the comment
+  - OP-098: tests for the myDPD session ending mid-run and Mój DHL's missing observed list; DPD's
+    reset-connection check by a code on `TransientError` that crosses the sandbox, not the message
+  - OP-099, OP-116: status literals and tracking-link templates into `open-parcels-rules`
+  - OP-101: `DETAIL_LIMIT` per account (active parcels first) for Canada Post, Cargus, PPL CZ,
+    Vinted Go; `MAX_PAGES` for Posti; save sessions only on change (ACS, An Post); USPS reads its
+    session once per run
+  - OP-102: drop CTT's screen script after reading the versions; bound or move the Budbee, Swiss
+    Post and Posti caches into the session store
+  - OP-106: kit `reportKey(text)` (digits and text after a preposition or colon stripped, capped)
+    in the 16 providers the audit lists
+  - OP-107: README privacy note that tracking links of bpost, Colis Privé, DHL NL, GLS NL/ES, Paack
+    and Trunkrs carry the recipient's postcode
+  - OP-109: one contract test over every built-in provider: history newest first, `pickupPoint`
+    only with `pickup`, `z.null()` secret for keyless providers, no interactive default flow for a
+    tracking connection (InPost)
+  - OP-110, OP-111, OP-112, OP-113, OP-114, OP-115: kit `oauthToken`/`BoundSession`,
+    `trackEach`/`trackBatches` everywhere, `readTables` options, `readObject`/`mergeSnapshots`,
+    time and unit helpers, `postcodeSchema` (with a config migration `postcode` → `postalCode`);
+    best done while moving the providers into the official providers repository
+  - OP-117: stop exporting provider internals; let knip check `carriers/`
+  - OP-118: a `#provider` subpath import (or flat `dhl/de-*.ts` files) for the eight DHL files
+  - OP-119: an Amazon test that serves an order line linking to another host and expects
+    `UnexpectedResponseError`
+  - OP-120: table-driven `kit-time`, `kit-html` and `kit-track` suites (clock changes in
+    Europe/Berlin and America/New_York, 31 February, `24:00`, fractions, epoch seconds versus
+    milliseconds)
 
 - [x] Consumers (decision record 0005, [`docs/consumers.md`](../docs/consumers.md)): `consumers:`
       in the repo manifest, notification rules in the core (events, direction, connections,

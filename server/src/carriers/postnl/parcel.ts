@@ -110,6 +110,19 @@ export interface ShipmentInput {
   readonly colli: Json | null;
 }
 
+/**
+ * The carrier's link to its own page, only when it points at PostNL over https: the user sees it
+ * as "the tracking page", so the answer cannot send them elsewhere (OP-107).
+ */
+function postnlLink(value: string | null): string | null {
+  const url = value === null ? null : URL.parse(value);
+  return url !== null &&
+    url.protocol === "https:" &&
+    (url.hostname === "postnl.nl" || url.hostname.endsWith(".postnl.nl"))
+    ? url.toString()
+    : null;
+}
+
 export function shipmentSnapshot(
   input: ShipmentInput,
   report: (kind: string, key: string) => void,
@@ -146,7 +159,7 @@ export function shipmentSnapshot(
     expectedFrom: window.from,
     expectedTo: window.to,
     pickup: shipment["deliveryAddressType"] === "ServicePoint",
-    url: text(shipment["detailsUrl"], STRINGS),
+    url: postnlLink(text(shipment["detailsUrl"], STRINGS)),
     sender: text(shipment["title"], STRINGS),
     receiver:
       text(asObject(asObject(details["recipient"])["names"])["personName"], STRINGS) ??

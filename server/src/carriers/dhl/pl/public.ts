@@ -98,8 +98,13 @@ export async function lookUpPublic(
   let answer = await postStatus(http, codes);
   if (answer.status === 422) {
     const refused = rejected(codes, answer.body);
+    if (refused.size === 0) {
+      // A 422 that names no number (a refused challenge, a changed form) is not "none of these
+      // exist": a failing back end fails the run (OP-097).
+      throw new UnexpectedResponseError("Mój DHL refused the lookup without naming a number.");
+    }
     codes = codes.filter((code) => !refused.has(code));
-    if (refused.size === 0 || codes.length === 0) {
+    if (codes.length === 0) {
       return found;
     }
     answer = await postStatus(http, codes);

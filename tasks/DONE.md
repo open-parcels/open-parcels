@@ -4,6 +4,12 @@ Shipped work, newest first, with the commit that shipped it.
 
 ## 2026-11-26
 
+- TODO §3: the audit's "rewrite" items OP-088 … OP-139 checked against the provider kit, with
+  acceptance tests (`server/test/unit/rewrite-acceptance.test.ts`) and the map item → test →
+  status in `docs/audit-rewrite-items.md`; fixed OP-089, OP-090, OP-091, OP-092, OP-094, OP-095,
+  OP-096, OP-097, OP-100, OP-103, OP-104, OP-126, OP-134, OP-139, partly OP-098, OP-107, OP-117,
+  OP-119; the rest is in TODO §3; OP-108's options written up for the owner (commit: see the
+  log, "audit rewrite items")
 - TODO §3: Amazon "Import history" job (`docs/connection-actions-and-jobs.md` §6–§7): all years
   from the orders page's time filter, page by page, paced, resumable, tracking pages only for
   recent shipments; imported history flagged (`imported_at`, migration 0030), quiet

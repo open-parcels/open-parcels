@@ -51,7 +51,9 @@ export function unescapeHtml(value: string): string {
     if (name.startsWith("#")) {
       return codePoint(Number.parseInt(name.slice(1), 10)) ?? whole;
     }
-    return ENTITIES[name] ?? ENTITIES[name.toLowerCase()] ?? whole;
+    // Own names only: `&constructor;` must not turn into Object's constructor (OP-104).
+    const known = [name, name.toLowerCase()].find((key) => Object.hasOwn(ENTITIES, key));
+    return known === undefined ? whole : (ENTITIES[known] ?? whole);
   });
 }
 

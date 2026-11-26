@@ -156,7 +156,8 @@ export function createMailInterpreter(rules: Rules, timeZone: string): MailInter
   return (mail: MailInput): readonly ParcelSnapshot[] => {
     const results = emailResults(rules, mail, timeZone);
     const domain = senderDomain(mail.from);
-    const at = (mail.date ?? new Date()).toISOString();
+    // An email without a plausible date gives no event: "now" would outrank newer scans (OP-126).
+    const at = mail.date?.toISOString() ?? null;
     const id = mailId(mail);
     const fromOrderEmail = emailOrder(results, mail.from);
     const snapshots: ParcelSnapshot[] = [];
@@ -184,7 +185,10 @@ export function createMailInterpreter(rules: Rules, timeZone: string): MailInter
             expectedTo: result.arrival?.to ?? null,
             url: result.trackingUrl ?? null,
             // A history entry needs a text: a neutral one when the subject must not be kept.
-            history: [{ at, status, rawStatus: rawStatus ?? "Shipping mail", location: null, id }],
+            history:
+              at === null
+                ? []
+                : [{ at, status, rawStatus: rawStatus ?? "Shipping mail", location: null, id }],
             items: (result.items ?? []).map((title) => ({
               title,
               imageUrl: null,

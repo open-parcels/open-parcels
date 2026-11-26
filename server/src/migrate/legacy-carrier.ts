@@ -93,7 +93,10 @@ export function resolveLegacyCarrier(input: LegacyCarrierInput): string {
   if (detected !== undefined) {
     return detected;
   }
-  const shop = input.shop === null ? undefined : SHOP_CARRIER[snakeCase(input.shop)];
+  const shopKey = input.shop === null ? null : snakeCase(input.shop);
+  // Own entries only: text from the old database must not find inherited names (OP-134).
+  const shop =
+    shopKey !== null && Object.hasOwn(SHOP_CARRIER, shopKey) ? SHOP_CARRIER[shopKey] : undefined;
   if (shop !== undefined) {
     return shop;
   }

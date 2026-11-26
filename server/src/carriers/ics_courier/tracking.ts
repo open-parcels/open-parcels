@@ -1,6 +1,7 @@
 import {
   carrierPattern,
   expectStatus,
+  isoTime,
   rulesStatus,
   snapshot,
   text,
@@ -117,10 +118,8 @@ function recordTime(value: string | undefined): string | null {
       TIME_ZONE,
     );
   }
-  const parsed = Date.parse(value ?? "");
-  return /[zZ]|[+-]\d{2}:?\d{2}$/.test(value ?? "") && !Number.isNaN(parsed)
-    ? new Date(parsed).toISOString()
-    : null;
+  // Anything else counts only with an offset after its time (OP-092).
+  return isoTime(value, { naive: "reject" });
 }
 
 /**

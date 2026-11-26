@@ -31,11 +31,12 @@ describe("filing lookup answers under the tracked code", () => {
     expect(warnings).toEqual([]);
   });
 
-  it("refiles a reformatted echo under the code asked, keeping the echo as reference", () => {
+  it("refiles a reformatted echo under the code asked, without a reference for a respelling", () => {
     const { result, warnings } = run(["fp 0001", "FP2"], ["FP-0001"]);
+    // The same code spelled differently is no number of its own (OP-100).
     expect(result.snapshots[0]).toMatchObject({
       trackingNumber: "fp 0001",
-      externalRef: "FP-0001",
+      externalRef: null,
     });
     expect(warnings).toEqual([NOT_FILED_AS_TRACKED]);
   });

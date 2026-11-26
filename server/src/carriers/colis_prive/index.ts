@@ -2,6 +2,7 @@ import { z } from "zod";
 import {
   carrierPattern,
   defineCarrier,
+  localDay,
   rulesStatus,
   snapshot,
   trackEach,
@@ -82,6 +83,8 @@ export function toSnapshot(
   }
   const delivered = status === "delivered";
   const outDay = status === "out_for_delivery" ? stageDay(page.rows, lang, status) : null;
+  // The whole local day, also on the 23- and 25-hour days of a clock change (OP-094).
+  const window = outDay === null ? null : localDay(outDay, ZONE);
   return snapshot({
     carrier: CARRIER_ID,
     trackingNumber: code,
@@ -89,8 +92,8 @@ export function toSnapshot(
     rawStatus: page.statusText,
     delivered,
     deliveredAt: delivered ? stageDay(page.rows, lang, "delivered") : null,
-    expectedFrom: outDay,
-    expectedTo: outDay === null ? null : new Date(Date.parse(outDay) + 86_399_000).toISOString(),
+    expectedFrom: window?.from ?? null,
+    expectedTo: window?.to ?? null,
     url: rulesTrackingUrl(CARRIER_ID, code + postal, undefined, { lang }),
     sender: page.sender,
     history: history(page.rows, lang),

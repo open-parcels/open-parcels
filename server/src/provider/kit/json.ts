@@ -124,6 +124,14 @@ export function readObject(response: HttpResponse, carrier: string): Json {
 }
 
 /**
+ * `table[key]` for the table's own entries only. A plain object also inherits `constructor`,
+ * `toString` and the like, which carrier or user text must never reach (OP-104).
+ */
+export function own<T>(table: Readonly<Record<string, T>>, key: string): T | undefined {
+  return Object.hasOwn(table, key) ? table[key] : undefined;
+}
+
+/**
  * The list under `key`, which must be there. A missing or renamed key is an unexpected answer that
  * stops the run, never an empty list: an account reading it as empty would mark every parcel gone.
  */

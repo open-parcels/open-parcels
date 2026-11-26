@@ -29,9 +29,8 @@ export function localDate(value: unknown): string | null {
   if (LOCAL_TIME.test(raw)) {
     return isoTime(raw, { naive: { zone: "Europe/Bratislava" } });
   }
-  return /[zZ]|[+-]\d{2}:?\d{2}$/.test(raw)
-    ? isoTime(raw, { naive: { zone: "Europe/Bratislava" } })
-    : null;
+  // Anything else counts only with an offset after its time (OP-092).
+  return isoTime(raw, { naive: "reject" });
 }
 
 /** The event `stateCode`. Both return codes are `returning`; the raw text keeps them apart. */

@@ -139,3 +139,16 @@ describe("DHL Poland", () => {
     await expect(driver.continue({ code: "123456" })).rejects.toBeInstanceOf(TransientError);
   });
 });
+
+describe("DHL Poland's public lookup (OP-097)", () => {
+  it("fails the run on a 422 that names no number instead of reading every code as not found", async () => {
+    const world = new World(dhl, [
+      on(CHALLENGE, json(challenge(7))),
+      on(STATUS, json({ errors: { captcha: ["invalid"] } }, 422)),
+      () => json([]),
+    ]);
+    await expect(world.track([CODE], { regions: ["PL"] })).rejects.toBeInstanceOf(
+      UnexpectedResponseError,
+    );
+  });
+});

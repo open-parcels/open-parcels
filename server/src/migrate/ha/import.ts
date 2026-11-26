@@ -333,10 +333,27 @@ function planProblem(plan: ConnectionPlan): string | null {
     }
     throw error;
   }
-  if (plan.secret !== null && !provider.info.secretSchema.safeParse(plan.secret).success) {
-    return `The sign-in data does not fit ${provider.info.name}.`;
-  }
   return null;
+}
+
+/**
+ * The plan with its secret if the provider's schema accepts it; else without one, needing a
+ * sign-in, since the connection itself still fits (OP-139: the provider decides, not a copy here).
+ */
+function fittingSecret(plan: ConnectionPlan): ConnectionPlan {
+  const provider = REGISTRY.get(plan.provider);
+  if (
+    plan.secret === null ||
+    provider?.info.secretSchema.safeParse(plan.secret).success !== false
+  ) {
+    return plan;
+  }
+  return {
+    ...plan,
+    secret: null,
+    state: "needs_sign_in",
+    signInNote: `The Home Assistant entry holds no sign-in data ${provider.info.name} accepts; sign in.`,
+  };
 }
 
 /** Tracking entries first, so DHL account codes go to the imported "DHL tracking" connection. */
@@ -403,7 +420,7 @@ export async function importHaEntries(options: HaImportOptions): Promise<HaImpor
     if (plan.type === "connection") {
       const problem = planProblem(plan.plan);
       if (problem === null) {
-        plans.push(plan.plan);
+        plans.push(fittingSecret(plan.plan));
       } else {
         skipped.push(note(entry, problem));
       }

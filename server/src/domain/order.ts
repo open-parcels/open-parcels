@@ -10,7 +10,8 @@ const ORDER_NUMBER_FORMATS: Readonly<Record<string, RegExp>> = {
 
 /** False when the shop has a known order-number format and the number does not match it. */
 export function isPlausibleOrder(shop: string, orderNumber: string): boolean {
-  const format = ORDER_NUMBER_FORMATS[shop];
+  // Own entries only: a shop named `constructor` must not find Object (OP-134).
+  const format = Object.hasOwn(ORDER_NUMBER_FORMATS, shop) ? ORDER_NUMBER_FORMATS[shop] : undefined;
   return format === undefined || format.test(orderNumber.trim());
 }
 

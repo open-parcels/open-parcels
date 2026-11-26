@@ -1,5 +1,6 @@
 import { createHash } from "node:crypto";
 import {
+  own,
   SignInRejectedError,
   TransientError,
   UnexpectedResponseError,
@@ -38,7 +39,15 @@ export interface Timeline {
 export function verificationToken(pasted: string): string {
   const value = pasted.trim();
   const match = /[?&]token=([^&\s#]+)/.exec(value);
-  return match?.[1] === undefined ? value : decodeURIComponent(match[1]);
+  if (match?.[1] === undefined) {
+    return value;
+  }
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    // A stray `%` is a refused sign-in, not a crash (OP-103).
+    throw new SignInRejectedError("The pasted link is not a Vinted Go verification link.");
+  }
 }
 
 function maskEmail(email: string): string {
@@ -208,7 +217,7 @@ export async function fetchVintedAccount(
   for (const shipment of await shipments(deps, session)) {
     const code = text(shipment["tracking_code"]);
     const contact = text(shipment["contact_type"]) ?? "";
-    const direction = DIRECTION[contact];
+    const direction = own(DIRECTION, contact);
     if (code === null || direction === undefined) {
       if (code !== null) {
         deps.reportUnknown("contact_type", contact);

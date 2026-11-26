@@ -1,4 +1,4 @@
-import { isoTime, ruleStatus, type ParcelStatus } from "../../provider/api.js";
+import { own, isoTime, ruleStatus, type ParcelStatus } from "../../provider/api.js";
 
 export interface Checkpoint {
   readonly code: string | null;
@@ -32,7 +32,7 @@ export function decidingCode(checkpoints: readonly Checkpoint[]): string | null 
     if (code === null) {
       continue;
     }
-    const target = RETRACTS[code];
+    const target = own(RETRACTS, code);
     if (target !== undefined) {
       retracted.push(target);
       continue;

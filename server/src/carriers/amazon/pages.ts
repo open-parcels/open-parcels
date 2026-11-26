@@ -1,3 +1,4 @@
+import { own } from "../../provider/api.js";
 import { cleanText, unescapeHtml } from "./text.js";
 
 /**
@@ -355,7 +356,7 @@ export function parseTrackPage(page: string): TrackPage {
     null;
   return {
     trackingId,
-    carrierCode: carrier === undefined ? null : (CARRIER_ALIASES[carrier] ?? carrier),
+    carrierCode: carrier === undefined ? null : (own(CARRIER_ALIASES, carrier) ?? carrier),
     carrierHeader,
     timeZone: str(state["timezone"]),
     shortStatus: str(state["shortStatus"]),

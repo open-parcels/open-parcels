@@ -193,7 +193,9 @@ export function mergeParcel(
   // pickup and the expected delivery as they are now, instead of keeping ones an earlier state set:
   // an estimate it withdrew after a missed delivery is gone (OP-022).
   const wholeTruth = setStatus && authority === "carrier" && snapshot.historyComplete === true;
-  const windowFromSnapshot = setStatus && (snapshot.expectedFrom !== null || wholeTruth);
+  // Either end is an estimate: some carriers send only the latest time (OP-089).
+  const windowFromSnapshot =
+    setStatus && (snapshot.expectedFrom !== null || snapshot.expectedTo !== null || wholeTruth);
   return {
     direction: current?.direction ?? snapshot.direction,
     status,

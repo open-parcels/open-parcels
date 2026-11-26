@@ -200,7 +200,7 @@ describe("GLS Germany", () => {
 
   it("never registers on a network error and stops on a captcha", async () => {
     const offline = new World(gls, [on(REGISTER, new TypeError("fetch failed"))]);
-    await expect(offline.track([CODE], config)).rejects.toThrow();
+    await expect(offline.track([CODE], config)).rejects.toBeInstanceOf(TransientError);
     expect(offline.requests()).toEqual([REGISTER]);
     const guarded = new World(gls, [on(REGISTER, raw("please solve the reCAPTCHA", 403))]);
     await expect(guarded.track([CODE], config)).rejects.toBeInstanceOf(CaptchaError);

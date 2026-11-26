@@ -231,7 +231,9 @@ async function importParcels(
     });
     counters.carriers[carrier] = (counters.carriers[carrier] ?? 0) + 1;
     const oldStatus = text(row["status"])?.toLowerCase() ?? "unknown";
-    const status = STATUS_MAP[oldStatus] ?? "unknown";
+    // Own entries only: text from the old database must not find inherited names (OP-134).
+    const status =
+      (Object.hasOwn(STATUS_MAP, oldStatus) ? STATUS_MAP[oldStatus] : undefined) ?? "unknown";
     counters.statuses[`${oldStatus} → ${status}`] =
       (counters.statuses[`${oldStatus} → ${status}`] ?? 0) + 1;
     const stored = normaliseTrackingNumber(carrier, trackingNumber);
@@ -337,7 +339,10 @@ function decryptable(
   key: Buffer | undefined,
   encrypted: string | null,
 ): { readonly skip: string } | { readonly key: Buffer; readonly encrypted: string } {
-  const deliberate = DELIBERATELY_SKIPPED[serviceKey(service)];
+  const skipKey = serviceKey(service);
+  const deliberate = Object.hasOwn(DELIBERATELY_SKIPPED, skipKey)
+    ? DELIBERATELY_SKIPPED[skipKey]
+    : undefined;
   if (deliberate !== undefined) {
     return { skip: deliberate };
   }

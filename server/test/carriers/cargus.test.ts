@@ -128,7 +128,7 @@ describe("Cargus account", () => {
   it("refreshes an old token and never signs in on a network error", async () => {
     const world = new World(cargus, [on(TOKEN, new TypeError("fetch failed"))]);
     world.stored = { ...tokens, expiresAt: 0 };
-    await expect(world.fetchAccount(CONFIG, SECRET)).rejects.toThrow();
+    await expect(world.fetchAccount(CONFIG, SECRET)).rejects.toBeInstanceOf(TransientError);
     expect(world.requests()).toEqual([TOKEN]);
   });
 

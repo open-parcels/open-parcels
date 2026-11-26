@@ -328,6 +328,25 @@ describe("Home Assistant suite import", () => {
     expect(report.skipped.map((s) => s.entryId)).toEqual(["n", "k"]);
   });
 
+  it("asks the provider's own schemas, not a copy, about storefronts and serials (OP-139)", async () => {
+    const report = await run([
+      entry("s", "amazon_orders", "Amazon (short serial)", {
+        country: "amazon.de",
+        device_serial: "0123",
+        refresh_token: AMAZON_TOKEN,
+      }),
+      entry("n", "amazon_orders", "Amazon (amazon.nl)", { country: "amazon.nl" }),
+    ]);
+    expect(report.connections.map((s) => [s.label, s.state, s.signedIn])).toEqual([
+      ["Amazon (short serial)", "needs_sign_in", false],
+    ]);
+    expect(report.connections[0]?.signInNote).toMatch(/no sign-in data Amazon accepts/);
+    const amazon = await connectionByLabel("Amazon (short serial)");
+    expect(amazon.secret_blob).toBeNull();
+    // The provider's config schema refuses the storefront, in its own words.
+    expect(report.skipped.map((s) => s.entryId)).toEqual(["n"]);
+  });
+
   it("rejects a file that is not core.config_entries", async () => {
     await expect(
       importHaEntries({

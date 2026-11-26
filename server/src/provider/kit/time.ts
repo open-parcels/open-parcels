@@ -88,11 +88,12 @@ function isRealWallTime(time: Required<WallTime>): boolean {
 
 /**
  * A wall-clock time in an IANA zone as an ISO 8601 UTC instant; null for an impossible date or
- * time. Always UTC: stored times are compared as text, so an offset form would sort wrongly.
+ * time, and for a zone name the runtime does not know (carriers send zone names too, OP-090).
+ * Always UTC: stored times are compared as text, so an offset form would sort wrongly.
  */
 export function zonedIso(time: WallTime, timeZone: string): string | null {
   const full = { hour: 0, minute: 0, second: 0, ...time };
-  if (!isRealWallTime(full)) {
+  if (!isRealWallTime(full) || !isTimeZone(timeZone)) {
     return null;
   }
   const guess = Date.UTC(full.year, full.month - 1, full.day, full.hour, full.minute, full.second);
@@ -155,7 +156,11 @@ export interface TimeOptions {
   readonly keepFraction?: boolean;
 }
 
-const HAS_OFFSET = /(?:Z|[+-]\d{2}:?\d{2})$/i;
+/**
+ * An offset that follows a time of day. A bare `-YYYY` (the year of `05-11-2026`) is not one
+ * (OP-091): such a value must not reach `Date.parse`, which reads it in the server's zone.
+ */
+const HAS_OFFSET = /\d{2}:\d{2}(?::\d{2}(?:\.\d+)?)?\s*(?:Z|[+-]\d{2}:?\d{2})$/i;
 /** A textual date that names its zone, such as `Wed, 18 Nov 2026 10:00:00 GMT`. */
 const NAMED_ZONE = /\b(?:GMT|UTC)\b/i;
 const NAIVE = /^(\d{4})-(\d{2})-(\d{2})(?:[T ](\d{2}):(\d{2})(?::(\d{2})(?:\.(\d+))?)?)?$/;

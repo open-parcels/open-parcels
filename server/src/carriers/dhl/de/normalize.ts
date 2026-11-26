@@ -128,7 +128,10 @@ export function normalizeDe(deps: Deps, element: Json): ParcelSnapshot | null {
   // The ladder is only confirmed for incoming parcels; outgoing ones fall back to the texts.
   const ladder = outgoing ? null : ladderStatus(deps, verlauf);
   const flag = details["istZugestellt"];
-  const delivered = typeof flag === "boolean" ? flag : ladder === "delivered";
+  // A return is "returning", never delivered, until the account drops it: `istZugestellt` then
+  // means it arrived back at the sender, not with the user (OP-096).
+  const returning = details["retoure"] === true || details["ruecksendung"] === true;
+  const delivered = !returning && (typeof flag === "boolean" ? flag : ladder === "delivered");
   let status: ParcelSnapshot["status"] = delivered ? "delivered" : ladder;
   const texts = history(events);
   status ??= texts.findLast((e) => e.status !== null)?.status ?? null;
@@ -144,7 +147,7 @@ export function normalizeDe(deps: Deps, element: Json): ParcelSnapshot | null {
     status = "at_pickup_point";
     pickupPoint = pickupPointFrom(events);
   }
-  if (details["retoure"] === true || details["ruecksendung"] === true) {
+  if (returning) {
     status = "returning";
   }
   const planned = delivered ? { from: null, to: null } : window(zustellung);

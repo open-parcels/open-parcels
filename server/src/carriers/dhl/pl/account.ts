@@ -227,6 +227,13 @@ export async function fetchPlAccount(
     if (own.status !== 200 || !isObject(own.body)) {
       throw new TransientError(`Mój DHL's inbox answered HTTP ${own.status}.`);
     }
+    if (observed.status !== 200) {
+      // The observed list is extra; without it the run goes on, but never silently (OP-098).
+      context.logger.warn(
+        { status: observed.status },
+        "Mój DHL's list of observed parcels was unavailable.",
+      );
+    }
     const merged = new Map<string, Json>();
     for (const item of [
       ...(observed.status === 200 ? asList(observed.body) : []),

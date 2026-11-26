@@ -89,7 +89,11 @@ describe("PostNL account", () => {
         GRAPHQL,
         list([
           shipment(CODE),
-          shipment(DONE, { delivered: true, deliveredTimeStamp: "2026-11-17T10:00:00Z" }),
+          shipment(DONE, {
+            delivered: true,
+            deliveredTimeStamp: "2026-11-17T10:00:00Z",
+            detailsUrl: "https://tracking.example.invalid/elsewhere",
+          }),
         ]),
       ),
       onPrefix(
@@ -113,6 +117,7 @@ describe("PostNL account", () => {
       weightKg: 1.5,
       sender: "Testwinkel",
       receiver: "T. Persoon",
+      url: `https://jouw.postnl.nl/track-and-trace/${CODE}`,
     });
     // The ETA notice inherits the stage before it.
     expect(live?.history.map((e) => e.status)).toEqual([
@@ -125,6 +130,8 @@ describe("PostNL account", () => {
       status: "delivered",
       delivered: true,
       deliveredAt: "2026-11-17T10:00:00.000Z",
+      // A link the answer points elsewhere is not shown as PostNL's tracking page (OP-107).
+      url: null,
     });
     expect(world.requests().filter((p) => p.startsWith("GET"))).toHaveLength(1);
     expect(world.stored).toMatchObject({ refreshToken: "rt-1", accessToken: "at-1" });

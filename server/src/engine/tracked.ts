@@ -10,10 +10,13 @@ function canonical(code: string): string {
 }
 
 function refiled(found: ParcelSnapshot, tracked: string): ParcelSnapshot {
+  // An empty echo or the same code spelled differently is no reference of its own (OP-100).
+  const echo = found.trackingNumber.trim();
+  const ownNumber = echo !== "" && canonical(echo) !== canonical(tracked);
   return {
     ...found,
     trackingNumber: tracked,
-    externalRef: found.externalRef ?? found.trackingNumber,
+    externalRef: found.externalRef ?? (ownNumber ? echo : null),
   };
 }
 

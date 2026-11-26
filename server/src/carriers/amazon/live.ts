@@ -1,5 +1,6 @@
 import { z } from "zod";
 import {
+  own,
   SignInRejectedError,
   TransientError,
   UnexpectedResponseError,
@@ -142,7 +143,7 @@ export async function readLive(
   if (!answer.success || details === null) {
     return null;
   }
-  const state = LIVE_STATES[details.trackingObjectState];
+  const state = own(LIVE_STATES, details.trackingObjectState);
   if (state === undefined) {
     context.reportUnknown("live_state", details.trackingObjectState);
     throw new UnexpectedResponseError("Amazon's courier map reported a state we do not know.");

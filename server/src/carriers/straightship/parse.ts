@@ -1,5 +1,6 @@
 import type { ParcelStatus } from "../../provider/api.js";
 import {
+  own,
   ruleStatus,
   cleanText,
   snapshot,
@@ -42,7 +43,7 @@ function summary(tables: readonly Cell[][][]): Map<string, string> {
   for (const rows of tables) {
     rows.forEach((row, index) => {
       row.forEach((cell, position) => {
-        const key = cell.header ? LABELS[cell.text.toLowerCase()] : undefined;
+        const key = cell.header ? own(LABELS, cell.text.toLowerCase()) : undefined;
         if (key === undefined || found.has(key)) {
           return;
         }

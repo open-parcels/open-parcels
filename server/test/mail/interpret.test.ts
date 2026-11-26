@@ -71,7 +71,9 @@ describe("mail interpretation details (OP-142)", () => {
   it("gives the same mail the same history id, by Message-ID or by its content", () => {
     const text = "Guten Tag, Ihre Sendung 00340434000000000017 wird heute zugestellt.";
     const idOf = (mail: Parameters<typeof interpret>[0]) => interpret(mail)[0]?.history[0]?.id;
-    expect(idOf({ ...dhlMail, text })).toBe(idOf({ ...dhlMail, text, date: null }));
+    expect(idOf({ ...dhlMail, text })).toBe(
+      idOf({ ...dhlMail, text, date: new Date("2026-11-19T08:00:00Z") }),
+    );
     expect(idOf({ ...dhlMail, text, messageId: "<a@example.invalid>" })).toBe(
       "mail:<a@example.invalid>",
     );

@@ -20,7 +20,7 @@ const HISTORY_TIME = /^[A-Za-z]{2}\s+(\d{1,2})\s+([A-Za-z]{3})\s+(\d{1,2}):(\d{2
 const decode = (value: string): string => unescapeHtml(value).trim();
 
 /** Text of every element with this `data-test-id`, in page order. */
-export function allById(html: string, id: string): string[] {
+function allById(html: string, id: string): string[] {
   const pattern = new RegExp(`data-test-id="${id}"[^>]*>\\s*([^<]*?)\\s*<`, "g");
   return [...html.matchAll(pattern)]
     .map((match) => decode(match[1] ?? ""))
@@ -28,6 +28,21 @@ export function allById(html: string, id: string): string[] {
 }
 
 const firstById = (html: string, id: string): string | null => allById(html, id)[0] ?? null;
+
+/**
+ * The history as one status and time per `<li>`, read inside the same row: a row without a time
+ * keeps its status with a null time instead of shifting every later time by one (OP-095).
+ */
+function historyRows(html: string): { status: string; time: string | null }[] {
+  const rows: { status: string; time: string | null }[] = [];
+  for (const row of html.matchAll(/<li\b[^>]*>([\s\S]*?)<\/li>/g)) {
+    const status = firstById(row[1] ?? "", "history-entry-status");
+    if (status !== null) {
+      rows.push({ status, time: firstById(row[1] ?? "", "history-entry-time") });
+    }
+  }
+  return rows;
+}
 
 /**
  * The page omits the year: take the current one in Amsterdam, and the year before when that
@@ -62,8 +77,8 @@ export interface PageInput {
 }
 
 export function ampereSnapshot(input: PageInput, report: (text: string) => void): ParcelSnapshot {
-  const statuses = allById(input.html, "history-entry-status");
-  const times = allById(input.html, "history-entry-time");
+  const rows = historyRows(input.html);
+  const statuses = rows.map((row) => row.status);
   const banner = firstById(input.html, "status-text");
   // History entries are newest first and more complete than the banner, so they win.
   const current = statuses[0] ?? banner;
@@ -77,12 +92,17 @@ export function ampereSnapshot(input: PageInput, report: (text: string) => void)
   }
   const status = ruleStatus(CARRIER_ID, current);
   const history: SnapshotEvent[] = [];
-  statuses.forEach((rawStatus, index) => {
-    const at = historyTime(times[index] ?? "", input.now);
+  for (const row of rows) {
+    const at = row.time === null ? null : historyTime(row.time, input.now);
     if (at !== null) {
-      history.push({ at, rawStatus, status: ruleStatus(CARRIER_ID, rawStatus), location: null });
+      history.push({
+        at,
+        rawStatus: row.status,
+        status: ruleStatus(CARRIER_ID, row.status),
+        location: null,
+      });
     }
-  });
+  }
   const delivered = status === "delivered";
   const barcode = firstById(input.html, "barcode-value") ?? input.parcelToken;
   return snapshot({
@@ -91,13 +111,13 @@ export function ampereSnapshot(input: PageInput, report: (text: string) => void)
     status,
     rawStatus: current,
     delivered,
-    deliveredAt: delivered ? historyTime(times[0] ?? "", input.now) : null,
+    deliveredAt: delivered ? historyTime(rows[0]?.time ?? "", input.now) : null,
     expectedFrom: delivered ? null : isoTime(input.window["from"], { naive: { zone: ZONE } }),
     expectedTo: delivered ? null : isoTime(input.window["to"], { naive: { zone: ZONE } }),
     sender: firstById(input.html, "company-name-value") ?? "bol.com",
     receiver: firstById(input.html, "receiver-name"),
     history: newestFirst(history),
     // The page itself is not kept: it holds the address. The parcel token opens nothing alone.
-    raw: { barcode, statuses, times, banner, window: input.window },
+    raw: { barcode, statuses, times: rows.map((row) => row.time), banner, window: input.window },
   });
 }

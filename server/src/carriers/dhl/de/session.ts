@@ -146,7 +146,11 @@ export async function finishSignIn(
   pasted: string,
 ): Promise<{ refreshToken: string }> {
   const expected = signInStateSchema.parse(rawState);
-  const url = new URL(pasted.trim());
+  // Text that is not an address is a refused sign-in, not a crash (OP-103).
+  const url = URL.parse(pasted.trim());
+  if (url === null) {
+    throw new SignInRejectedError("The pasted text is not an address.");
+  }
   const code = url.searchParams.get("code");
   if (url.searchParams.get("state") !== expected.state || code === null) {
     throw new SignInRejectedError("The pasted address does not belong to this sign-in.");

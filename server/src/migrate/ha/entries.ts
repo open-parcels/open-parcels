@@ -136,30 +136,19 @@ function needsSignIn(detail: string): Pick<ConnectionPlan, "state" | "signInNote
   return { state: "needs_sign_in", signInNote: detail };
 }
 
-/** Storefronts the `amazon` provider reads; kept here so the importer needs no provider import. */
-const AMAZON_STOREFRONTS: ReadonlySet<string> = new Set([
-  "amazon.de",
-  "amazon.co.uk",
-  "amazon.com",
-  "amazon.ie",
-  "amazon.ca",
-  "amazon.com.au",
-  "amazon.in",
-]);
-
+/**
+ * Which storefronts and device serials the provider accepts is the provider's own schema's
+ * business: the importer checks every plan against it (`planProblem`, `fittingSecret`), so it
+ * keeps no copy of them (OP-139).
+ */
 function amazonPlan(entry: HaEntry): EntryPlan {
   const storefront = text(entry.data["country"])?.toLowerCase() ?? null;
-  if (storefront === null || !AMAZON_STOREFRONTS.has(storefront)) {
-    return {
-      type: "skipped",
-      entry,
-      reason: `The amazon provider does not read the storefront ${storefront ?? "(none)"} yet.`,
-    };
+  if (storefront === null) {
+    return { type: "skipped", entry, reason: "The Home Assistant entry names no storefront." };
   }
   const refreshToken = text(entry.data["refresh_token"]);
   const deviceSerial = text(entry.data["device_serial"])?.toUpperCase() ?? null;
-  const usable =
-    refreshToken !== null && deviceSerial !== null && /^[0-9A-F]{32}$/.test(deviceSerial);
+  const usable = refreshToken !== null && deviceSerial !== null;
   return {
     type: "connection",
     plan: {

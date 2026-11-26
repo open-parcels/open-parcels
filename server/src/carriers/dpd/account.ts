@@ -279,7 +279,9 @@ class AccountRun {
     try {
       fresh = await this.#requireSignedIn(this.#postback(INBOX_URL, html, rowTarget(row.index)));
     } catch (error) {
-      if (!(error instanceof TransientError)) {
+      // A session that ended is no missing panel: the rest of the run would read signed-out
+      // pages, so it stops here (OP-098).
+      if (!(error instanceof TransientError) || error instanceof UnexpectedResponseError) {
         throw error;
       }
       // A detail panel that does not open leaves the row as listed; the next poll tries again.

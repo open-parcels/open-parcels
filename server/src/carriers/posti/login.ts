@@ -1,6 +1,7 @@
 import { createHash, randomBytes } from "node:crypto";
 import { z } from "zod";
 import {
+  own,
   CookieJar,
   SignInRejectedError,
   TransientError,
@@ -119,7 +120,10 @@ function options(methods: Map<string, string>): SignInOption[] {
   };
   return [...methods.keys()]
     .sort((a, b) => rank(a) - rank(b))
-    .map((id) => ({ id, label: METHOD_LABELS[id] ?? id.charAt(0).toUpperCase() + id.slice(1) }));
+    .map((id) => ({
+      id,
+      label: own(METHOD_LABELS, id) ?? id.charAt(0).toUpperCase() + id.slice(1),
+    }));
 }
 
 async function bankAddress(http: ProviderHttp, jar: CookieJar, link: string): Promise<string> {
@@ -232,7 +236,7 @@ export function bankSignIn<Config>(): InteractiveSignIn<Config, PostiSecret> {
       const state = stateSchema.parse(rawState);
       const jar = restoreJar(state.jar);
       if (state.methods !== undefined) {
-        const link = state.methods[input["choice"] ?? ""];
+        const link = own(state.methods, input["choice"] ?? "");
         if (link === undefined) {
           throw new SignInRejectedError("That identification method is not offered.");
         }

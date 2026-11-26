@@ -1,5 +1,4 @@
 import {
-  isTimeZone,
   parseArrival,
   pastDayOffset,
   wallTimeAt,
@@ -14,8 +13,6 @@ export interface Day {
   readonly month: number;
   readonly day: number;
 }
-
-export { isTimeZone };
 
 export function today(now: Date, timeZone: string): Day {
   const { year, month, day } = wallTimeAt(now.getTime(), timeZone);

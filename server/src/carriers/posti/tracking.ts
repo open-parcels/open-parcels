@@ -1,4 +1,5 @@
 import {
+  own,
   asObject,
   cleanText,
   isObject,
@@ -167,7 +168,7 @@ export class PostiTracking {
 function weightKg(measurements: Json): number | null {
   const weight = asObject(measurements["weight"]);
   const value = num(weight["value"], DECIMAL);
-  const factor = { kg: 1, g: 0.001 }[String(weight["unit"]).toLowerCase()];
+  const factor = own({ kg: 1, g: 0.001 }, String(weight["unit"]).toLowerCase());
   return value === null || factor === undefined || value <= 0 ? null : value * factor;
 }
 

@@ -104,11 +104,11 @@ describe("UPS public tracking", () => {
     expect(w.unknown).toEqual([]);
   });
 
-  it("files a pasted code under its own spelling, the normalised one kept as reference", async () => {
+  it("files a pasted code under its own spelling, with no reference for a respelling (OP-100)", async () => {
     const pasted = "1z999aa1 0000000001";
     const w = world([on(BOOT, seeded()), on(LOOKUP, json(detail()))]);
     const [parcel] = (await w.track([pasted])).snapshots;
-    expect(parcel).toMatchObject({ trackingNumber: pasted, externalRef: CODE });
+    expect(parcel).toMatchObject({ trackingNumber: pasted, externalRef: null });
   });
 
   it("treats error code 504 as not found", async () => {

@@ -1,4 +1,5 @@
 import {
+  own,
   SignInRejectedError,
   snapshot,
   TransientError,
@@ -83,7 +84,7 @@ function weightKg(details: Json | null): number | null {
   const weight = asObject(details?.["weight"]);
   const value = num(weight?.["value"], { strings: false });
   const unit = (asString(weight?.["unitText"]) ?? "").trim().toLowerCase();
-  const factor = KG_PER_UNIT[unit];
+  const factor = own(KG_PER_UNIT, unit);
   return value === null || factor === undefined ? null : Math.round(value * factor * 1000) / 1000;
 }
 

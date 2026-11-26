@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { brt } from "../../src/carriers/brt/index.js";
-import { SignInRejectedError, UnexpectedResponseError } from "../../src/provider/errors.js";
+import {
+  SignInRejectedError,
+  TransientError,
+  UnexpectedResponseError,
+} from "../../src/provider/errors.js";
 import { json, madeUp, on, onPrefix, World } from "./harness.js";
 
 // Made-up parcel numbers, tokens and accounts only.
@@ -93,7 +97,7 @@ describe("BRT account", () => {
   it("never signs in again on a network error", async () => {
     const world = new World(brt, [on(LIST, new TypeError("fetch failed"))]);
     world.stored = { token: "old" };
-    await expect(world.fetchAccount({}, SECRET)).rejects.toThrow();
+    await expect(world.fetchAccount({}, SECRET)).rejects.toBeInstanceOf(TransientError);
     expect(world.requests()).toEqual([LIST]);
   });
 });

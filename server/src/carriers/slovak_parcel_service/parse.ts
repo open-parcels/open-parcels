@@ -24,9 +24,8 @@ export function slovakTime(value: unknown): string | null {
   if (LOCAL_TIME.test(value.trim())) {
     return isoTime(value, { naive: { zone: "Europe/Bratislava" } });
   }
-  return /[zZ]|[+-]\d{2}:?\d{2}$/.test(value)
-    ? isoTime(value, { naive: { zone: "Europe/Bratislava" } })
-    : null;
+  // Anything else counts only with an offset after its time (OP-092).
+  return isoTime(value, { naive: "reject" });
 }
 /** A code's status; the shared table maps codes that describe no movement to `unknown`. */
 function codeStatus(code: string | null): ParcelStatus | null {

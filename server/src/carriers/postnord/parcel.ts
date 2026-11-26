@@ -1,4 +1,5 @@
 import {
+  own,
   asObject,
   isoTime,
   num,
@@ -88,7 +89,7 @@ function weightKg(raw: Json): number | null {
   for (const candidate of candidates) {
     const weight = asObject(candidate);
     const value = num(weight["value"], DECIMAL);
-    const factor = { kg: 1, g: 0.001 }[String(weight["unit"]).toLowerCase()];
+    const factor = own({ kg: 1, g: 0.001 }, String(weight["unit"]).toLowerCase());
     if (value !== null && factor !== undefined && value > 0) {
       return value * factor;
     }
