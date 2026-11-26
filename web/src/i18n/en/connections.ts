@@ -83,7 +83,8 @@ export const connections = {
   cancelDenied: "The extension was not allowed to help this page.",
   cancelInvalid: "The extension could not use this sign-in address.",
   cancelTimeout: "The sign-in took too long.",
-  cancelBusy: "The extension is already running another sign-in. Finish or close that one first.",
+  cancelBusy:
+    "The extension is busy: another sign-in waits for approval, or this tab was not in front. Finish that one, then try again from this tab.",
   cancelError: "The extension ran into an error.",
   cancelOther: "The extension stopped.",
   extensionWaiting: "Sign in in the window that opened. It closes by itself when you are done.",

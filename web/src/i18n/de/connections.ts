@@ -90,7 +90,7 @@ export const connections: Messages["connections"] = {
   cancelInvalid: "Die Erweiterung konnte diese Anmeldeadresse nicht verwenden.",
   cancelTimeout: "Die Anmeldung hat zu lange gedauert.",
   cancelBusy:
-    "Die Erweiterung führt schon eine andere Anmeldung aus. Diese zuerst abschließen oder schließen.",
+    "Die Erweiterung ist beschäftigt: Eine andere Anmeldung wartet auf Freigabe, oder dieser Tab war nicht im Vordergrund. Jene abschließen und es dann in diesem Tab erneut versuchen.",
   cancelError: "In der Erweiterung ist ein Fehler aufgetreten.",
   cancelOther: "Die Erweiterung hat abgebrochen.",
   extensionWaiting:
