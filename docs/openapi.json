@@ -433,13 +433,22 @@
                     "database": {
                       "type": "object",
                       "properties": {
-                        "detail": {
+                        "error": {
                           "nullable": true,
-                          "type": "string"
+                          "description": "Why the database does not answer, as a code (the server log has the details); null when it answers.",
+                          "type": "string",
+                          "enum": [
+                            "busy",
+                            "corrupt",
+                            "no_space",
+                            "read_only",
+                            "cannot_open",
+                            "failed"
+                          ]
                         }
                       },
                       "required": [
-                        "detail"
+                        "error"
                       ],
                       "additionalProperties": false
                     },

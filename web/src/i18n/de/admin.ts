@@ -16,7 +16,6 @@ export const admin: Messages["admin"] = {
     service: "Dienst",
     version: (version: string, commit: string | null, since: string) =>
       `Version ${version}${commit === null ? "" : ` (${commit})`}, läuft seit ${since}`,
-    databaseDetail: (detail: string) => `Datenbank: ${detail}`,
     connectionLine: (extra: string | undefined, lastRun: string, lastOk: string) =>
       `${extra === undefined ? "" : `${extra}, `}letzter Lauf ${lastRun}, letzter Erfolg ${lastOk}`,
     pausedUntil: (until: string) => `, vom Paketdienst pausiert bis ${until}`,
@@ -45,6 +44,14 @@ export const admin: Messages["admin"] = {
     schedulerErrors: {
       cycle_failed: "Der letzte Durchlauf ist fehlgeschlagen; das Server-Log nennt den Grund.",
     },
+  },
+  databaseErrors: {
+    busy: "Datenbank: Ein anderer Prozess hält eine Sperre.",
+    corrupt: "Datenbank: Die Datei ist beschädigt oder keine Datenbank.",
+    no_space: "Datenbank: Der Datenträger ist voll.",
+    read_only: "Datenbank: Die Datei oder ihr Ordner darf nicht beschrieben werden.",
+    cannot_open: "Datenbank: Die Datei lässt sich nicht öffnen (Ordner fehlt oder keine Rechte).",
+    failed: "Datenbank: Sie antwortet nicht; das Server-Log nennt den Grund.",
   },
   backupErrors: {
     no_space: "Der Datenträger ist voll.",

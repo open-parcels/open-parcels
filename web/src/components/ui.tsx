@@ -111,7 +111,8 @@ export function Dialog(props: {
         props.onClose();
       }}
     >
-      <header className="dialog-header">
+      {/* A div, not a header: a header outside <main> would be a second banner landmark. */}
+      <div className="dialog-header">
         <h2 id={titleId}>{props.title}</h2>
         <button
           type="button"
@@ -121,7 +122,7 @@ export function Dialog(props: {
         >
           ×
         </button>
-      </header>
+      </div>
       {props.children}
     </dialog>
   );

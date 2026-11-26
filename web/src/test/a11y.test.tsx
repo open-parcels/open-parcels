@@ -1,6 +1,7 @@
 // Automated accessibility checks (axe-core) on every page, signed in as the admin. jsdom has no
 // layout or colours: contrast is checked on the design tokens instead (contrast.test.ts).
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import axe from "axe-core";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { t } from "../i18n";
@@ -34,8 +35,8 @@ function mockAll(): void {
   });
 }
 
-async function violations(): Promise<string[]> {
-  const result = await axe.run(document.body, {
+async function violations(root: Element = document.body): Promise<string[]> {
+  const result = await axe.run(root, {
     rules: { "color-contrast": { enabled: false } },
   });
   return result.violations.map(
@@ -75,4 +76,50 @@ describe("accessibility", () => {
     });
     expect(await violations()).toEqual([]);
   });
+});
+
+// The dialogs a page opens: opener path, the opener's name and the dialog's title. Focus trapping
+// comes from the browser's modal dialog (`showModal`); jsdom has none, so it is stubbed and its
+// use is checked. What is left for a person is listed in tasks/TODO.md §2.
+const DIALOGS = [
+  { path: "/", opener: t.shell.add, title: t.parcels.track },
+  { path: "/connections", opener: t.connections.add, title: t.connections.add },
+  { path: "/consumers", opener: t.consumers.add, title: t.consumers.add },
+] as const;
+
+describe("dialogs from the keyboard", () => {
+  afterEach(() => {
+    Reflect.deleteProperty(HTMLDialogElement.prototype, "showModal");
+  });
+
+  it.each(DIALOGS)(
+    "$title: modal, named, clean, Escape closes it, focus returns",
+    async (dialog) => {
+      mockAll();
+      const showModal = vi.fn(function (this: HTMLDialogElement) {
+        this.setAttribute("open", "");
+      });
+      Object.defineProperty(HTMLDialogElement.prototype, "showModal", {
+        configurable: true,
+        value: showModal,
+      });
+      const user = userEvent.setup();
+      renderApp(dialog.path);
+      const openers = await screen.findAllByRole("button", { name: dialog.opener });
+      const opener = openers[0];
+      if (opener === undefined) throw new Error("no opener");
+      opener.focus();
+      await user.keyboard("{Enter}");
+      const open = await screen.findByRole("dialog", { name: dialog.title });
+      expect(showModal).toHaveBeenCalledOnce();
+      expect(within(open).getByRole("button", { name: t.common.close })).toBeTruthy();
+      expect(await violations(open)).toEqual([]);
+      // Escape fires the dialog's `cancel` event in a browser.
+      fireEvent(open, new Event("cancel", { cancelable: true }));
+      await waitFor(() => {
+        expect(screen.queryByRole("dialog")).toBeNull();
+      });
+      expect(document.activeElement).toBe(opener);
+    },
+  );
 });

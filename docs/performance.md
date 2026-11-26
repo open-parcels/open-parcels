@@ -48,6 +48,30 @@ The NAS was busy (load 7–16) during the runs; p95 moves by ±50 % between runs
 Server memory: 210–225 MB after start, 200–230 MB after all runs (peak 232–239 MB); no growth
 over the runs.
 
+### Re-measured with the order list paged in SQL (NAS, 384 MB, 2 CPUs, 2026-11-26)
+
+Same seed and runs, load 5–7. The order list is two to four times faster than the "After" column;
+every endpoint stays under 200 ms p95.
+
+| Endpoint | p50 / p95 / max ms | KB |
+| --- | --- | --- |
+| parcels, first page (100) | 20 / 55 / 73 | 203 |
+| parcels, web UI page (1000; ~100 active) | 34 / 52 / 296 | 410 |
+| parcels + archived, page at offset 5000 | 17 / 21 / 23 | 204 |
+| parcels, status filter | 5 / 7 / 8 | 21 |
+| parcels + archived, carrier filter | 19 / 23 / 38 | 202 |
+| parcels, active (map) | 11 / 16 / 21 | 91 |
+| orders, open (100) | 39 / 48 / 77 | 101 |
+| orders, web UI page (500) | 39 / 63 / 87 | 101 |
+| orders, all, page at offset 2000 | 48 / 67 / 83 | 178 |
+| returns, open | 7 / 8 / 13 | 3 |
+| calendar, six weeks | 39 / 71 / 102 | 80 |
+| status | 2 / 4 / 5 | 2 |
+| sync from the start (one page) | 37 / 57 / 64 | 228 |
+| sync since a cursor | 45 / 66 / 79 | 220 |
+
+Server memory: 229 MB after start, 241 MB after all runs (peak 241 MB).
+
 ## What changed
 
 - **Visibility check** (`db/visibility.ts`): "shown unless every connection is disabled" was two
@@ -67,7 +91,8 @@ over the runs.
   derived from the visible parcels in one grouped query, filtered, sorted and paged by the
   database; only the page is built. Not stored: a stored status would have to follow every parcel
   write, connection toggle and the 30-day rule for orders without parcels. A test holds the SQL
-  and `order-lifecycle.ts` to the same answers on 300 generated orders. Not yet re-measured.
+  and `order-lifecycle.ts` to the same answers on 300 generated orders. Re-measured on
+  2026-11-26 (above): 48–67 ms p95. Not yet measured on the Pi.
 - The web UI still loads every page of parcels and orders (search and counts run in the browser).
   With the default views (archived left out) that is a few hundred rows; "Include archived" loads
   all 10,000 parcels (~4 MB of JSON).

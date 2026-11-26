@@ -75,8 +75,8 @@ function Overview({ status }: { readonly status: GetApiV1Status200 }): ReactNode
           </li>
         ))}
       </ul>
-      {status.database.detail === null ? null : (
-        <p className="muted">{t.admin.status.databaseDetail(status.database.detail)}</p>
+      {status.database.error === null ? null : (
+        <p className="muted">{t.admin.databaseErrors[status.database.error]}</p>
       )}
     </section>
   );

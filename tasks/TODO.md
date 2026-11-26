@@ -14,34 +14,44 @@ Groups 1–24 are shipped (see `DONE.md`). Left, optional:
 ## 2. Production readiness
 
 - [ ] Internationalisation leftovers (web UI EN/DE, error codes, settings, provider texts, map
-      layers, connection state reasons, scheduler and backup error codes, calendar and ICS texts
-      done, see `DONE.md`). Still English: the database check's own error text on the Status page
-      and texts written by providers or carriers (`carrier_message`, provider rewrite, §3); the
-      HA integration's return sensor attributes (`drop_off`, `cost` words)
-- [ ] Accessibility pass: axe on every page and token contrast are tested (see `DONE.md`).
-      Still to do by hand: keyboard walk of every page and dialog (focus order, focus return
-      after dialogs, the map and calendar widgets), screen-reader pass (NVDA/Orca) of live
-      updates and sign-in steps
+      layers, connection state reasons, scheduler, backup and database error codes, calendar and
+      ICS texts, the HA integration's return sensor attributes done, see `DONE.md`). Still
+      English: texts written by providers or carriers (`carrier_message`), part of the provider
+      rewrite (§3)
+- [ ] Accessibility pass: axe on every page and in every add dialog, token contrast, and the
+      dialogs from the keyboard (opened with Enter, modal, named, Escape closes, focus returns to
+      the opener) are tested (see `DONE.md`). Still to do by hand, in a real browser: Tab order
+      through the top bar, each page and each dialog (initial focus, focus kept inside the modal
+      dialog), the edit dialogs and the job input dialog, the map (Leaflet's controls and
+      markers) and the calendar (FullCalendar's toolbar and events) by keyboard, the connection
+      picker's search and the sign-in steps; a screen-reader pass (NVDA/Orca) of live updates
+      (the live badge, toasts, "Show 200 more") and the sign-in steps
 - [ ] Mobile layout pass: phone CSS at 360–480 px done (nav on its own row, icons only; tables
       scroll inside their card; smaller paddings; dialogs nearly full width; calendar toolbar
       wraps and opens the list view on phones; map menu kept clear). Still to look at on a real
       phone: the parcels table (scrolls, maybe cards), the split map/list pages and Leaflet's
       controls, FullCalendar's week/day views, the sign-in dialog's steps, the Settings place
       picker map, and Safari's dialog height (`100dvh`)
-- [ ] Performance follow-ups (`docs/performance.md`, "Left as it is"): re-measure the order list
-      now paged in SQL; the web UI still loads every page of parcels, because the parcels table
-      searches, sorts and counts in the browser and the map and connections pages use every parcel
-      (~4 MB with "Include archived" at 10,000 parcels); paging them needs search and sort on the
-      server; measure on the Pi
+- [ ] Performance follow-ups (`docs/performance.md`, "Left as it is"): the order list paged in SQL
+      is re-measured (NAS, 2026-11-26: 48–67 ms p95, every endpoint under budget). Left: the web UI
+      still loads every page of parcels, because the parcels table searches, sorts and counts in
+      the browser and the map and connections pages use every parcel (~4 MB with "Include
+      archived" at 10,000 parcels); paging them needs search and sort on the server; measure on
+      the Pi
 - [ ] Release 2.0.0: changelog, tags `2.0.0`, `2.0`, `latest` on Docker Hub and GHCR, website and
       Unraid template switched from `:dev` to `:latest`, HA app on the release
 - [ ] Make `ghcr.io/open-parcels/open-parcels` public (owner click) and switch docs to it
-- [ ] Backups: look at the Backups card and the Status page in a browser (built and tested, not
-      yet seen); the HA app's `backup_exclude` may want `backups/` once backups are on by default
+- [ ] Backups: the Status page was looked at in the NAS browser (2026-11-26, read-only view: all
+      parts, backups "next in 18 hours, last 6 hours ago (succeeded)"); the Backups card on
+      Settings is for the admin only and still needs a look while signed in. The HA app's
+      `backup_exclude` may want `backups/` once backups are on by default
 
 - [ ] Provider logos beyond the eight from simple-icons (`server/logos/manifest.json`): add
       carriers' official logos from their press/brand pages where the terms allow, recording the
-      source per file; until then the picker shows monograms
+      source per file; until then the picker shows monograms. Checked 2026-11-26: simple-icons
+      16.38.1 has no further mark of our providers (only Deutsche Post, covered by DHL). Left:
+      each carrier's brand page, one by one; where the terms only allow use with permission, the
+      carrier's written permission (owner)
 - [ ] Connection picker: look at it on a real phone (full-height dialog via `:has(.picker)`)
 
 ## 2b. Early groundwork for decision record 0004 (do soon: shapes the API and data model)
@@ -49,7 +59,8 @@ Groups 1–24 are shipped (see `DONE.md`). Left, optional:
 Token login, CORS, token on the live event stream, delta sync, API versioning and the slimmer
 image are shipped (see `DONE.md`). Left:
 
-- [ ] Measure the arm64 image on the Pi at the next publish (`op-image-housekeeping.sh`)
+- [x] Measure the arm64 image on the Pi: `sha-34a60c0`, 324 MB unpacked, 99 MB to download
+      (decision record 0004 §2)
 
 ## 3. Provider rewrite (decision record draft 0002, provider ecosystem)
 

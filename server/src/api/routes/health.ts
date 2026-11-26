@@ -1,6 +1,7 @@
 import { sql } from "kysely";
 import { z } from "zod";
 import { backupErrorSchema } from "../../data/backup.js";
+import { databaseErrorSchema } from "../../status/database-error.js";
 import { SCHEDULER_ERRORS } from "../../engine/scheduler.js";
 import type { Services } from "../../services.js";
 import { CHECK_NAMES, CHECK_STATES, collectStatus, type CheckName } from "../../status/service.js";
@@ -54,7 +55,7 @@ const statusSchema = summarySchema.extend({
       "A random id created once per install and kept for its lifetime; clients use it to recognise the same server (the Home Assistant integration's unique id).",
     ),
   started_at: z.string(),
-  database: z.object({ detail: z.string().nullable() }),
+  database: z.object({ error: databaseErrorSchema }),
   connections: z.array(connectionStatusSchema).describe("Every enabled connection but inboxes."),
   inboxes: z.array(
     connectionStatusSchema.extend({

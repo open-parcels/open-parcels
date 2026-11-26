@@ -96,9 +96,18 @@ export type GetApiV1Status200Checks = {
   consumers: GetApiV1Status200ChecksConsumers;
 };
 
+/**
+ * Why the database does not answer, as a code (the server log has the details); null when it answers.
+ * @nullable
+ */
+export type GetApiV1Status200DatabaseError =
+  "busy" | "corrupt" | "no_space" | "read_only" | "cannot_open" | "failed" | null;
 export type GetApiV1Status200Database = {
-  /** @nullable */
-  detail: string | null;
+  /**
+   * Why the database does not answer, as a code (the server log has the details); null when it answers.
+   * @nullable
+   */
+  error: GetApiV1Status200DatabaseError;
 };
 
 export type GetApiV1Status200ConnectionsItemKind = "account" | "tracking" | "shop" | "mail";

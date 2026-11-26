@@ -23,7 +23,7 @@ const STATUS = {
   commit: "abc1234",
   install_id: "install-1",
   started_at: "2026-11-25T08:00:00.000Z",
-  database: { detail: null },
+  database: { error: null },
   connections: [
     {
       id: "c1",

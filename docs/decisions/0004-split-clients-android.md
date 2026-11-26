@@ -41,8 +41,11 @@ serves static files). The real savings are elsewhere:
 - sharp (19 MB) is only used for collages and thumbnails; a "no pictures" build could drop it.
 
 Estimated: a server-only image of roughly 150–200 MB, versus 426 MB today. **Measured after
-Tailscale on demand, no npm/npx and the bundle (2026-11-25, amd64): 284 MB** (`node_modules` 22 MB). Memory is dominated by
-Node itself and the providers, not by the web UI.
+Tailscale on demand, no npm/npx and the bundle (2026-11-25, amd64): 284 MB** (`node_modules`
+22 MB). **arm64 on the Pi (`sha-34a60c0`, 2026-11-26): 324 MB unpacked, 99 MB to download**
+(layers: Debian 110 MB, Node.js 179 MB, the server and web UI 34 MB; Docker's containerd store
+lists 424 MB because it also keeps the packed layers). amd64 of the same commit: 285 MB unpacked.
+Memory is dominated by Node itself and the providers, not by the web UI.
 
 ## 3. Proposed shape
 

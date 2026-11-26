@@ -1,6 +1,7 @@
 import { sql } from "kysely";
 import type { ConnectionRow } from "../db/schema.js";
 import type { BackupError } from "../data/backup.js";
+import { databaseError, type DatabaseError } from "./database-error.js";
 import { SCHEDULER_STALL_MS, type SchedulerError } from "../engine/scheduler.js";
 import type { Services } from "../services.js";
 import { COMMIT, VERSION } from "../version.js";
@@ -70,7 +71,7 @@ export interface StatusReport {
   readonly install_id: string;
   readonly started_at: string;
   readonly checks: Readonly<Record<CheckName, CheckState>>;
-  readonly database: { readonly detail: string | null };
+  readonly database: { readonly error: DatabaseError | null };
   readonly connections: ConnectionStatus[];
   readonly inboxes: InboxStatus[];
   readonly scheduler: {
@@ -142,13 +143,13 @@ function connectionStatus(row: ConnectionRow): ConnectionStatus {
   };
 }
 
-async function databaseCheck(services: Services): Promise<string | null> {
+async function databaseCheck(services: Services): Promise<DatabaseError | null> {
   try {
     await sql`select 1`.execute(services.db);
     return null;
   } catch (error) {
     services.logger.error({ err: error }, "Status check: the database does not answer.");
-    return error instanceof Error ? error.message : String(error);
+    return databaseError(error);
   }
 }
 
@@ -162,8 +163,8 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
     install_id: services.installId,
     started_at: STARTED_AT.toISOString(),
   };
-  const databaseError = await databaseCheck(services);
-  if (databaseError !== null) {
+  const databaseFailure = await databaseCheck(services);
+  if (databaseFailure !== null) {
     const checks = Object.fromEntries(CHECK_NAMES.map((name) => [name, "unavailable"])) as Record<
       CheckName,
       CheckState
@@ -172,7 +173,7 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
       ...base,
       status: "unavailable",
       checks,
-      database: { detail: databaseError },
+      database: { error: databaseFailure },
       connections: [],
       inboxes: [],
       scheduler: {
@@ -246,7 +247,7 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
     ...base,
     status: worst(Object.values(checks)),
     checks,
-    database: { detail: null },
+    database: { error: null },
     connections: carriers.map(connectionStatus),
     inboxes,
     scheduler: {

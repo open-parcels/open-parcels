@@ -1,4 +1,4 @@
-import type { BackupError, SchedulerError } from "../../api/types";
+import type { BackupError, DatabaseError, SchedulerError } from "../../api/types";
 
 /** English texts: admin. The German file must have the same keys (the type enforces it). */
 export const admin = {
@@ -17,7 +17,6 @@ export const admin = {
     service: "Service",
     version: (version: string, commit: string | null, since: string) =>
       `Version ${version}${commit === null ? "" : ` (${commit})`}, running since ${since}`,
-    databaseDetail: (detail: string) => `Database: ${detail}`,
     connectionLine: (extra: string | undefined, lastRun: string, lastOk: string) =>
       `${extra === undefined ? "" : `${extra}, `}last run ${lastRun}, last success ${lastOk}`,
     pausedUntil: (until: string) => `, paused by the carrier until ${until}`,
@@ -46,6 +45,14 @@ export const admin = {
       cycle_failed: "The last pass failed; the server log says why.",
     } satisfies Record<SchedulerError, string>,
   },
+  databaseErrors: {
+    busy: "Database: another process holds a lock on it.",
+    corrupt: "Database: the file is damaged or is no database.",
+    no_space: "Database: the disk is full.",
+    read_only: "Database: the file or its folder may not be written.",
+    cannot_open: "Database: the file cannot be opened (missing folder or permissions).",
+    failed: "Database: it does not answer; the server log says why.",
+  } satisfies Record<DatabaseError, string>,
   backupErrors: {
     no_space: "The disk is full.",
     permission_denied: "The server may not write to the backup folder.",

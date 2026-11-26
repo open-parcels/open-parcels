@@ -4,6 +4,13 @@ Shipped work, newest first, with the commit that shipped it.
 
 ## 2026-11-26
 
+- TODO §2 and §2b leftovers: the Status page's database error is a code with English and German
+  texts (`database.error`, was the driver's message in `database.detail`); the HA integration's
+  return sensor attributes and return events word drop-off and cost in HA's language; dialogs
+  tested from the keyboard and with axe while open (fixed: a dialog's header was a second banner
+  landmark); the order list re-measured on the NAS (`docs/performance.md`); the arm64 image
+  measured on the Pi (decision record 0004 §2); the Status page looked at in the NAS browser
+  (commit: see the log, "TODO §2 leftovers")
 - TODO §3: the audit's "rewrite" items OP-088 … OP-139 checked against the provider kit, with
   acceptance tests (`server/test/unit/rewrite-acceptance.test.ts`) and the map item → test →
   status in `docs/audit-rewrite-items.md`; fixed OP-089, OP-090, OP-091, OP-092, OP-094, OP-095,

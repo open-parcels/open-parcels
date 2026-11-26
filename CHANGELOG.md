@@ -2,6 +2,18 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Changed: the Status page's database error is a code
+
+`GET /api/v1/status` reports why the database does not answer as `database.error`, a code
+(`busy`, `corrupt`, `no_space`, `read_only`, `cannot_open`, `failed`; the server log has the
+details), instead of the driver's English message in `database.detail`, which is gone. The web
+UI shows its own text in English or German. The Home Assistant integration does not read it.
+
+### Fixed: dialogs announced a second page banner
+
+A dialog's title bar was a `<header>`, which outside the main content is a banner landmark, so
+screen readers listed two page banners while "Track a parcel" was open. It is a plain block now.
+
 ### Added: returns of other shops, PayPal refunds matched to orders (rules 2.0.0-dev.17)
 
 What a return or refund email says about the return (return-by day, drop-off options, cost,
