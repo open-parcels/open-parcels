@@ -72,6 +72,7 @@ image are shipped (see `DONE.md`). Left:
       2.0.0-dev.15) and DPD Germany, UPS, FedEx, USPS, Evri, Canada Post (2.0.0-dev.16) moved;
       next: shops as declarative providers; status tables, keys and carrier entries later (P5)
 - [ ] One repo with a folder per provider for the official providers; repo manifest lists them
+      (plan: `docs/official-providers-repo.md`)
 - [ ] Registry repo (verified tier, signed index, blocklist), custom git URLs, community discovery
       via the `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button)
 - [ ] Providers page: installed / available tabs, tier badges, install from URL, auto-update
