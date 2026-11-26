@@ -324,6 +324,9 @@ release.
   site. Both are untrusted transports, because the signature is what counts. A user may point
   `OPENPARCELS_REGISTRY_URL` at a mirror.
 
+**Built (2026-11-26):** `open-parcels/open-parcels-registry` with JSON files instead of YAML,
+one signing key so far; see [`registry-and-installs.md`](../registry-and-installs.md).
+
 #### 2.6.2 The blocklist
 
 ```yaml

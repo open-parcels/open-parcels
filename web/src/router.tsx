@@ -26,6 +26,9 @@ const ConnectionsPage = lazy(() =>
 const ConsumersPage = lazy(() =>
   import("./consumers/ConsumersPage").then((m) => ({ default: m.ConsumersPage })),
 );
+const ProvidersPage = lazy(() =>
+  import("./providers/ProvidersPage").then((m) => ({ default: m.ProvidersPage })),
+);
 const TokensPage = lazy(() =>
   import("./admin/TokensPage").then((m) => ({ default: m.TokensPage })),
 );
@@ -78,6 +81,7 @@ const routeTree = rootRoute.addChildren([
     component: ConnectionsPage,
   }),
   createRoute({ getParentRoute: () => rootRoute, path: "/consumers", component: ConsumersPage }),
+  createRoute({ getParentRoute: () => rootRoute, path: "/providers", component: ProvidersPage }),
   createRoute({ getParentRoute: () => rootRoute, path: "/map", component: MapPage }),
   createRoute({ getParentRoute: () => rootRoute, path: "/orders", component: OrdersPage }),
   createRoute({ getParentRoute: () => rootRoute, path: "/returns", component: ReturnsPage }),

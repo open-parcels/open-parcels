@@ -73,8 +73,8 @@ image are shipped (see `DONE.md`). Left:
       and trust warnings. Precondition: the web UI must use design tokens (CSS custom properties)
       everywhere, no hard-coded colours. Built (`docs/themes.md`): tokens everywhere, the two
       settings with migration, manifest format 1 with contrast and file checks, the repo
-      manifest's `themes:` list, the default and the example theme. Left: installing from repos
-      on the providers page (waits for the registry).
+      manifest's `themes:` list, the default and the example theme, and installing themes from
+      git repositories on the Providers page (2026-11-26).
 - [x] Email routing: inboxes dispatch matching emails to providers' `parseEmail` (sender domain +
       DKIM/DMARC check, `OPENPARCELS_EMAIL_ROUTING` on by default); design note §3
 - [ ] Email routing follow-ups (0002 §2.14): subject/body filters and priority, per-route switches
@@ -89,10 +89,16 @@ image are shipped (see `DONE.md`). Left:
       `docs/official-providers-repo.md`)
 - [ ] Providers repo, rest: the provider SDK package, the repo's own gate, bundles instead of
       sources (`docs/official-providers-repo.md` steps 2–3)
-- [ ] Registry repo (verified tier, signed index, blocklist), custom git URLs, community discovery
-      via the `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button)
-- [ ] Providers page: installed / available tabs, tier badges, install from URL, auto-update
+- [x] Registry repo (`open-parcels/open-parcels-registry`: verified entries, SSH-signed index,
+      blocklist), custom git URLs (GitHub, GitLab, Gitea), community discovery via the
+      `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button);
+      `docs/registry-and-installs.md`
+- [x] Providers page: installed / available tabs, tier badges, install from URL, auto-update
       (on for built-in and verified, opt-in for custom and community)
+- [ ] Installs, rest: running installed code providers and consumers (needs bundles and the
+      sandbox per tier, `docs/official-providers-repo.md`), the consent diff for new permissions on
+      update, rollback, uploads (`.opp`), the blocklist's `critical` disabling of installed items,
+      a second (offline) registry key, the HA app options for the new settings
 - [ ] Audit rewrite items, rest (item → test → status in `docs/audit-rewrite-items.md`):
   - OP-088: replace "401/403/400/422/409/redirect/missing list = not found" in Trunkrs, Paack,
     Colisweb, Hermes, DHL Iberia, GLS NA and BOX NOW by each carrier's own not-found marker from a

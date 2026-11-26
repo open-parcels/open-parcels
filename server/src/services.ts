@@ -60,6 +60,9 @@ import type { Consumer } from "./consumers/api.js";
 import { builtinConsumers } from "./consumers/builtin/index.js";
 import { ConsumerDispatcher } from "./consumers/dispatcher.js";
 import { ConsumerStore } from "./consumers/store.js";
+import { InstallService } from "./installs/service.js";
+import { ThemeCatalog } from "./installs/themes.js";
+import { guardedFetch } from "./net/guarded-fetch.js";
 
 /**
  * How this server identifies itself to tile servers and the place search: a stable name for the
@@ -114,6 +117,10 @@ export interface Services {
   readonly consumers: ConsumerStore;
   /** Live events to notifications to deliveries; loaded and started by main. */
   readonly notifications: ConsumerDispatcher;
+  /** Built-in and installed themes. */
+  readonly themes: ThemeCatalog;
+  /** Installs from git repositories, the registry and community discovery (Providers page). */
+  readonly installs: InstallService;
   /** The sandbox the built-in providers run in (`OPENPARCELS_PROVIDER_ISOLATION=pool`), else none. */
   readonly providerPool: Sandbox | undefined;
 }
@@ -256,6 +263,32 @@ async function consumerServices(
   });
   await notifications.load();
   return { consumerCatalog, consumers, notifications };
+}
+
+/** The themes and the install service (decision record 0002 §2.8). */
+function installServices(
+  deps: ServiceDeps,
+  registry: ProviderRegistry,
+  consumerCatalog: ReadonlyMap<string, Consumer>,
+): Pick<Services, "themes" | "installs"> {
+  const themes = new ThemeCatalog(deps.config.dataDir, deps.logger);
+  const builtin = {
+    provider: () => new Set(registry.list().map((provider) => provider.info.id)),
+    theme: () => themes.builtinIds(),
+    consumer: () => new Set(consumerCatalog.keys()),
+  };
+  const installs = new InstallService({
+    db: deps.db,
+    clock: deps.clock,
+    fetch: deps.fetchImpl ?? guardedFetch,
+    dataDir: deps.config.dataDir,
+    registryUrl: deps.config.installs.registryUrl,
+    remote: deps.config.installs.remote,
+    community: deps.config.installs.community,
+    themes,
+    builtinIds: (kind) => builtin[kind](),
+  });
+  return { themes, installs };
 }
 
 /** The job service, with the inbox's own actions ("Read old emails again"). */
@@ -420,6 +453,7 @@ export async function createServices(deps: ServiceDeps): Promise<Services> {
     fallbackCarrier: () => fallbackCarrier(db, registry),
   });
   const access = await AccessControl.create(auth, logins, deps.config, configSettings, logger);
+  const consumerParts = await consumerServices(deps, bus, (id) => presentation.providerName(id));
   const returns = new ReturnService(db, clock, deps.config.timeZone);
   const orders = new OrderService(db, bus, clock, presentation, returns);
   return {
@@ -465,7 +499,8 @@ export async function createServices(deps: ServiceDeps): Promise<Services> {
       connections,
     }),
     access,
-    ...(await consumerServices(deps, bus, (id) => presentation.providerName(id))),
+    ...consumerParts,
+    ...installServices(deps, registry, consumerParts.consumerCatalog),
     backups: new BackupService({
       db,
       clock,

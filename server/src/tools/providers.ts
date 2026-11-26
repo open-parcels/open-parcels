@@ -116,6 +116,14 @@ function layOut(serverDir: string, root: string, stamp: string): number {
   return entries.length;
 }
 
+/** Whether every folder the laid-out repo manifest lists is there (a copy may have lost some). */
+function complete(carriers: string): boolean {
+  if (!existsSync(path.join(carriers, "open-parcels-repo.json"))) return false;
+  return readEntries(carriers).every(({ folder }) =>
+    existsSync(path.join(carriers, path.basename(folder), "open-parcels-provider.json")),
+  );
+}
+
 function fromRelease(serverDir: string): string {
   const pin = readPin(serverDir);
   const tarball = path.join(serverDir, "vendor", `open-parcels-providers-${pin.version}.tgz`);
@@ -125,7 +133,11 @@ function fromRelease(serverDir: string): string {
   }
   const stamp = `${pin.version} ${digest}`;
   const stampFile = path.join(serverDir, "src", "carriers", STAMP);
-  if (existsSync(stampFile) && readFileSync(stampFile, "utf8").trim() === stamp) {
+  if (
+    existsSync(stampFile) &&
+    readFileSync(stampFile, "utf8").trim() === stamp &&
+    complete(path.join(serverDir, "src", "carriers"))
+  ) {
     return `providers ${pin.version} already laid out`;
   }
   const temp = mkdtempSync(path.join(tmpdir(), "open-parcels-providers-"));

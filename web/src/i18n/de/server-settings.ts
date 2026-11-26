@@ -40,6 +40,12 @@ export const serverSettings: Messages["serverSettings"] = {
       "E-Mails von den eigenen Absenderdomains eines Providers an diesen Provider geben, sobald der empfangende Mailserver den Absender bestätigt hat (DKIM oder DMARC). Aus: Die gemeinsamen E-Mail-Regeln lesen jede E-Mail.",
     OPENPARCELS_PROVIDER_ISOLATION:
       "Wo die eingebauten Provider laufen: off lässt sie im Prozess des Servers laufen; pool lässt sie gemeinsam in einem eigenen Prozess unter dem Berechtigungsmodell von Node laufen, der Netzwerk, Anmeldedaten und Sitzungen nur über den Server erreicht, einen Aufruf nach dem anderen. Pool kostet einen weiteren Prozess (etwa 60 MB).",
+    OPENPARCELS_PROVIDERS_REMOTE:
+      "Registry lesen, GitHub nach Community-Einträgen durchsuchen und Provider, Themes und Consumer aus Git-Repositorys installieren oder aktualisieren. Aus: nichts wird abgerufen, für Installationen ohne Internet; die eingebauten funktionieren weiter.",
+    OPENPARCELS_PROVIDERS_COMMUNITY:
+      "Community-Einträge auf der Provider-Seite zeigen: GitHub-Repositorys mit dem Topic open-parcels-provider, die niemand bei open-parcels geprüft hat. Sie sind markiert, und vor dem Installieren wird nachgefragt.",
+    OPENPARCELS_REGISTRY_URL:
+      "Woher der signierte Registry-Index (index.json und index.json.sig) gelesen wird; ein Spiegel geht auch, denn nur die Signatur zählt.",
     OPENPARCELS_ARCHIVE_DAYS:
       "Tage nach der Zustellung, bis ein Paket archiviert wird und seine Rohdaten vom Paketdienst verworfen werden.",
     OPENPARCELS_DELETE_DAYS:

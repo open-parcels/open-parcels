@@ -116,6 +116,7 @@ export const errors: ErrorTexts = {
     job_running: () => "This connection is busy with a job already.",
     job_state: () => "The job cannot do that in its current state.",
     invalid_consumer: (p) => withDetail("Check the consumer's settings and rules.", p),
+    install_refused: (p) => withDetail("This cannot be installed.", p),
   },
   http: (status) => `The server answered with error ${String(status)}.`,
 };

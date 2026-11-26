@@ -2,6 +2,19 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Added: the Providers page, the registry and installs from git repositories
+
+A Providers page lists the installed providers, themes and consumers with their tier (Built in,
+Verified, Custom, Community · unreviewed) and what can be installed: verified items from the
+signed registry (`open-parcels/open-parcels-registry`) and community repositories with the
+GitHub topic `open-parcels-provider` (yellow, with a warning and a review-prompt copy button).
+"Install from URL" checks a GitHub, GitLab or Gitea repository at a release tag or commit.
+Themes install; code providers and consumers are listed but refused until installed code can
+run. Auto-update is on for verified installs and opt-in for custom and community ones. New API
+routes under `/api/v1/providers/` (admin for changes), the `install_refused` error code, the
+settings `OPENPARCELS_PROVIDERS_REMOTE`, `OPENPARCELS_PROVIDERS_COMMUNITY` (both on) and
+`OPENPARCELS_REGISTRY_URL`, and the `installs` table (migration 0033).
+
 ### Changed: the built-in providers come from open-parcels-providers
 
 The 89 built-in providers moved to their own repository,

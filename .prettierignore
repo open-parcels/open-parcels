@@ -17,3 +17,5 @@ logs
 docs/decisions
 docs/openapi.json
 *.md
+# Signed as published: reformatting would break the signature.
+server/test/installs/index.json

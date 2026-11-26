@@ -2,7 +2,7 @@
 
 Design note for TODO §3 "Themes". It narrows decision record [0002](decisions/0002-providers.md)
 owner decision 10 to what is built now: the theme format, its checks, the built-in themes and the
-two settings. Installing themes from repos waits for the registry (P3/P4).
+two settings. Themes also install from git repositories on the Providers page (§4).
 
 ## 1. Two settings
 
@@ -66,9 +66,10 @@ Every theme is a folder with `open-parcels-theme.json` and the files it names. T
 - `GET /api/v1/themes` lists the loaded themes (public, like the web UI's files) with complete
   token sets; the web UI puts the chosen variant's tokens on the root element.
 
-## 4. Not built yet
+## 4. Installing from repositories
 
-Installing themes from repos (standalone or inside a provider repository) from the providers
-page, with the tiers and trust warnings of providers, waits for the registry. It will hand each
-installed theme folder to `loadTheme(folder, defaultTheme)` (or a repository to `loadThemeRepo`),
-which runs every check above.
+Installing themes from git repositories is built (2026-11-26, `docs/registry-and-installs.md`):
+the Providers page checks a repository, downloads the theme's manifest and bundled files at the
+pinned commit into `<data>/installs/themes/<id>/` and loads it with
+`loadTheme(folder, defaultTheme)`, which runs every check above; a theme that fails is not
+installed.

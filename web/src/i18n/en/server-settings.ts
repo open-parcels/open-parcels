@@ -47,6 +47,12 @@ export const serverSettings: {
       "Hand emails from a provider's own sender domains to that provider, once the receiving mail server confirmed the sender (DKIM or DMARC). Off: the shared email rules read every email.",
     OPENPARCELS_PROVIDER_ISOLATION:
       "Where the built-in providers run: off runs them in the server's own process; pool runs them together in one separate process under Node's permission model, which reaches the network, the sign-in data and the sessions only through the server, one call at a time. Pool costs one more process (about 60 MB).",
+    OPENPARCELS_PROVIDERS_REMOTE:
+      "Read the registry, search GitHub for community items and install or update providers, themes and consumers from git repositories. Off: nothing is fetched, for air-gapped installs; the built-in ones keep working.",
+    OPENPARCELS_PROVIDERS_COMMUNITY:
+      "List community items on the Providers page: GitHub repositories with the topic open-parcels-provider, which nobody at open-parcels has reviewed. They are marked and installing one asks first.",
+    OPENPARCELS_REGISTRY_URL:
+      "Where the signed registry index (index.json and index.json.sig) is read from; a mirror works, since only the signature counts.",
     OPENPARCELS_ARCHIVE_DAYS:
       "Days after delivery before a parcel is archived and its raw carrier data dropped.",
     OPENPARCELS_DELETE_DAYS:

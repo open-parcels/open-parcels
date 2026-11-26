@@ -357,6 +357,23 @@ export interface JobTable {
 }
 
 /** A configured consumer. See migration 0031 and `docs/consumers.md`. */
+/** An installed provider, theme or consumer (`installs/service.ts`); built-in ones have no row. */
+interface InstallTable {
+  kind: string;
+  id: string;
+  name: string;
+  /** `verified`, `custom` or `community`. */
+  tier: string;
+  repository: string;
+  folder: string;
+  version: string;
+  /** The full commit it is pinned to. */
+  commit: string;
+  auto_update: number;
+  installed_at: Timestamp;
+  updated_at: Timestamp;
+}
+
 interface ConsumerTable {
   id: string;
   /** The consumer's id (`ntfy`, `email`, …). */
@@ -426,6 +443,7 @@ export interface Database {
   sync_changes: SyncChangeTable;
   jobs: JobTable;
   consumers: ConsumerTable;
+  installs: InstallTable;
   notifications: NotificationTable;
   notification_deliveries: NotificationDeliveryTable;
 }

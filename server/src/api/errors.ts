@@ -50,6 +50,7 @@ const ERROR_CODES = [
   "job_running",
   "job_state",
   "invalid_consumer",
+  "install_refused",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
 

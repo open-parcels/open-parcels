@@ -3,6 +3,7 @@ import { calendar } from "./en/calendar";
 import { common } from "./en/common";
 import { connections } from "./en/connections";
 import { consumers } from "./en/consumers";
+import { providers } from "./en/providers";
 import { errors } from "./en/errors";
 import { jobs } from "./en/jobs";
 import { map } from "./en/map";
@@ -23,6 +24,7 @@ export const en = {
   parcels,
   connections,
   consumers,
+  providers,
   jobs,
   settings,
   serverSettings,

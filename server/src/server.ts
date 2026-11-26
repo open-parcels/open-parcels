@@ -143,6 +143,17 @@ export async function startServer(processEnv: NodeJS.ProcessEnv): Promise<Runnin
     services.backups.runIfDue().catch((error: unknown) => {
       logger.error({ err: error }, "Checking for a due backup failed.");
     });
+    services.installs
+      .updateIfDue()
+      .then((results) => {
+        for (const { id, error } of results) {
+          if (error === null) logger.info({ install: id }, "Updated an installed item.");
+          else logger.warn({ install: id, error }, "Updating an installed item failed.");
+        }
+      })
+      .catch((error: unknown) => {
+        logger.error({ err: error }, "Checking installed items for updates failed.");
+      });
   };
   const maintenance = setInterval(maintain, MAINTENANCE_INTERVAL_MS);
   // Also once shortly after start: a server restarted more often than hourly would otherwise

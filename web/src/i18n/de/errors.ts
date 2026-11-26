@@ -125,6 +125,7 @@ export const errors: ErrorTexts = {
     job_running: () => "Diese Verbindung hat schon einen laufenden Auftrag.",
     job_state: () => "Das geht im aktuellen Zustand des Auftrags nicht.",
     invalid_consumer: (p) => withDetail("Prüfe die Einstellungen und Regeln des Consumers.", p),
+    install_refused: (p) => withDetail("Das lässt sich nicht installieren.", p),
   },
   http: (status) => `Der Server hat mit Fehler ${String(status)} geantwortet.`,
 };

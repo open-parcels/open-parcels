@@ -80,8 +80,9 @@ tarball travels with the files like the rules package.
 2. Next: the SDK package and the providers' imports switched to it in one step (no alias kept),
    then the providers repo's own gate (format, ESLint, knip, tsc, vitest per provider).
 3. Then bundles (precondition 3), with a check that `dist/` matches the sources.
-4. **Later (P3, P4):** installs from git URLs read the same repo manifest; the registry pins
-   `repository + path + commit`; auto-update is on for built-in and verified providers.
+4. **Done 2026-11-26:** installs from git URLs read the same repo manifest; the registry pins
+   `repository + path + commit`; auto-update is on for built-in and verified providers
+   ([`registry-and-installs.md`](registry-and-installs.md)). Installed code waits for step 3.
 
 ## Risks
 

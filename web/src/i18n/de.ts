@@ -3,6 +3,7 @@ import { calendar } from "./de/calendar";
 import { common } from "./de/common";
 import { connections } from "./de/connections";
 import { consumers } from "./de/consumers";
+import { providers } from "./de/providers";
 import { errors } from "./de/errors";
 import { jobs } from "./de/jobs";
 import { map } from "./de/map";
@@ -21,6 +22,7 @@ export const de: Messages = {
   parcels,
   connections,
   consumers,
+  providers,
   jobs,
   settings,
   serverSettings,

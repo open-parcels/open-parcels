@@ -1048,7 +1048,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1134,7 +1135,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1330,7 +1332,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1416,7 +1419,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1502,7 +1506,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1639,7 +1644,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1747,7 +1753,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1952,7 +1959,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2038,7 +2046,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2285,7 +2294,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2451,7 +2461,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2749,7 +2760,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3061,6 +3073,9 @@
                           "OPENPARCELS_QUIET_WINDOW",
                           "OPENPARCELS_EMAIL_ROUTING",
                           "OPENPARCELS_PROVIDER_ISOLATION",
+                          "OPENPARCELS_PROVIDERS_REMOTE",
+                          "OPENPARCELS_PROVIDERS_COMMUNITY",
+                          "OPENPARCELS_REGISTRY_URL",
                           "OPENPARCELS_ARCHIVE_DAYS",
                           "OPENPARCELS_DELETE_DAYS",
                           "OPENPARCELS_NOT_FOUND_ARCHIVE_DAYS",
@@ -3254,6 +3269,9 @@
                           "OPENPARCELS_QUIET_WINDOW",
                           "OPENPARCELS_EMAIL_ROUTING",
                           "OPENPARCELS_PROVIDER_ISOLATION",
+                          "OPENPARCELS_PROVIDERS_REMOTE",
+                          "OPENPARCELS_PROVIDERS_COMMUNITY",
+                          "OPENPARCELS_REGISTRY_URL",
                           "OPENPARCELS_ARCHIVE_DAYS",
                           "OPENPARCELS_DELETE_DAYS",
                           "OPENPARCELS_NOT_FOUND_ARCHIVE_DAYS",
@@ -3440,7 +3458,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3522,6 +3541,9 @@
                           "OPENPARCELS_QUIET_WINDOW",
                           "OPENPARCELS_EMAIL_ROUTING",
                           "OPENPARCELS_PROVIDER_ISOLATION",
+                          "OPENPARCELS_PROVIDERS_REMOTE",
+                          "OPENPARCELS_PROVIDERS_COMMUNITY",
+                          "OPENPARCELS_REGISTRY_URL",
                           "OPENPARCELS_ARCHIVE_DAYS",
                           "OPENPARCELS_DELETE_DAYS",
                           "OPENPARCELS_NOT_FOUND_ARCHIVE_DAYS",
@@ -3708,7 +3730,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3794,7 +3817,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3932,7 +3956,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -4018,7 +4043,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -5531,7 +5557,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -5617,7 +5644,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -6450,7 +6478,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -7215,7 +7244,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -7335,7 +7365,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -8587,7 +8618,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -9261,7 +9293,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -9382,7 +9415,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -9927,7 +9961,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10692,7 +10727,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10921,7 +10957,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11007,7 +11044,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11127,7 +11165,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11265,7 +11304,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11351,7 +11391,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11474,7 +11515,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11560,7 +11602,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11704,7 +11747,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11849,7 +11893,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12076,7 +12121,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12345,7 +12391,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12431,7 +12478,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12517,7 +12565,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12603,7 +12652,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12971,7 +13021,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13189,7 +13240,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13275,7 +13327,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13361,7 +13414,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13447,7 +13501,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13665,7 +13720,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13751,7 +13807,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13837,7 +13894,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13923,7 +13981,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14141,7 +14200,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14227,7 +14287,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14313,7 +14374,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14399,7 +14461,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15023,7 +15086,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15398,7 +15462,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15484,7 +15549,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15604,7 +15670,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15741,7 +15808,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16141,7 +16209,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16399,7 +16468,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16485,7 +16555,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16650,7 +16721,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17039,7 +17111,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17125,7 +17198,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17211,7 +17285,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17297,7 +17372,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17383,7 +17459,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17787,7 +17864,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17873,7 +17951,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17959,7 +18038,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18045,7 +18125,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18131,7 +18212,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18513,7 +18595,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18599,7 +18682,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18685,7 +18769,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18771,7 +18856,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18857,7 +18943,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -18989,7 +19076,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -19285,7 +19373,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -21330,7 +21419,8 @@
                         "invalid_input",
                         "job_running",
                         "job_state",
-                        "invalid_consumer"
+                        "invalid_consumer",
+                        "install_refused"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -21900,6 +21990,1324 @@
         "responses": {
           "200": {
             "description": "Default Response"
+          }
+        }
+      }
+    },
+    "/api/v1/providers/installed": {
+      "get": {
+        "summary": "Installed providers, themes and consumers, built-in ones first.",
+        "tags": [
+          "providers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "provider",
+                              "theme",
+                              "consumer"
+                            ]
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "tier": {
+                            "type": "string",
+                            "enum": [
+                              "builtin",
+                              "verified",
+                              "custom",
+                              "community"
+                            ]
+                          },
+                          "version": {
+                            "nullable": true,
+                            "description": "Null for built-in items: they update with the server.",
+                            "type": "string"
+                          },
+                          "repository": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "commit": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "auto_update": {
+                            "type": "boolean"
+                          },
+                          "auto_update_fixed": {
+                            "type": "boolean",
+                            "description": "True for built-in items: always updated with open-parcels itself."
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "id",
+                          "name",
+                          "tier",
+                          "version",
+                          "repository",
+                          "commit",
+                          "auto_update",
+                          "auto_update_fixed"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "registry": {
+                      "type": "object",
+                      "properties": {
+                        "checked_at": {
+                          "nullable": true,
+                          "type": "string"
+                        },
+                        "stale_days": {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991,
+                          "description": "Days past the signed index's expiry; 0 while valid."
+                        },
+                        "error": {
+                          "nullable": true,
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "checked_at",
+                        "stale_days",
+                        "error"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "remote": {
+                      "type": "boolean",
+                      "description": "False: nothing is fetched (OPENPARCELS_PROVIDERS_REMOTE)."
+                    },
+                    "community": {
+                      "type": "boolean",
+                      "description": "Community discovery is on (OPENPARCELS_PROVIDERS_COMMUNITY)."
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "registry",
+                    "remote",
+                    "community"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/providers/available": {
+      "get": {
+        "summary": "What can be installed: the registry's verified items, or community repositories.",
+        "tags": [
+          "providers"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "default": "verified",
+              "type": "string",
+              "enum": [
+                "verified",
+                "community"
+              ]
+            },
+            "in": "query",
+            "name": "source",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "refresh",
+            "required": false,
+            "description": "Search again (at most once a minute)."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "nullable": true,
+                            "description": "Null for community hits: their manifest is read on checking.",
+                            "type": "string",
+                            "enum": [
+                              "provider",
+                              "theme",
+                              "consumer"
+                            ]
+                          },
+                          "id": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "tier": {
+                            "type": "string",
+                            "enum": [
+                              "verified",
+                              "community"
+                            ]
+                          },
+                          "repository": {
+                            "type": "string"
+                          },
+                          "version": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "commit": {
+                            "nullable": true,
+                            "description": "The reviewed commit of a verified item's newest version.",
+                            "type": "string"
+                          },
+                          "stars": {
+                            "nullable": true,
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991
+                          },
+                          "updated_at": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "installed": {
+                            "type": "boolean"
+                          },
+                          "similar_to": {
+                            "nullable": true,
+                            "description": "A verified or built-in id this community hit's name is close to (typosquatting).",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "id",
+                          "name",
+                          "description",
+                          "tier",
+                          "repository",
+                          "version",
+                          "commit",
+                          "stars",
+                          "updated_at",
+                          "installed",
+                          "similar_to"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "checked_at": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "error": {
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "items",
+                    "checked_at",
+                    "error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/providers/check": {
+      "post": {
+        "summary": "Reads what a git repository offers at a release tag or commit, for the consent screen.",
+        "tags": [
+          "providers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 300
+                  },
+                  "ref": {
+                    "description": "Release tag or full commit; default: the newest release tag.",
+                    "type": "string",
+                    "maxLength": 100
+                  }
+                },
+                "required": [
+                  "url"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "repository": {
+                      "type": "string"
+                    },
+                    "version": {
+                      "type": "string"
+                    },
+                    "commit": {
+                      "type": "string"
+                    },
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "provider",
+                              "theme",
+                              "consumer"
+                            ]
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "folder": {
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "hosts": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "refusal": {
+                            "nullable": true,
+                            "type": "string",
+                            "enum": [
+                              "needs_bundles",
+                              "invalid",
+                              "reserved",
+                              "blocked"
+                            ]
+                          },
+                          "detail": {
+                            "nullable": true,
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "kind",
+                          "id",
+                          "folder",
+                          "name",
+                          "description",
+                          "hosts",
+                          "refusal",
+                          "detail"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "repository",
+                    "version",
+                    "commit",
+                    "items"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/providers/install": {
+      "post": {
+        "summary": "Installs (or updates) one provider, theme or consumer a repository lists.",
+        "tags": [
+          "providers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "maxLength": 300
+                  },
+                  "ref": {
+                    "type": "string",
+                    "maxLength": 100
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "provider",
+                      "theme",
+                      "consumer"
+                    ]
+                  },
+                  "id": {
+                    "type": "string",
+                    "maxLength": 40
+                  },
+                  "source": {
+                    "type": "string",
+                    "enum": [
+                      "url",
+                      "community",
+                      "verified"
+                    ],
+                    "description": "Where the user found it: the URL dialog, the community list or the registry."
+                  }
+                },
+                "required": [
+                  "url",
+                  "kind",
+                  "id",
+                  "source"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "provider",
+                        "theme",
+                        "consumer"
+                      ]
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "tier": {
+                      "type": "string",
+                      "enum": [
+                        "builtin",
+                        "verified",
+                        "custom",
+                        "community"
+                      ]
+                    },
+                    "version": {
+                      "nullable": true,
+                      "description": "Null for built-in items: they update with the server.",
+                      "type": "string"
+                    },
+                    "repository": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "commit": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "auto_update": {
+                      "type": "boolean"
+                    },
+                    "auto_update_fixed": {
+                      "type": "boolean",
+                      "description": "True for built-in items: always updated with open-parcels itself."
+                    }
+                  },
+                  "required": [
+                    "kind",
+                    "id",
+                    "name",
+                    "tier",
+                    "version",
+                    "repository",
+                    "commit",
+                    "auto_update",
+                    "auto_update_fixed"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/providers/{kind}/{id}": {
+      "patch": {
+        "summary": "Switches auto-update of an installed item.",
+        "tags": [
+          "providers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "auto_update": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "auto_update"
+                ]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "provider",
+                "theme",
+                "consumer"
+              ]
+            },
+            "in": "path",
+            "name": "kind",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    null
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Uninstalls an installed item; built-in ones cannot be uninstalled.",
+        "tags": [
+          "providers"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "provider",
+                "theme",
+                "consumer"
+              ]
+            },
+            "in": "path",
+            "name": "kind",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    null
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer",
+                        "install_refused"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
           }
         }
       }

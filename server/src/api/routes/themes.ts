@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { loadBuiltInThemes } from "../../builtin-themes.js";
 import { VARIANT_TOKENS } from "../../themes/manifest.js";
 import type { Theme } from "../../themes/loader.js";
 import type { Services } from "../../services.js";
@@ -55,12 +54,6 @@ function view(theme: Theme): z.infer<typeof themeSchema> {
  * files: the login page wears the theme too, and a theme says nothing about the user.
  */
 export function registerThemeRoutes(app: TypedApp, services: Services): void {
-  const loaded = loadBuiltInThemes();
-  for (const { folder, error } of loaded.rejected) {
-    services.logger.warn({ theme: folder, error }, "A theme failed its checks and is not loaded.");
-  }
-  const themes = loaded.themes;
-
   app.get(
     "/api/v1/themes",
     {
@@ -71,7 +64,7 @@ export function registerThemeRoutes(app: TypedApp, services: Services): void {
         response: { 200: z.array(themeSchema) },
       },
     },
-    () => themes.map(view),
+    () => services.themes.all().map(view),
   );
 
   app.get(
@@ -86,7 +79,7 @@ export function registerThemeRoutes(app: TypedApp, services: Services): void {
       },
     },
     (request, reply) => {
-      const theme = themes.find((candidate) => candidate.id === request.params.id);
+      const theme = services.themes.all().find((candidate) => candidate.id === request.params.id);
       const file = theme?.files.get(request.params.file);
       if (file === undefined) {
         throw notFound("route");

@@ -2525,3 +2525,28 @@ tbody tr:hover {
 .card-table-scroll code {
   overflow-wrap: anywhere;
 }
+
+/* Providers page: tier badges; community items are yellow with a warning (0002 owner decision 3). */
+.badge.tier-verified {
+  color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+  border-color: color-mix(in srgb, var(--ok) 25%, transparent);
+}
+
+.badge.tier-custom {
+  color: var(--info);
+  background: color-mix(in srgb, var(--info) 15%, transparent);
+  border-color: color-mix(in srgb, var(--info) 25%, transparent);
+}
+
+.badge.tier-community {
+  color: var(--yellow);
+  background: color-mix(in srgb, var(--yellow) 15%, transparent);
+  border-color: color-mix(in srgb, var(--yellow) 25%, transparent);
+}
+
+.card.install-community,
+.notice.community-warning {
+  background: color-mix(in srgb, var(--yellow) 12%, var(--panel-solid));
+  border-color: color-mix(in srgb, var(--yellow) 40%, transparent);
+}

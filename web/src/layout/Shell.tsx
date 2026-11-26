@@ -1,7 +1,8 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import {
-  BellRing,
   Activity,
+  BellRing,
+  Blocks,
   CalendarDays,
   KeyRound,
   LogIn,
@@ -12,8 +13,8 @@ import {
   Plus,
   Settings,
   ShoppingBag,
-  Undo2,
   type LucideIcon,
+  Undo2,
 } from "lucide-react";
 import { Suspense, useState, type ReactNode } from "react";
 import { useLiveUpdates, type LiveState } from "../api/events";
@@ -36,6 +37,7 @@ const NAV = [
   { to: "/calendar", label: t.shell.nav.calendar, icon: CalendarDays },
   { to: "/connections", label: t.shell.nav.connections, icon: Plug },
   { to: "/consumers", label: t.shell.nav.consumers, icon: BellRing },
+  { to: "/providers", label: t.shell.nav.providers, icon: Blocks },
   { to: "/tokens", label: t.shell.nav.tokens, icon: KeyRound, adminOnly: true },
   { to: "/status", label: t.shell.nav.status, icon: Activity },
   { to: "/settings", label: t.shell.nav.settings, icon: Settings },

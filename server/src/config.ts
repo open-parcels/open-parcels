@@ -268,6 +268,33 @@ export const SETTINGS = {
     kind: "string",
     choices: PROVIDER_ISOLATION,
   }),
+  OPENPARCELS_PROVIDERS_REMOTE: setting({
+    group: "tracking",
+    description:
+      "Read the registry, search GitHub for community items and install or update providers, themes and consumers from git repositories. Off: nothing is fetched, for air-gapped installs; the built-in ones keep working.",
+    schema: booleanFlag,
+    default: true,
+    apply: "env",
+    kind: "boolean",
+  }),
+  OPENPARCELS_PROVIDERS_COMMUNITY: setting({
+    group: "tracking",
+    description:
+      "List community items on the Providers page: GitHub repositories with the topic open-parcels-provider, which nobody at open-parcels has reviewed. They are marked and installing one asks first.",
+    schema: booleanFlag,
+    default: true,
+    apply: "env",
+    kind: "boolean",
+  }),
+  OPENPARCELS_REGISTRY_URL: setting({
+    group: "tracking",
+    description:
+      "Where the signed registry index (index.json and index.json.sig) is read from; a mirror works, since only the signature counts.",
+    schema: z.url({ protocol: /^https$/, error: "Use an https address." }),
+    default: "https://raw.githubusercontent.com/open-parcels/open-parcels-registry/main/",
+    apply: "env",
+    kind: "string",
+  }),
   OPENPARCELS_ARCHIVE_DAYS: setting({
     group: "retention",
     description:
@@ -581,6 +608,12 @@ export interface AppConfig {
   readonly emailRouting: boolean;
   /** Where the built-in providers run (OPENPARCELS_PROVIDER_ISOLATION). */
   readonly providerIsolation: ProviderIsolation;
+  /** Installs from git repositories (OPENPARCELS_PROVIDERS_REMOTE, _COMMUNITY, REGISTRY_URL). */
+  readonly installs: {
+    readonly remote: boolean;
+    readonly community: boolean;
+    readonly registryUrl: string;
+  };
   /** Background lookup of scan place names (OPENPARCELS_GEOCODING). */
   readonly geocoding: boolean;
   /** Nominatim-compatible search endpoint (OPENPARCELS_GEOCODING_URL). */
@@ -646,6 +679,11 @@ export function toConfig(values: Readonly<SettingValues>, env: ParsedEnv): AppCo
     quietWindow: values.OPENPARCELS_QUIET_WINDOW,
     emailRouting: values.OPENPARCELS_EMAIL_ROUTING,
     providerIsolation: values.OPENPARCELS_PROVIDER_ISOLATION,
+    installs: {
+      remote: values.OPENPARCELS_PROVIDERS_REMOTE,
+      community: values.OPENPARCELS_PROVIDERS_COMMUNITY,
+      registryUrl: values.OPENPARCELS_REGISTRY_URL,
+    },
     geocoding: values.OPENPARCELS_GEOCODING,
     geocodingUrl: values.OPENPARCELS_GEOCODING_URL,
     contactEmail: values.OPENPARCELS_CONTACT_EMAIL,

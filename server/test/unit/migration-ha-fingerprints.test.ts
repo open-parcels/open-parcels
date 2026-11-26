@@ -41,7 +41,7 @@ describe("migration 0032-ha-marker-fingerprints", () => {
         ])
         .execute();
 
-      expect(await migrateToLatest(db)).toEqual(["0032-ha-marker-fingerprints"]);
+      expect(await migrateToLatest(db)).toEqual(["0032-ha-marker-fingerprints", "0033-installs"]);
 
       const stored = await db.selectFrom("settings").select(["key", "value"]).execute();
       const byKey = Object.fromEntries(stored.map((row) => [row.key, row.value]));

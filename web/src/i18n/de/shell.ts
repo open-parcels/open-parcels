@@ -9,6 +9,7 @@ export const shell: Messages["shell"] = {
     calendar: "Kalender",
     connections: "Verbindungen",
     consumers: "Consumer",
+    providers: "Provider",
     tokens: "API-Tokens",
     status: "Status",
     settings: "Einstellungen",

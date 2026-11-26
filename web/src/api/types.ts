@@ -12,6 +12,10 @@ import type {
   GetApiV1Connections200Item,
   GetApiV1Consumers200Item,
   GetApiV1ConsumersAvailable200Item,
+  GetApiV1ProvidersAvailable200ItemsItem,
+  GetApiV1ProvidersInstalled200ItemsItem,
+  PostApiV1ProvidersCheck200,
+  PostApiV1ProvidersInstallBodySource,
   GetApiV1Jobs200Item,
   GetApiV1ConnectionsIdSignInFlows200Item,
   GetApiV1Tokens200Item,
@@ -64,3 +68,10 @@ export const PARCEL_STATUSES = listingEvery<ParcelStatus>()([
   "problem",
   "unknown",
 ]);
+
+/** The Providers page (decision record 0002 §2.8). */
+export type InstalledItem = GetApiV1ProvidersInstalled200ItemsItem;
+export type AvailableItem = GetApiV1ProvidersAvailable200ItemsItem;
+export type InstallOffer = PostApiV1ProvidersCheck200;
+export type InstallSource = PostApiV1ProvidersInstallBodySource;
+export type InstallKind = InstalledItem["kind"];

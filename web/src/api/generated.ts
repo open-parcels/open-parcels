@@ -447,7 +447,8 @@ export type PostApiV1Session401Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -509,7 +510,8 @@ export type PostApiV1Session429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -587,7 +589,8 @@ export type PostApiV1Setup403Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -649,7 +652,8 @@ export type PostApiV1Setup409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -711,7 +715,8 @@ export type PostApiV1Setup429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -787,7 +792,8 @@ export type PutApiV1AdminPassword400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -849,7 +855,8 @@ export type DeleteApiV1AdminPassword409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -950,7 +957,8 @@ export type PostApiV1Logins401Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1012,7 +1020,8 @@ export type PostApiV1Logins429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1113,7 +1122,8 @@ export type PostApiV1LoginsRefresh401Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1180,7 +1190,8 @@ export type DeleteApiV1LoginsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1289,7 +1300,8 @@ export type DeleteApiV1TokensId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1441,6 +1453,9 @@ export type GetApiV1SettingsConfig200ItemKey =
   | "OPENPARCELS_QUIET_WINDOW"
   | "OPENPARCELS_EMAIL_ROUTING"
   | "OPENPARCELS_PROVIDER_ISOLATION"
+  | "OPENPARCELS_PROVIDERS_REMOTE"
+  | "OPENPARCELS_PROVIDERS_COMMUNITY"
+  | "OPENPARCELS_REGISTRY_URL"
   | "OPENPARCELS_ARCHIVE_DAYS"
   | "OPENPARCELS_DELETE_DAYS"
   | "OPENPARCELS_NOT_FOUND_ARCHIVE_DAYS"
@@ -1517,6 +1532,9 @@ export type PatchApiV1SettingsConfig200ItemKey =
   | "OPENPARCELS_QUIET_WINDOW"
   | "OPENPARCELS_EMAIL_ROUTING"
   | "OPENPARCELS_PROVIDER_ISOLATION"
+  | "OPENPARCELS_PROVIDERS_REMOTE"
+  | "OPENPARCELS_PROVIDERS_COMMUNITY"
+  | "OPENPARCELS_REGISTRY_URL"
   | "OPENPARCELS_ARCHIVE_DAYS"
   | "OPENPARCELS_DELETE_DAYS"
   | "OPENPARCELS_NOT_FOUND_ARCHIVE_DAYS"
@@ -1620,7 +1638,8 @@ export type PatchApiV1SettingsConfig400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1653,6 +1672,9 @@ export type DeleteApiV1SettingsConfigKey200ItemKey =
   | "OPENPARCELS_QUIET_WINDOW"
   | "OPENPARCELS_EMAIL_ROUTING"
   | "OPENPARCELS_PROVIDER_ISOLATION"
+  | "OPENPARCELS_PROVIDERS_REMOTE"
+  | "OPENPARCELS_PROVIDERS_COMMUNITY"
+  | "OPENPARCELS_REGISTRY_URL"
   | "OPENPARCELS_ARCHIVE_DAYS"
   | "OPENPARCELS_DELETE_DAYS"
   | "OPENPARCELS_NOT_FOUND_ARCHIVE_DAYS"
@@ -1756,7 +1778,8 @@ export type DeleteApiV1SettingsConfigKey400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1818,7 +1841,8 @@ export type DeleteApiV1SettingsConfigKey404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1894,7 +1918,8 @@ export type GetApiV1Geocode400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1956,7 +1981,8 @@ export type GetApiV1Geocode502Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -2727,7 +2753,8 @@ export type PostApiV1Parcels400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -2789,7 +2816,8 @@ export type PostApiV1Parcels409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -3220,7 +3248,8 @@ export type GetApiV1ParcelsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -3627,7 +3656,8 @@ export type PatchApiV1ParcelsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -3689,7 +3719,8 @@ export type DeleteApiV1ParcelsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4296,7 +4327,8 @@ export type GetApiV1OrdersId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4633,7 +4665,8 @@ export type PatchApiV1OrdersId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4695,7 +4728,8 @@ export type DeleteApiV1OrdersId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4956,7 +4990,8 @@ export type GetApiV1ReturnsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5284,7 +5319,8 @@ export type PostApiV1Connections400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5407,7 +5443,8 @@ export type PatchApiV1ConnectionsId400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5469,7 +5506,8 @@ export type PatchApiV1ConnectionsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5531,7 +5569,8 @@ export type DeleteApiV1ConnectionsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5597,7 +5636,8 @@ export type PutApiV1ConnectionsIdSecret400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5659,7 +5699,8 @@ export type PutApiV1ConnectionsIdSecret404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5721,7 +5762,8 @@ export type PostApiV1ConnectionsIdSync404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5783,7 +5825,8 @@ export type PostApiV1ConnectionsIdSync429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5866,7 +5909,8 @@ export type GetApiV1ConnectionsIdData404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5949,7 +5993,8 @@ export type PostApiV1ConnectionsIdClear404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6060,7 +6105,8 @@ export type GetApiV1ConnectionsIdActions404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6180,7 +6226,8 @@ export type PostApiV1ConnectionsIdActionsAction400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6242,7 +6289,8 @@ export type PostApiV1ConnectionsIdActionsAction404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6304,7 +6352,8 @@ export type PostApiV1ConnectionsIdActionsAction409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6366,7 +6415,8 @@ export type PostApiV1ConnectionsIdActionsAction429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6528,7 +6578,8 @@ export type GetApiV1JobsId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6636,7 +6687,8 @@ export type PostApiV1JobsIdCancel400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6698,7 +6750,8 @@ export type PostApiV1JobsIdCancel404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6760,7 +6813,8 @@ export type PostApiV1JobsIdCancel409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6822,7 +6876,8 @@ export type PostApiV1JobsIdCancel429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6930,7 +6985,8 @@ export type PostApiV1JobsIdResume400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6992,7 +7048,8 @@ export type PostApiV1JobsIdResume404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7054,7 +7111,8 @@ export type PostApiV1JobsIdResume409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7116,7 +7174,8 @@ export type PostApiV1JobsIdResume429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7224,7 +7283,8 @@ export type PostApiV1JobsIdRestart400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7286,7 +7346,8 @@ export type PostApiV1JobsIdRestart404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7348,7 +7409,8 @@ export type PostApiV1JobsIdRestart409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7410,7 +7472,8 @@ export type PostApiV1JobsIdRestart429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7727,7 +7790,8 @@ export type PostApiV1Consumers400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7937,7 +8001,8 @@ export type PatchApiV1ConsumersId400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7999,7 +8064,8 @@ export type PatchApiV1ConsumersId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8061,7 +8127,8 @@ export type DeleteApiV1ConsumersId404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8131,7 +8198,8 @@ export type PostApiV1ConsumersIdTest404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8368,7 +8436,8 @@ export type PostApiV1DataBackups500Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8484,7 +8553,8 @@ export type PostApiV1DataClear400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8546,7 +8616,8 @@ export type PostApiV1DataClear500Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8621,7 +8692,8 @@ export type GetApiV1ConnectionsIdSignInFlows404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8753,7 +8825,8 @@ export type PostApiV1ConnectionsIdSignInAttempts400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8815,7 +8888,8 @@ export type PostApiV1ConnectionsIdSignInAttempts404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8877,7 +8951,8 @@ export type PostApiV1ConnectionsIdSignInAttempts409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8939,7 +9014,8 @@ export type PostApiV1ConnectionsIdSignInAttempts429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9001,7 +9077,8 @@ export type PostApiV1ConnectionsIdSignInAttempts503Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9136,7 +9213,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9200,7 +9278,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9264,7 +9343,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9328,7 +9408,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9392,7 +9473,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue503Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9521,7 +9603,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9585,7 +9668,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9649,7 +9733,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll409Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9713,7 +9798,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll429Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9777,7 +9863,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll503Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9841,7 +9928,8 @@ export type DeleteApiV1ConnectionsIdSignInAttemptsAttempt404Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9995,7 +10083,8 @@ export type GetApiV1Calendar400Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -10919,7 +11008,8 @@ export type GetApiV1Sync410Error =
   | "invalid_input"
   | "job_running"
   | "job_state"
-  | "invalid_consumer";
+  | "invalid_consumer"
+  | "install_refused";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -11089,6 +11179,690 @@ export type GetApiV1Themes200Item = {
 
 export type GetApiV1ThemesIdFilesFileParams = {
   v?: string;
+};
+
+export type GetApiV1ProvidersInstalled200ItemsItemKind = "provider" | "theme" | "consumer";
+export type GetApiV1ProvidersInstalled200ItemsItemTier =
+  "builtin" | "verified" | "custom" | "community";
+export type GetApiV1ProvidersInstalled200ItemsItem = {
+  kind: GetApiV1ProvidersInstalled200ItemsItemKind;
+  id: string;
+  name: string;
+  tier: GetApiV1ProvidersInstalled200ItemsItemTier;
+  /**
+   * Null for built-in items: they update with the server.
+   * @nullable
+   */
+  version: string | null;
+  /** @nullable */
+  repository: string | null;
+  /** @nullable */
+  commit: string | null;
+  auto_update: boolean;
+  /** True for built-in items: always updated with open-parcels itself. */
+  auto_update_fixed: boolean;
+};
+
+export type GetApiV1ProvidersInstalled200Registry = {
+  /** @nullable */
+  checked_at: string | null;
+  /**
+   * Days past the signed index's expiry; 0 while valid.
+   * @minimum -9007199254740991
+   * @maximum 9007199254740991
+   */
+  stale_days: number;
+  /** @nullable */
+  error: string | null;
+};
+
+export type GetApiV1ProvidersInstalled200 = {
+  items: GetApiV1ProvidersInstalled200ItemsItem[];
+  registry: GetApiV1ProvidersInstalled200Registry;
+  /** False: nothing is fetched (OPENPARCELS_PROVIDERS_REMOTE). */
+  remote: boolean;
+  /** Community discovery is on (OPENPARCELS_PROVIDERS_COMMUNITY). */
+  community: boolean;
+};
+
+export type GetApiV1ProvidersAvailableParams = {
+  source?: GetApiV1ProvidersAvailableSource;
+  /** Search again (at most once a minute). */
+  refresh?: string;
+};
+
+export type GetApiV1ProvidersAvailableSource = "verified" | "community";
+/**
+ * Null for community hits: their manifest is read on checking.
+ * @nullable
+ */
+export type GetApiV1ProvidersAvailable200ItemsItemKind = "provider" | "theme" | "consumer" | null;
+export type GetApiV1ProvidersAvailable200ItemsItemTier = "verified" | "community";
+export type GetApiV1ProvidersAvailable200ItemsItem = {
+  /**
+   * Null for community hits: their manifest is read on checking.
+   * @nullable
+   */
+  kind: GetApiV1ProvidersAvailable200ItemsItemKind;
+  /** @nullable */
+  id: string | null;
+  name: string;
+  /** @nullable */
+  description: string | null;
+  tier: GetApiV1ProvidersAvailable200ItemsItemTier;
+  repository: string;
+  /** @nullable */
+  version: string | null;
+  /**
+   * The reviewed commit of a verified item's newest version.
+   * @nullable
+   */
+  commit: string | null;
+  /**
+   * @minimum -9007199254740991
+   * @maximum 9007199254740991
+   * @nullable
+   */
+  stars: number | null;
+  /** @nullable */
+  updated_at: string | null;
+  installed: boolean;
+  /**
+   * A verified or built-in id this community hit's name is close to (typosquatting).
+   * @nullable
+   */
+  similar_to: string | null;
+};
+
+export type GetApiV1ProvidersAvailable200 = {
+  items: GetApiV1ProvidersAvailable200ItemsItem[];
+  /** @nullable */
+  checked_at: string | null;
+  /** @nullable */
+  error: string | null;
+};
+
+export type PostApiV1ProvidersCheckBody = {
+  /** @maxLength 300 */
+  url: string;
+  /**
+   * Release tag or full commit; default: the newest release tag.
+   * @maxLength 100
+   */
+  ref?: string;
+};
+
+export type PostApiV1ProvidersCheck200ItemsItemKind = "provider" | "theme" | "consumer";
+/**
+ * @nullable
+ */
+export type PostApiV1ProvidersCheck200ItemsItemRefusal =
+  "needs_bundles" | "invalid" | "reserved" | "blocked" | null;
+export type PostApiV1ProvidersCheck200ItemsItem = {
+  kind: PostApiV1ProvidersCheck200ItemsItemKind;
+  id: string;
+  folder: string;
+  name: string;
+  /** @nullable */
+  description: string | null;
+  hosts: string[];
+  /** @nullable */
+  refusal: PostApiV1ProvidersCheck200ItemsItemRefusal;
+  /** @nullable */
+  detail: string | null;
+};
+
+export type PostApiV1ProvidersCheck200 = {
+  repository: string;
+  version: string;
+  commit: string;
+  items: PostApiV1ProvidersCheck200ItemsItem[];
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PostApiV1ProvidersCheck400Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PostApiV1ProvidersCheck400Params = { [key: string]: string | number };
+
+export type PostApiV1ProvidersCheck400 = {
+  /** Stable machine-readable error code. */
+  error: PostApiV1ProvidersCheck400Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PostApiV1ProvidersCheck400Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PostApiV1ProvidersCheck404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PostApiV1ProvidersCheck404Params = { [key: string]: string | number };
+
+export type PostApiV1ProvidersCheck404 = {
+  /** Stable machine-readable error code. */
+  error: PostApiV1ProvidersCheck404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PostApiV1ProvidersCheck404Params;
+};
+
+export type PostApiV1ProvidersInstallBodyKind = "provider" | "theme" | "consumer";
+/**
+ * Where the user found it: the URL dialog, the community list or the registry.
+ */
+export type PostApiV1ProvidersInstallBodySource = "url" | "community" | "verified";
+export type PostApiV1ProvidersInstallBody = {
+  /** @maxLength 300 */
+  url: string;
+  /** @maxLength 100 */
+  ref?: string;
+  kind: PostApiV1ProvidersInstallBodyKind;
+  /** @maxLength 40 */
+  id: string;
+  /** Where the user found it: the URL dialog, the community list or the registry. */
+  source: PostApiV1ProvidersInstallBodySource;
+};
+
+export type PostApiV1ProvidersInstall200Kind = "provider" | "theme" | "consumer";
+export type PostApiV1ProvidersInstall200Tier = "builtin" | "verified" | "custom" | "community";
+export type PostApiV1ProvidersInstall200 = {
+  kind: PostApiV1ProvidersInstall200Kind;
+  id: string;
+  name: string;
+  tier: PostApiV1ProvidersInstall200Tier;
+  /**
+   * Null for built-in items: they update with the server.
+   * @nullable
+   */
+  version: string | null;
+  /** @nullable */
+  repository: string | null;
+  /** @nullable */
+  commit: string | null;
+  auto_update: boolean;
+  /** True for built-in items: always updated with open-parcels itself. */
+  auto_update_fixed: boolean;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PostApiV1ProvidersInstall400Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PostApiV1ProvidersInstall400Params = { [key: string]: string | number };
+
+export type PostApiV1ProvidersInstall400 = {
+  /** Stable machine-readable error code. */
+  error: PostApiV1ProvidersInstall400Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PostApiV1ProvidersInstall400Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PostApiV1ProvidersInstall404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PostApiV1ProvidersInstall404Params = { [key: string]: string | number };
+
+export type PostApiV1ProvidersInstall404 = {
+  /** Stable machine-readable error code. */
+  error: PostApiV1ProvidersInstall404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PostApiV1ProvidersInstall404Params;
+};
+
+export type PatchApiV1ProvidersKindIdBody = {
+  auto_update: boolean;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PatchApiV1ProvidersKindId400Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PatchApiV1ProvidersKindId400Params = { [key: string]: string | number };
+
+export type PatchApiV1ProvidersKindId400 = {
+  /** Stable machine-readable error code. */
+  error: PatchApiV1ProvidersKindId400Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PatchApiV1ProvidersKindId400Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PatchApiV1ProvidersKindId404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PatchApiV1ProvidersKindId404Params = { [key: string]: string | number };
+
+export type PatchApiV1ProvidersKindId404 = {
+  /** Stable machine-readable error code. */
+  error: PatchApiV1ProvidersKindId404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PatchApiV1ProvidersKindId404Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type DeleteApiV1ProvidersKindId400Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type DeleteApiV1ProvidersKindId400Params = { [key: string]: string | number };
+
+export type DeleteApiV1ProvidersKindId400 = {
+  /** Stable machine-readable error code. */
+  error: DeleteApiV1ProvidersKindId400Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: DeleteApiV1ProvidersKindId400Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type DeleteApiV1ProvidersKindId404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer"
+  | "install_refused";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type DeleteApiV1ProvidersKindId404Params = { [key: string]: string | number };
+
+export type DeleteApiV1ProvidersKindId404 = {
+  /** Stable machine-readable error code. */
+  error: DeleteApiV1ProvidersKindId404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: DeleteApiV1ProvidersKindId404Params;
 };
 
 const getHeaders = (
@@ -12770,5 +13544,133 @@ export const getApiV1ThemesIdFilesFile = async (
   return apiFetch<void>(getGetApiV1ThemesIdFilesFileUrl(id, file, params), {
     ...options,
     method: "GET",
+  });
+};
+
+export const getGetApiV1ProvidersInstalledUrl = () => {
+  return `/api/v1/providers/installed`;
+};
+
+/**
+ * @summary Installed providers, themes and consumers, built-in ones first.
+ */
+export const getApiV1ProvidersInstalled = async (
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<GetApiV1ProvidersInstalled200> => {
+  return apiFetch<GetApiV1ProvidersInstalled200>(getGetApiV1ProvidersInstalledUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiV1ProvidersAvailableUrl = (params?: GetApiV1ProvidersAvailableParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/v1/providers/available?${stringifiedParams}`
+    : `/api/v1/providers/available`;
+};
+
+/**
+ * @summary What can be installed: the registry's verified items, or community repositories.
+ */
+export const getApiV1ProvidersAvailable = async (
+  params?: GetApiV1ProvidersAvailableParams,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<GetApiV1ProvidersAvailable200> => {
+  return apiFetch<GetApiV1ProvidersAvailable200>(getGetApiV1ProvidersAvailableUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getPostApiV1ProvidersCheckUrl = () => {
+  return `/api/v1/providers/check`;
+};
+
+/**
+ * @summary Reads what a git repository offers at a release tag or commit, for the consent screen.
+ */
+export const postApiV1ProvidersCheck = async (
+  postApiV1ProvidersCheckBody: PostApiV1ProvidersCheckBody,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<PostApiV1ProvidersCheck200> => {
+  return apiFetch<PostApiV1ProvidersCheck200>(getPostApiV1ProvidersCheckUrl(), {
+    ...options,
+    method: "POST",
+    headers: getHeaders({ "Content-Type": "application/json" }, options?.headers),
+    body: JSON.stringify(postApiV1ProvidersCheckBody),
+  });
+};
+
+export const getPostApiV1ProvidersInstallUrl = () => {
+  return `/api/v1/providers/install`;
+};
+
+/**
+ * @summary Installs (or updates) one provider, theme or consumer a repository lists.
+ */
+export const postApiV1ProvidersInstall = async (
+  postApiV1ProvidersInstallBody: PostApiV1ProvidersInstallBody,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<PostApiV1ProvidersInstall200> => {
+  return apiFetch<PostApiV1ProvidersInstall200>(getPostApiV1ProvidersInstallUrl(), {
+    ...options,
+    method: "POST",
+    headers: getHeaders({ "Content-Type": "application/json" }, options?.headers),
+    body: JSON.stringify(postApiV1ProvidersInstallBody),
+  });
+};
+
+export const getPatchApiV1ProvidersKindIdUrl = (
+  kind: "provider" | "theme" | "consumer",
+  id: string,
+) => {
+  return `/api/v1/providers/${kind}/${id}`;
+};
+
+/**
+ * @summary Switches auto-update of an installed item.
+ */
+export const patchApiV1ProvidersKindId = async (
+  kind: "provider" | "theme" | "consumer",
+  id: string,
+  patchApiV1ProvidersKindIdBody: PatchApiV1ProvidersKindIdBody,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<null> => {
+  return apiFetch<null>(getPatchApiV1ProvidersKindIdUrl(kind, id), {
+    ...options,
+    method: "PATCH",
+    headers: getHeaders({ "Content-Type": "application/json" }, options?.headers),
+    body: JSON.stringify(patchApiV1ProvidersKindIdBody),
+  });
+};
+
+export const getDeleteApiV1ProvidersKindIdUrl = (
+  kind: "provider" | "theme" | "consumer",
+  id: string,
+) => {
+  return `/api/v1/providers/${kind}/${id}`;
+};
+
+/**
+ * @summary Uninstalls an installed item; built-in ones cannot be uninstalled.
+ */
+export const deleteApiV1ProvidersKindId = async (
+  kind: "provider" | "theme" | "consumer",
+  id: string,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<null> => {
+  return apiFetch<null>(getDeleteApiV1ProvidersKindIdUrl(kind, id), {
+    ...options,
+    method: "DELETE",
   });
 };
