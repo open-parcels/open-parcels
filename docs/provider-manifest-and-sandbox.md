@@ -160,7 +160,7 @@ Narrows decision record 0002 §2.14 to what is built now.
   the provider's email rules in place of the shared ones (the `ignore` rules stay), through the
   same interpreters as unrouted email. Their reading is complete even when it finds nothing, so a
   routed email never reaches the shared rules too ([`rules-split.md`](rules-split.md)). Amazon,
-  DHL and Hermes read their emails this way.
+  DHL, Hermes, DPD Germany, UPS, FedEx, USPS, Evri and Canada Post read their emails this way.
 - **Filed under the inbox:** results are ingested under the inbox connection (role `mail`), as the
   rules' results are.
 - **The switch:** `OPENPARCELS_EMAIL_ROUTING` (live, on by default). Off: the rules read every

@@ -54,6 +54,7 @@ by default; off, that inbox routes by the sender's domain alone.
 3. **First providers, most common emails first:** Amazon (order, shipping, return and dunning
    emails), DHL and Hermes. Their rules and fixtures leave the rules package; it is released as
    `2.0.0-dev.15`, and the server moves to it in lockstep.
-4. **Next:** the other carriers with providers and one sender of their own (DPD Germany, UPS,
-   FedEx, USPS, Evri, Canada Post), then shops as declarative providers once those exist (eBay,
+4. **Carriers with providers and one sender of their own:** DPD Germany, UPS, FedEx, USPS,
+   Evri and Canada Post, released as rules `2.0.0-dev.16` with the server in lockstep.
+5. **Next:** shops as declarative providers once those exist (eBay,
    AliExpress, Temu, Otto, Zalando, …).

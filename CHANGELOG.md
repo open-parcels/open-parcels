@@ -2,6 +2,15 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Changed: DPD Germany, UPS, FedEx, USPS, Evri and Canada Post read their own emails (rules 2.0.0-dev.16)
+
+The next step of splitting the shared rules ([`docs/rules-split.md`](docs/rules-split.md)): the
+shipping email rules of DPD Germany (`dpd.de`, `dpd.at`), UPS, FedEx, USPS, Evri (`evri.com`,
+`myhermes.co.uk`) and Canada Post and their fixtures moved out of `open-parcels-rules` (released
+as `2.0.0-dev.16`) into those providers, whose manifests now name their sender domains. Routed
+emails read exactly as before; as with Amazon, DHL and Hermes, an email from those senders that
+fails the DKIM/DMARC check is no longer read by their rules.
+
 ### Changed: Amazon, DHL and Hermes read their own emails (rules 2.0.0-dev.15)
 
 The first step of splitting the shared rules ([`docs/rules-split.md`](docs/rules-split.md)):

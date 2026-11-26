@@ -20,6 +20,7 @@ import {
   rulesTrackingUrl,
 } from "../../provider/api.js";
 import { FedExSession, HOST } from "./api.js";
+import { FEDEX_EMAIL_RULES } from "./email-rules.js";
 
 const CARRIER_ID = "fedex";
 const POUND_KG = 0.45359237;
@@ -117,6 +118,7 @@ async function track(context: ProviderContext<unknown, Secret>, barcodes: readon
 /** FedEx: the official Track API, with the user's own developer API key. */
 export const fedex = defineCarrier<unknown, Secret>({
   id: CARRIER_ID,
+  emailRules: FEDEX_EMAIL_RULES,
   configSchema: z.looseObject({}),
   secretSchema,
   signIn: { type: "api_key" },

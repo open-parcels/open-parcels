@@ -21,5 +21,8 @@
     "secrets": ["api_key"],
     "session": true,
     "user_agent": true
+  },
+  "email": {
+    "from_domains": [".ups.com"]
   }
 }

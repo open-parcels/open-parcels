@@ -13,6 +13,7 @@ import {
 } from "../../provider/api.js";
 import { isoTime, objects, rulesTrackingUrl, text, type Json } from "../../provider/api.js";
 import { API_HOST, UspsClient } from "./client.js";
+import { USPS_EMAIL_RULES } from "./email-rules.js";
 import { fetchInformed, INFORMED_API_HOST } from "./informed.js";
 import { informedSignIn } from "./journey.js";
 
@@ -136,6 +137,7 @@ async function track(context: ProviderContext<Config, Secret>, barcodes: readonl
 
 export const usps = defineCarrier<Config, Secret>({
   id: CARRIER_ID,
+  emailRules: USPS_EMAIL_RULES,
   configSchema,
   secretSchema,
   signIn: [informedSignIn<Config>(), { type: "api_key", kinds: ["tracking"] }],

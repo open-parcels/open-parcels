@@ -11,6 +11,7 @@ import {
   type ProviderContext,
 } from "../../provider/api.js";
 import { CanadaPostAccount, LIST_HOST, TOKEN_HOST } from "./account.js";
+import { CANADAPOST_EMAIL_RULES } from "./email-rules.js";
 import {
   CARRIER_ID,
   lookUp,
@@ -90,6 +91,7 @@ async function fetchAccount(context: ProviderContext<Config, Secret>) {
 
 export const canadapost = defineCarrier<Config, Secret>({
   id: CARRIER_ID,
+  emailRules: CANADAPOST_EMAIL_RULES,
   configSchema,
   secretSchema,
   signIn: [

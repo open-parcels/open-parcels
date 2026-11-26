@@ -42,8 +42,18 @@ function senderDomains(definition: EmailRuleDefinition): string[] {
 }
 
 describe("email rules of built-in providers", () => {
-  it("are Amazon's, DHL's and Hermes' so far", () => {
-    expect(ruled.map((provider) => provider.id).sort()).toEqual(["amazon", "dhl", "hermes"]);
+  it("are those of the providers whose rules have moved so far", () => {
+    expect(ruled.map((provider) => provider.id).sort()).toEqual([
+      "amazon",
+      "canadapost",
+      "dhl",
+      "dpd",
+      "evri",
+      "fedex",
+      "hermes",
+      "ups",
+      "usps",
+    ]);
   });
 
   for (const provider of ruled) {

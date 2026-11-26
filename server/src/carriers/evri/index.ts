@@ -19,6 +19,7 @@ import {
   rulesTrackingUrl,
 } from "../../provider/api.js";
 import { EvriTracking, HOST } from "./api.js";
+import { EVRI_EMAIL_RULES } from "./email-rules.js";
 
 const CARRIER_ID = "evri";
 
@@ -132,6 +133,7 @@ async function track(context: ProviderContext<Config, unknown>, barcodes: readon
 /** Evri (United Kingdom): the public tracking website's API, by tracking number and postcode. */
 export const evri = defineCarrier<Config, unknown>({
   id: CARRIER_ID,
+  emailRules: EVRI_EMAIL_RULES,
   configSchema,
   secretSchema: z.unknown(),
   signIn: { type: "none" },

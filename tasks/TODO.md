@@ -68,9 +68,9 @@ image are shipped (see `DONE.md`). Left:
       on the inbox card, "found in email by" attribution, backfill job, consent screen's sender
       domains (per-inbox sender check switch shipped)
 - [ ] Split `open-parcels-rules`: provider data into providers, slim shared core stays
-      (`docs/rules-split.md`). Email rules of Amazon, DHL and Hermes moved (rules
-      2.0.0-dev.15); next: DPD Germany, UPS, FedEx, USPS, Evri, Canada Post, then shops as
-      declarative providers; status tables, keys and carrier entries later (P5)
+      (`docs/rules-split.md`). Email rules of Amazon, DHL and Hermes (rules
+      2.0.0-dev.15) and DPD Germany, UPS, FedEx, USPS, Evri, Canada Post (2.0.0-dev.16) moved;
+      next: shops as declarative providers; status tables, keys and carrier entries later (P5)
 - [ ] One repo with a folder per provider for the official providers; repo manifest lists them
 - [ ] Registry repo (verified tier, signed index, blocklist), custom git URLs, community discovery
       via the `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button)

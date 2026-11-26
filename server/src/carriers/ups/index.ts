@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { defineCarrier } from "../../provider/api.js";
+import { UPS_EMAIL_RULES } from "./email-rules.js";
 import {
   BROWSER_HEADERS_REASON,
   BROWSER_USER_AGENT,
@@ -28,6 +29,7 @@ const secretSchema = z
  */
 export const ups = defineCarrier({
   id: "ups",
+  emailRules: UPS_EMAIL_RULES,
   configSchema: z.looseObject({
     /** The locale sent to UPS. It only changes display texts; the mapped keys do not depend on it. */
     locale: z.enum(LOCALES).optional().meta({ title: "Language" }),

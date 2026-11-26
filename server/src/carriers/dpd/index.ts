@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { carrierKey, defineCarrier } from "../../provider/api.js";
 import { fetchDeAccount } from "./account.js";
+import { DPD_EMAIL_RULES } from "./email-rules.js";
 import { TRACKING_HOST, trackDe } from "./tracking.js";
 
 const configSchema = z.object({
@@ -27,6 +28,7 @@ const ACCOUNT_LIMIT = { intervalMs: 4_000, burst: 2 };
 /** DPD Germany: the public tracking page and the myDPD account. */
 export const dpd = defineCarrier({
   id: "dpd",
+  emailRules: DPD_EMAIL_RULES,
   configSchema,
   secretSchema,
   signIn: [
