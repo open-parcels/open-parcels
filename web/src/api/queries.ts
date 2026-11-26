@@ -15,6 +15,14 @@ import {
   deleteApiV1OrdersId,
   deleteApiV1ParcelsId,
   deleteApiV1ConnectionsId,
+  deleteApiV1ConsumersId,
+  getApiV1Consumers,
+  getApiV1ConsumersAvailable,
+  patchApiV1ConsumersId,
+  postApiV1Consumers,
+  postApiV1ConsumersIdTest,
+  type PatchApiV1ConsumersIdBody,
+  type PostApiV1ConsumersBody,
   deleteApiV1LoginsId,
   deleteApiV1TokensId,
   getApiV1Calendar,
@@ -69,6 +77,8 @@ export const keys = {
   returns: ["returns"] as const,
   returnList: (view: ReturnView) => ["returns", "list", { view }] as const,
   connections: ["connections"] as const,
+  consumers: ["consumers"] as const,
+  availableConsumers: ["consumers-available"] as const,
   jobs: ["jobs"] as const,
   signInFlows: (connectionId: string | undefined) => ["sign-in-flows", connectionId] as const,
   carriers: ["carriers"] as const,
@@ -507,4 +517,59 @@ export function useEndLogin() {
     mutationFn: (id: string) => deleteApiV1LoginsId(id),
     onSuccess: () => client.invalidateQueries({ queryKey: keys.logins }),
   });
+}
+
+/** Configured consumers (`docs/consumers.md`). */
+export function useConsumers() {
+  return useQuery({
+    queryKey: keys.consumers,
+    queryFn: ({ signal }) => getApiV1Consumers({ signal }),
+  });
+}
+
+/** The consumers that can be added, with their forms. */
+export function useAvailableConsumers() {
+  return useQuery({
+    queryKey: keys.availableConsumers,
+    queryFn: ({ signal }) => getApiV1ConsumersAvailable({ signal }),
+    staleTime: Infinity,
+  });
+}
+
+/** Consumer changes also change the Status page's consumer lines. */
+async function invalidateConsumers(client: QueryClient): Promise<void> {
+  await Promise.all([
+    client.invalidateQueries({ queryKey: keys.consumers }),
+    client.invalidateQueries({ queryKey: keys.status }),
+  ]);
+}
+
+export function useAddConsumer() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (body: PostApiV1ConsumersBody) => postApiV1Consumers(body),
+    onSuccess: () => invalidateConsumers(client),
+  });
+}
+
+export function useUpdateConsumer() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: ({ id, body }: { id: string; body: PatchApiV1ConsumersIdBody }) =>
+      patchApiV1ConsumersId(id, body),
+    onSuccess: () => invalidateConsumers(client),
+  });
+}
+
+export function useDeleteConsumer() {
+  const client = useQueryClient();
+  return useMutation({
+    mutationFn: (id: string) => deleteApiV1ConsumersId(id),
+    onSuccess: () => invalidateConsumers(client),
+  });
+}
+
+/** "Send test notification": the outcome is shown next to the button. */
+export function useTestConsumer() {
+  return useMutation({ mutationFn: (id: string) => postApiV1ConsumersIdTest(id) });
 }

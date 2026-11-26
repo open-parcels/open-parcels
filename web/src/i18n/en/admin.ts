@@ -12,6 +12,7 @@ export const admin = {
       scheduler: "Scheduler",
       event_stream: "Live event stream",
       backups: "Backups",
+      consumers: "Consumers",
     },
     service: "Service",
     version: (version: string, commit: string | null, since: string) =>
@@ -29,6 +30,9 @@ export const admin = {
     backupsOff: "automatic backups off",
     backupsNone: ", none yet",
     backupsLast: (when: string, ok: boolean) => `, last ${when} (${ok ? "succeeded" : "failed"})`,
+    consumerQueue: (pending: number, failed: number) =>
+      (pending > 0 ? `, ${String(pending)} waiting` : "") +
+      (failed > 0 ? `, ${String(failed)} given up` : ""),
     noneYet: "None yet.",
     watching: "watching for new email",
     notConnected: "not connected",

@@ -88,14 +88,30 @@ function Section(props: {
   );
 }
 
+/** The picker's own texts; "Add a consumer" brings its own. */
+export interface PickerLabels {
+  readonly search: string;
+  readonly main: string;
+  readonly other: string;
+}
+
+const CONNECTION_LABELS: PickerLabels = {
+  search: t.connections.pickerSearch,
+  main: t.connections.pickerProviders,
+  other: t.connections.pickerOther,
+};
+
 /**
  * The first step of "Add a connection", like Home Assistant's "Add integration": a search over
- * name, aliases and countries, one row per provider, inboxes and fallback services apart.
+ * name, aliases and countries, one row per provider, inboxes and fallback services apart. "Add a
+ * consumer" uses it too, with its own labels.
  */
 export function ProviderPicker(props: {
   readonly entries: readonly PickerEntry[];
   readonly onChoose: (id: string) => void;
+  readonly labels?: PickerLabels;
 }): ReactNode {
+  const labels = props.labels ?? CONNECTION_LABELS;
   const [query, setQuery] = useState("");
   const listRef = useRef<HTMLDivElement>(null);
   const inputId = useId();
@@ -119,13 +135,13 @@ export function ProviderPicker(props: {
   return (
     <div className="picker">
       <label htmlFor={inputId} className="visually-hidden">
-        {t.connections.pickerSearch}
+        {labels.search}
       </label>
       <input
         id={inputId}
         type="search"
         className="picker-search"
-        placeholder={t.connections.pickerSearch}
+        placeholder={labels.search}
         autoComplete="off"
         // The dialog opens on this step: typing starts the search straight away.
         autoFocus
@@ -146,12 +162,8 @@ export function ProviderPicker(props: {
           moveFocus(listRef.current, event);
         }}
       >
-        <Section
-          title={t.connections.pickerProviders}
-          entries={providers}
-          onChoose={props.onChoose}
-        />
-        <Section title={t.connections.pickerOther} entries={other} onChoose={props.onChoose} />
+        <Section title={labels.main} entries={providers} onChoose={props.onChoose} />
+        <Section title={labels.other} entries={other} onChoose={props.onChoose} />
       </div>
     </div>
   );

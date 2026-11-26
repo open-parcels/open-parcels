@@ -31,6 +31,7 @@ export type GetApiV1Health200ChecksInboxes = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health200ChecksScheduler = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health200ChecksEventStream = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health200ChecksBackups = "ok" | "degraded" | "unavailable";
+export type GetApiV1Health200ChecksConsumers = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health200Checks = {
   database: GetApiV1Health200ChecksDatabase;
   connections: GetApiV1Health200ChecksConnections;
@@ -38,6 +39,7 @@ export type GetApiV1Health200Checks = {
   scheduler: GetApiV1Health200ChecksScheduler;
   event_stream: GetApiV1Health200ChecksEventStream;
   backups: GetApiV1Health200ChecksBackups;
+  consumers: GetApiV1Health200ChecksConsumers;
 };
 
 export type GetApiV1Health200 = {
@@ -56,6 +58,7 @@ export type GetApiV1Health503ChecksInboxes = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health503ChecksScheduler = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health503ChecksEventStream = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health503ChecksBackups = "ok" | "degraded" | "unavailable";
+export type GetApiV1Health503ChecksConsumers = "ok" | "degraded" | "unavailable";
 export type GetApiV1Health503Checks = {
   database: GetApiV1Health503ChecksDatabase;
   connections: GetApiV1Health503ChecksConnections;
@@ -63,6 +66,7 @@ export type GetApiV1Health503Checks = {
   scheduler: GetApiV1Health503ChecksScheduler;
   event_stream: GetApiV1Health503ChecksEventStream;
   backups: GetApiV1Health503ChecksBackups;
+  consumers: GetApiV1Health503ChecksConsumers;
 };
 
 export type GetApiV1Health503 = {
@@ -81,6 +85,7 @@ export type GetApiV1Status200ChecksInboxes = "ok" | "degraded" | "unavailable";
 export type GetApiV1Status200ChecksScheduler = "ok" | "degraded" | "unavailable";
 export type GetApiV1Status200ChecksEventStream = "ok" | "degraded" | "unavailable";
 export type GetApiV1Status200ChecksBackups = "ok" | "degraded" | "unavailable";
+export type GetApiV1Status200ChecksConsumers = "ok" | "degraded" | "unavailable";
 export type GetApiV1Status200Checks = {
   database: GetApiV1Status200ChecksDatabase;
   connections: GetApiV1Status200ChecksConnections;
@@ -88,6 +93,7 @@ export type GetApiV1Status200Checks = {
   scheduler: GetApiV1Status200ChecksScheduler;
   event_stream: GetApiV1Status200ChecksEventStream;
   backups: GetApiV1Status200ChecksBackups;
+  consumers: GetApiV1Status200ChecksConsumers;
 };
 
 export type GetApiV1Status200Database = {
@@ -290,6 +296,34 @@ export type GetApiV1Status200Backups = {
   next_at: string | null;
 };
 
+export type GetApiV1Status200ConsumersItem = {
+  id: string;
+  consumer: string;
+  label: string;
+  enabled: boolean;
+  /** @nullable */
+  last_attempt_at: string | null;
+  /** @nullable */
+  last_ok_at: string | null;
+  /**
+   * Why the last attempt did not deliver.
+   * @nullable
+   */
+  last_error: string | null;
+  /**
+   * Notifications waiting (due later, or retrying).
+   * @minimum -9007199254740991
+   * @maximum 9007199254740991
+   */
+  pending: number;
+  /**
+   * Notifications it gave up on.
+   * @minimum -9007199254740991
+   * @maximum 9007199254740991
+   */
+  failed: number;
+};
+
 export type GetApiV1Status200 = {
   /** `ok`; `degraded`: it works, but something needs attention (a connection or inbox in error or needing sign-in, a failing backup, a stalled scheduler); `unavailable`: the database does not answer. */
   status: GetApiV1Status200Status;
@@ -311,6 +345,8 @@ export type GetApiV1Status200 = {
   scheduler: GetApiV1Status200Scheduler;
   event_stream: GetApiV1Status200EventStream;
   backups: GetApiV1Status200Backups;
+  /** Each configured consumer's last delivery. */
+  consumers: GetApiV1Status200ConsumersItem[];
 };
 
 /**
@@ -401,7 +437,8 @@ export type PostApiV1Session401Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -462,7 +499,8 @@ export type PostApiV1Session429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -539,7 +577,8 @@ export type PostApiV1Setup403Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -600,7 +639,8 @@ export type PostApiV1Setup409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -661,7 +701,8 @@ export type PostApiV1Setup429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -736,7 +777,8 @@ export type PutApiV1AdminPassword400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -797,7 +839,8 @@ export type DeleteApiV1AdminPassword409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -897,7 +940,8 @@ export type PostApiV1Logins401Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -958,7 +1002,8 @@ export type PostApiV1Logins429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1058,7 +1103,8 @@ export type PostApiV1LoginsRefresh401Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1124,7 +1170,8 @@ export type DeleteApiV1LoginsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1232,7 +1279,8 @@ export type DeleteApiV1TokensId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1562,7 +1610,8 @@ export type PatchApiV1SettingsConfig400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1697,7 +1746,8 @@ export type DeleteApiV1SettingsConfigKey400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1758,7 +1808,8 @@ export type DeleteApiV1SettingsConfigKey404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1833,7 +1884,8 @@ export type GetApiV1Geocode400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -1894,7 +1946,8 @@ export type GetApiV1Geocode502Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -2648,7 +2701,8 @@ export type PostApiV1Parcels400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -2709,7 +2763,8 @@ export type PostApiV1Parcels409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -3091,7 +3146,8 @@ export type GetApiV1ParcelsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -3497,7 +3553,8 @@ export type PatchApiV1ParcelsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -3558,7 +3615,8 @@ export type DeleteApiV1ParcelsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4164,7 +4222,8 @@ export type GetApiV1OrdersId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4500,7 +4559,8 @@ export type PatchApiV1OrdersId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4561,7 +4621,8 @@ export type DeleteApiV1OrdersId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -4821,7 +4882,8 @@ export type GetApiV1ReturnsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5100,7 +5162,8 @@ export type PostApiV1Connections400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5222,7 +5285,8 @@ export type PatchApiV1ConnectionsId400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5283,7 +5347,8 @@ export type PatchApiV1ConnectionsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5344,7 +5409,8 @@ export type DeleteApiV1ConnectionsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5409,7 +5475,8 @@ export type PutApiV1ConnectionsIdSecret400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5470,7 +5537,8 @@ export type PutApiV1ConnectionsIdSecret404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5531,7 +5599,8 @@ export type PostApiV1ConnectionsIdSync404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5592,7 +5661,8 @@ export type PostApiV1ConnectionsIdSync429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5674,7 +5744,8 @@ export type GetApiV1ConnectionsIdData404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5756,7 +5827,8 @@ export type PostApiV1ConnectionsIdClear404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5866,7 +5938,8 @@ export type GetApiV1ConnectionsIdActions404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -5985,7 +6058,8 @@ export type PostApiV1ConnectionsIdActionsAction400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6046,7 +6120,8 @@ export type PostApiV1ConnectionsIdActionsAction404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6107,7 +6182,8 @@ export type PostApiV1ConnectionsIdActionsAction409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6168,7 +6244,8 @@ export type PostApiV1ConnectionsIdActionsAction429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6329,7 +6406,8 @@ export type GetApiV1JobsId404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6436,7 +6514,8 @@ export type PostApiV1JobsIdCancel400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6497,7 +6576,8 @@ export type PostApiV1JobsIdCancel404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6558,7 +6638,8 @@ export type PostApiV1JobsIdCancel409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6619,7 +6700,8 @@ export type PostApiV1JobsIdCancel429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6726,7 +6808,8 @@ export type PostApiV1JobsIdResume400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6787,7 +6870,8 @@ export type PostApiV1JobsIdResume404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6848,7 +6932,8 @@ export type PostApiV1JobsIdResume409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -6909,7 +6994,8 @@ export type PostApiV1JobsIdResume429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7016,7 +7102,8 @@ export type PostApiV1JobsIdRestart400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7077,7 +7164,8 @@ export type PostApiV1JobsIdRestart404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7138,7 +7226,8 @@ export type PostApiV1JobsIdRestart409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7199,7 +7288,8 @@ export type PostApiV1JobsIdRestart429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7212,6 +7302,727 @@ export type PostApiV1JobsIdRestart429 = {
   message: string;
   /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
   params: PostApiV1JobsIdRestart429Params;
+};
+
+/**
+ * Installed consumers come with the registry.
+ */
+export type GetApiV1ConsumersAvailable200ItemTier = "builtin";
+export type GetApiV1ConsumersAvailable200ItemFieldsItem =
+  "tracking_number" | "carrier" | "items" | "shop" | "pickup_point" | "expected_delivery";
+export type GetApiV1ConsumersAvailable200Item = {
+  id: string;
+  name: string;
+  description: string;
+  /** Installed consumers come with the registry. */
+  tier: GetApiV1ConsumersAvailable200ItemTier;
+  /** Parcel fields it gets beyond the texts. */
+  fields: GetApiV1ConsumersAvailable200ItemFieldsItem[];
+  /** Hosts it may reach: a name, or `config:<field>` for the host the user types there. */
+  hosts: string[];
+  smtp: boolean;
+  /** JSON Schema of the settings form. */
+  config_schema: unknown;
+  /** JSON Schema of the secret form, if any. */
+  secret_schema: unknown;
+};
+
+export type GetApiV1Consumers200ItemRulesEventsItem =
+  | "registered"
+  | "in_transit"
+  | "out_for_delivery"
+  | "at_pickup_point"
+  | "delivered"
+  | "delivery_time_changed"
+  | "returning"
+  | "problem"
+  | "refunded"
+  | "sign_in_needed"
+  | "backup_failed";
+export type GetApiV1Consumers200ItemRulesDirectionsItem = "receiving" | "sending";
+/**
+ * Nothing is sent between these times (server time zone); held until they end.
+ * @nullable
+ */
+export type GetApiV1Consumers200ItemRulesQuietHours = {
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  from: string;
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  to: string;
+} | null;
+
+/**
+ * immediately; hourly (on the hour) or daily (08:00): all due ones in one message.
+ */
+export type GetApiV1Consumers200ItemRulesDigest = "immediately" | "hourly" | "daily";
+/**
+ * Language of the texts.
+ */
+export type GetApiV1Consumers200ItemRulesLanguage = "en" | "de";
+export type GetApiV1Consumers200ItemRules = {
+  /** The notification events to send. */
+  events: GetApiV1Consumers200ItemRulesEventsItem[];
+  /**
+   * Parcels of these directions.
+   * @minItems 1
+   */
+  directions: GetApiV1Consumers200ItemRulesDirectionsItem[];
+  /**
+   * Only parcels reported by these connections; null: every connection.
+   * @nullable
+   * @items.pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  connections: string[] | null;
+  /**
+   * Nothing is sent between these times (server time zone); held until they end.
+   * @nullable
+   */
+  quiet_hours: GetApiV1Consumers200ItemRulesQuietHours;
+  /** immediately; hourly (on the hour) or daily (08:00): all due ones in one message. */
+  digest: GetApiV1Consumers200ItemRulesDigest;
+  /** Language of the texts. */
+  language: GetApiV1Consumers200ItemRulesLanguage;
+};
+
+export type GetApiV1Consumers200Item = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  /** Which consumer: ntfy, email, webhook, apprise, … */
+  consumer: string;
+  label: string;
+  config: unknown;
+  /** Whether a secret is stored. It is never returned. */
+  has_secret: boolean;
+  rules: GetApiV1Consumers200ItemRules;
+  enabled: boolean;
+  /** @nullable */
+  last_attempt_at: string | null;
+  /** @nullable */
+  last_ok_at: string | null;
+  /**
+   * Why the last attempt did not deliver.
+   * @nullable
+   */
+  last_error: string | null;
+};
+
+export type PostApiV1ConsumersBodyRulesEventsItem =
+  | "registered"
+  | "in_transit"
+  | "out_for_delivery"
+  | "at_pickup_point"
+  | "delivered"
+  | "delivery_time_changed"
+  | "returning"
+  | "problem"
+  | "refunded"
+  | "sign_in_needed"
+  | "backup_failed";
+export type PostApiV1ConsumersBodyRulesDirectionsItem = "receiving" | "sending";
+/**
+ * Nothing is sent between these times (server time zone); held until they end.
+ * @nullable
+ */
+export type PostApiV1ConsumersBodyRulesQuietHours = {
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  from: string;
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  to: string;
+} | null;
+
+/**
+ * immediately; hourly (on the hour) or daily (08:00): all due ones in one message.
+ */
+export type PostApiV1ConsumersBodyRulesDigest = "immediately" | "hourly" | "daily";
+/**
+ * Language of the texts.
+ */
+export type PostApiV1ConsumersBodyRulesLanguage = "en" | "de";
+export type PostApiV1ConsumersBodyRules = {
+  /** The notification events to send. */
+  events: PostApiV1ConsumersBodyRulesEventsItem[];
+  /**
+   * Parcels of these directions.
+   * @minItems 1
+   */
+  directions: PostApiV1ConsumersBodyRulesDirectionsItem[];
+  /**
+   * Only parcels reported by these connections; null: every connection.
+   * @nullable
+   * @items.pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  connections: string[] | null;
+  /**
+   * Nothing is sent between these times (server time zone); held until they end.
+   * @nullable
+   */
+  quiet_hours: PostApiV1ConsumersBodyRulesQuietHours;
+  /** immediately; hourly (on the hour) or daily (08:00): all due ones in one message. */
+  digest: PostApiV1ConsumersBodyRulesDigest;
+  /** Language of the texts. */
+  language: PostApiV1ConsumersBodyRulesLanguage;
+};
+
+export type PostApiV1ConsumersBody = {
+  /**
+   * @minLength 1
+   * @maxLength 40
+   */
+  consumer: string;
+  /**
+   * @minLength 1
+   * @maxLength 80
+   */
+  label: string;
+  config?: unknown;
+  secret?: unknown;
+  rules: PostApiV1ConsumersBodyRules;
+  enabled?: boolean;
+};
+
+export type PostApiV1Consumers201RulesEventsItem =
+  | "registered"
+  | "in_transit"
+  | "out_for_delivery"
+  | "at_pickup_point"
+  | "delivered"
+  | "delivery_time_changed"
+  | "returning"
+  | "problem"
+  | "refunded"
+  | "sign_in_needed"
+  | "backup_failed";
+export type PostApiV1Consumers201RulesDirectionsItem = "receiving" | "sending";
+/**
+ * Nothing is sent between these times (server time zone); held until they end.
+ * @nullable
+ */
+export type PostApiV1Consumers201RulesQuietHours = {
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  from: string;
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  to: string;
+} | null;
+
+/**
+ * immediately; hourly (on the hour) or daily (08:00): all due ones in one message.
+ */
+export type PostApiV1Consumers201RulesDigest = "immediately" | "hourly" | "daily";
+/**
+ * Language of the texts.
+ */
+export type PostApiV1Consumers201RulesLanguage = "en" | "de";
+export type PostApiV1Consumers201Rules = {
+  /** The notification events to send. */
+  events: PostApiV1Consumers201RulesEventsItem[];
+  /**
+   * Parcels of these directions.
+   * @minItems 1
+   */
+  directions: PostApiV1Consumers201RulesDirectionsItem[];
+  /**
+   * Only parcels reported by these connections; null: every connection.
+   * @nullable
+   * @items.pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  connections: string[] | null;
+  /**
+   * Nothing is sent between these times (server time zone); held until they end.
+   * @nullable
+   */
+  quiet_hours: PostApiV1Consumers201RulesQuietHours;
+  /** immediately; hourly (on the hour) or daily (08:00): all due ones in one message. */
+  digest: PostApiV1Consumers201RulesDigest;
+  /** Language of the texts. */
+  language: PostApiV1Consumers201RulesLanguage;
+};
+
+export type PostApiV1Consumers201 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  /** Which consumer: ntfy, email, webhook, apprise, … */
+  consumer: string;
+  label: string;
+  config: unknown;
+  /** Whether a secret is stored. It is never returned. */
+  has_secret: boolean;
+  rules: PostApiV1Consumers201Rules;
+  enabled: boolean;
+  /** @nullable */
+  last_attempt_at: string | null;
+  /** @nullable */
+  last_ok_at: string | null;
+  /**
+   * Why the last attempt did not deliver.
+   * @nullable
+   */
+  last_error: string | null;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PostApiV1Consumers400Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PostApiV1Consumers400Params = { [key: string]: string | number };
+
+export type PostApiV1Consumers400 = {
+  /** Stable machine-readable error code. */
+  error: PostApiV1Consumers400Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PostApiV1Consumers400Params;
+};
+
+export type PatchApiV1ConsumersIdBodyRulesEventsItem =
+  | "registered"
+  | "in_transit"
+  | "out_for_delivery"
+  | "at_pickup_point"
+  | "delivered"
+  | "delivery_time_changed"
+  | "returning"
+  | "problem"
+  | "refunded"
+  | "sign_in_needed"
+  | "backup_failed";
+export type PatchApiV1ConsumersIdBodyRulesDirectionsItem = "receiving" | "sending";
+/**
+ * Nothing is sent between these times (server time zone); held until they end.
+ * @nullable
+ */
+export type PatchApiV1ConsumersIdBodyRulesQuietHours = {
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  from: string;
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  to: string;
+} | null;
+
+/**
+ * immediately; hourly (on the hour) or daily (08:00): all due ones in one message.
+ */
+export type PatchApiV1ConsumersIdBodyRulesDigest = "immediately" | "hourly" | "daily";
+/**
+ * Language of the texts.
+ */
+export type PatchApiV1ConsumersIdBodyRulesLanguage = "en" | "de";
+export type PatchApiV1ConsumersIdBodyRules = {
+  /** The notification events to send. */
+  events: PatchApiV1ConsumersIdBodyRulesEventsItem[];
+  /**
+   * Parcels of these directions.
+   * @minItems 1
+   */
+  directions: PatchApiV1ConsumersIdBodyRulesDirectionsItem[];
+  /**
+   * Only parcels reported by these connections; null: every connection.
+   * @nullable
+   * @items.pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  connections: string[] | null;
+  /**
+   * Nothing is sent between these times (server time zone); held until they end.
+   * @nullable
+   */
+  quiet_hours: PatchApiV1ConsumersIdBodyRulesQuietHours;
+  /** immediately; hourly (on the hour) or daily (08:00): all due ones in one message. */
+  digest: PatchApiV1ConsumersIdBodyRulesDigest;
+  /** Language of the texts. */
+  language: PatchApiV1ConsumersIdBodyRulesLanguage;
+};
+
+export type PatchApiV1ConsumersIdBody = {
+  /**
+   * @minLength 1
+   * @maxLength 80
+   */
+  label?: string;
+  config?: unknown;
+  secret?: unknown;
+  rules?: PatchApiV1ConsumersIdBodyRules;
+  enabled?: boolean;
+};
+
+export type PatchApiV1ConsumersId200RulesEventsItem =
+  | "registered"
+  | "in_transit"
+  | "out_for_delivery"
+  | "at_pickup_point"
+  | "delivered"
+  | "delivery_time_changed"
+  | "returning"
+  | "problem"
+  | "refunded"
+  | "sign_in_needed"
+  | "backup_failed";
+export type PatchApiV1ConsumersId200RulesDirectionsItem = "receiving" | "sending";
+/**
+ * Nothing is sent between these times (server time zone); held until they end.
+ * @nullable
+ */
+export type PatchApiV1ConsumersId200RulesQuietHours = {
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  from: string;
+  /** @pattern ^(?:[01]\d|2[0-3]):[0-5]\d$ */
+  to: string;
+} | null;
+
+/**
+ * immediately; hourly (on the hour) or daily (08:00): all due ones in one message.
+ */
+export type PatchApiV1ConsumersId200RulesDigest = "immediately" | "hourly" | "daily";
+/**
+ * Language of the texts.
+ */
+export type PatchApiV1ConsumersId200RulesLanguage = "en" | "de";
+export type PatchApiV1ConsumersId200Rules = {
+  /** The notification events to send. */
+  events: PatchApiV1ConsumersId200RulesEventsItem[];
+  /**
+   * Parcels of these directions.
+   * @minItems 1
+   */
+  directions: PatchApiV1ConsumersId200RulesDirectionsItem[];
+  /**
+   * Only parcels reported by these connections; null: every connection.
+   * @nullable
+   * @items.pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$
+   */
+  connections: string[] | null;
+  /**
+   * Nothing is sent between these times (server time zone); held until they end.
+   * @nullable
+   */
+  quiet_hours: PatchApiV1ConsumersId200RulesQuietHours;
+  /** immediately; hourly (on the hour) or daily (08:00): all due ones in one message. */
+  digest: PatchApiV1ConsumersId200RulesDigest;
+  /** Language of the texts. */
+  language: PatchApiV1ConsumersId200RulesLanguage;
+};
+
+export type PatchApiV1ConsumersId200 = {
+  /** @pattern ^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$ */
+  id: string;
+  /** Which consumer: ntfy, email, webhook, apprise, … */
+  consumer: string;
+  label: string;
+  config: unknown;
+  /** Whether a secret is stored. It is never returned. */
+  has_secret: boolean;
+  rules: PatchApiV1ConsumersId200Rules;
+  enabled: boolean;
+  /** @nullable */
+  last_attempt_at: string | null;
+  /** @nullable */
+  last_ok_at: string | null;
+  /**
+   * Why the last attempt did not deliver.
+   * @nullable
+   */
+  last_error: string | null;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PatchApiV1ConsumersId400Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PatchApiV1ConsumersId400Params = { [key: string]: string | number };
+
+export type PatchApiV1ConsumersId400 = {
+  /** Stable machine-readable error code. */
+  error: PatchApiV1ConsumersId400Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PatchApiV1ConsumersId400Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PatchApiV1ConsumersId404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PatchApiV1ConsumersId404Params = { [key: string]: string | number };
+
+export type PatchApiV1ConsumersId404 = {
+  /** Stable machine-readable error code. */
+  error: PatchApiV1ConsumersId404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PatchApiV1ConsumersId404Params;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type DeleteApiV1ConsumersId404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type DeleteApiV1ConsumersId404Params = { [key: string]: string | number };
+
+export type DeleteApiV1ConsumersId404 = {
+  /** Stable machine-readable error code. */
+  error: DeleteApiV1ConsumersId404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: DeleteApiV1ConsumersId404Params;
+};
+
+export type PostApiV1ConsumersIdTest200 = {
+  ok: boolean;
+  /** Not delivered, but it may work later (the service was down). */
+  retry: boolean;
+  /** @nullable */
+  message: string | null;
+};
+
+/**
+ * Stable machine-readable error code.
+ */
+export type PostApiV1ConsumersIdTest404Error =
+  | "unauthorized"
+  | "forbidden"
+  | "csrf"
+  | "admin_required"
+  | "not_found"
+  | "invalid_request"
+  | "internal"
+  | "invalid_range"
+  | "carrier_not_detected"
+  | "duplicate"
+  | "backup_failed"
+  | "delete_backup_failed"
+  | "confirmation_required"
+  | "invalid_setting"
+  | "geocode_failed"
+  | "tile"
+  | "image"
+  | "too_many_attempts"
+  | "current_required"
+  | "invalid_password"
+  | "no_environment_password"
+  | "already_set_up"
+  | "bad_setup_code"
+  | "wrong_password"
+  | "login_ended"
+  | "sync_expired"
+  | "invalid_connection"
+  | "connection_backing_off"
+  | "sign_in_expired"
+  | "sign_in_timeout"
+  | "sign_in_refused"
+  | "sign_in_failed"
+  | "sign_in_wrong_step"
+  | "sign_in_poll_too_soon"
+  | "sign_in_unavailable"
+  | "sign_in_captcha"
+  | "no_sign_in"
+  | "no_such_action"
+  | "action_unavailable"
+  | "action_cooldown"
+  | "invalid_input"
+  | "job_running"
+  | "job_state"
+  | "invalid_consumer";
+/**
+ * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
+ */
+export type PostApiV1ConsumersIdTest404Params = { [key: string]: string | number };
+
+export type PostApiV1ConsumersIdTest404 = {
+  /** Stable machine-readable error code. */
+  error: PostApiV1ConsumersIdTest404Error;
+  /** English explanation, for logs and scripts. */
+  message: string;
+  /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
+  params: PostApiV1ConsumersIdTest404Params;
 };
 
 export type GetApiV1Data200CacheBytes = {
@@ -7435,7 +8246,8 @@ export type PostApiV1DataBackups500Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7550,7 +8362,8 @@ export type PostApiV1DataClear400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7611,7 +8424,8 @@ export type PostApiV1DataClear500Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7685,7 +8499,8 @@ export type GetApiV1ConnectionsIdSignInFlows404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7816,7 +8631,8 @@ export type PostApiV1ConnectionsIdSignInAttempts400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7877,7 +8693,8 @@ export type PostApiV1ConnectionsIdSignInAttempts404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7938,7 +8755,8 @@ export type PostApiV1ConnectionsIdSignInAttempts409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -7999,7 +8817,8 @@ export type PostApiV1ConnectionsIdSignInAttempts429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8060,7 +8879,8 @@ export type PostApiV1ConnectionsIdSignInAttempts503Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8194,7 +9014,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8257,7 +9078,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8320,7 +9142,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8383,7 +9206,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8446,7 +9270,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptContinue503Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8574,7 +9399,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8637,7 +9463,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8700,7 +9527,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll409Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8763,7 +9591,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll429Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8826,7 +9655,8 @@ export type PostApiV1ConnectionsIdSignInAttemptsAttemptPoll503Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -8889,7 +9719,8 @@ export type DeleteApiV1ConnectionsIdSignInAttemptsAttempt404Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9042,7 +9873,8 @@ export type GetApiV1Calendar400Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -9965,7 +10797,8 @@ export type GetApiV1Sync410Error =
   | "action_cooldown"
   | "invalid_input"
   | "job_running"
-  | "job_state";
+  | "job_state"
+  | "invalid_consumer";
 /**
  * Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words.
  */
@@ -11220,6 +12053,112 @@ export const postApiV1JobsIdRestart = async (
   options?: Parameters<typeof apiFetch>[1],
 ): Promise<PostApiV1JobsIdRestart200> => {
   return apiFetch<PostApiV1JobsIdRestart200>(getPostApiV1JobsIdRestartUrl(id), {
+    ...options,
+    method: "POST",
+  });
+};
+
+export const getGetApiV1ConsumersAvailableUrl = () => {
+  return `/api/v1/consumers/available`;
+};
+
+/**
+ * @summary The consumers that can be added, with their forms.
+ */
+export const getApiV1ConsumersAvailable = async (
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<GetApiV1ConsumersAvailable200Item[]> => {
+  return apiFetch<GetApiV1ConsumersAvailable200Item[]>(getGetApiV1ConsumersAvailableUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiV1ConsumersUrl = () => {
+  return `/api/v1/consumers`;
+};
+
+/**
+ * @summary Configured consumers with their rules and last delivery.
+ */
+export const getApiV1Consumers = async (
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<GetApiV1Consumers200Item[]> => {
+  return apiFetch<GetApiV1Consumers200Item[]>(getGetApiV1ConsumersUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getPostApiV1ConsumersUrl = () => {
+  return `/api/v1/consumers`;
+};
+
+/**
+ * @summary Add a consumer. Its secret is encrypted at rest and never returned.
+ */
+export const postApiV1Consumers = async (
+  postApiV1ConsumersBody: PostApiV1ConsumersBody,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<PostApiV1Consumers201> => {
+  return apiFetch<PostApiV1Consumers201>(getPostApiV1ConsumersUrl(), {
+    ...options,
+    method: "POST",
+    headers: getHeaders({ "Content-Type": "application/json" }, options?.headers),
+    body: JSON.stringify(postApiV1ConsumersBody),
+  });
+};
+
+export const getPatchApiV1ConsumersIdUrl = (id: string) => {
+  return `/api/v1/consumers/${id}`;
+};
+
+/**
+ * `secret`: leave it out to keep the stored one, null to remove it.
+ * @summary Change a consumer's label, settings, secret, rules or switch it on or off.
+ */
+export const patchApiV1ConsumersId = async (
+  id: string,
+  patchApiV1ConsumersIdBody: PatchApiV1ConsumersIdBody,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<PatchApiV1ConsumersId200> => {
+  return apiFetch<PatchApiV1ConsumersId200>(getPatchApiV1ConsumersIdUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: getHeaders({ "Content-Type": "application/json" }, options?.headers),
+    body: JSON.stringify(patchApiV1ConsumersIdBody),
+  });
+};
+
+export const getDeleteApiV1ConsumersIdUrl = (id: string) => {
+  return `/api/v1/consumers/${id}`;
+};
+
+/**
+ * @summary Remove a consumer and its queued notifications.
+ */
+export const deleteApiV1ConsumersId = async (
+  id: string,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<null> => {
+  return apiFetch<null>(getDeleteApiV1ConsumersIdUrl(id), {
+    ...options,
+    method: "DELETE",
+  });
+};
+
+export const getPostApiV1ConsumersIdTestUrl = (id: string) => {
+  return `/api/v1/consumers/${id}/test`;
+};
+
+/**
+ * @summary Send a test notification now, past the rules and the queue.
+ */
+export const postApiV1ConsumersIdTest = async (
+  id: string,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<PostApiV1ConsumersIdTest200> => {
+  return apiFetch<PostApiV1ConsumersIdTest200>(getPostApiV1ConsumersIdTestUrl(id), {
     ...options,
     method: "POST",
   });

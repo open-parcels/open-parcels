@@ -11,6 +11,7 @@ export const admin: Messages["admin"] = {
       scheduler: "Planer",
       event_stream: "Live-Ereignisstrom",
       backups: "Sicherungen",
+      consumers: "Ausgaben",
     },
     service: "Dienst",
     version: (version: string, commit: string | null, since: string) =>
@@ -29,6 +30,9 @@ export const admin: Messages["admin"] = {
     backupsNone: ", noch keine",
     backupsLast: (when: string, ok: boolean) =>
       `, letzte ${when} (${ok ? "erfolgreich" : "fehlgeschlagen"})`,
+    consumerQueue: (pending: number, failed: number) =>
+      (pending > 0 ? `, ${String(pending)} wartend` : "") +
+      (failed > 0 ? `, ${String(failed)} aufgegeben` : ""),
     noneYet: "Noch keine.",
     watching: "wartet auf neue E-Mails",
     notConnected: "nicht verbunden",

@@ -7,6 +7,7 @@ import { formatDateTime, formatRelative } from "../lib/format";
 import { t } from "../i18n";
 import { ConnectionStateBadge } from "../parcels/badges";
 import { StateCause } from "../connections/StateCause";
+import { lastDelivery } from "../consumers/delivery";
 
 type CheckState = GetApiV1Status200["status"];
 type CheckName = keyof GetApiV1Status200["checks"];
@@ -175,6 +176,24 @@ export function StatusPage(): ReactNode {
                         : t.admin.status.reconnecting(formatRelative(inbox.reconnect_at))
                   }
                 />
+              ))}
+            </ul>
+          </section>
+          <section className="card" aria-labelledby="consumers-status-title">
+            <h2 id="consumers-status-title">{t.admin.status.checks.consumers}</h2>
+            {data.consumers.length === 0 ? <p className="muted">{t.admin.status.noneYet}</p> : null}
+            <ul className="plain-list">
+              {data.consumers.map((consumer) => (
+                <li key={consumer.id}>
+                  <CheckBadge
+                    state={consumer.enabled && consumer.last_error !== null ? "degraded" : "ok"}
+                  />{" "}
+                  <strong>{consumer.label}</strong>{" "}
+                  <span className="muted">
+                    {consumer.enabled ? lastDelivery(consumer) : t.consumers.off}
+                    {t.admin.status.consumerQueue(consumer.pending, consumer.failed)}
+                  </span>
+                </li>
               ))}
             </ul>
           </section>

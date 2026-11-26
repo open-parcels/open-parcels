@@ -2,6 +2,7 @@ import { admin } from "./de/admin";
 import { calendar } from "./de/calendar";
 import { common } from "./de/common";
 import { connections } from "./de/connections";
+import { consumers } from "./de/consumers";
 import { errors } from "./de/errors";
 import { jobs } from "./de/jobs";
 import { map } from "./de/map";
@@ -19,6 +20,7 @@ export const de: Messages = {
   shell,
   parcels,
   connections,
+  consumers,
   jobs,
   settings,
   serverSettings,

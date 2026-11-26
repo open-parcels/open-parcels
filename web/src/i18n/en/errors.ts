@@ -25,6 +25,7 @@ const NOT_FOUND: Readonly<Record<NotFoundResource, ErrorText>> = {
   setting: () => "There is no such setting.",
   pictures: () => "There are no item pictures.",
   job: () => "The job was not found.",
+  consumer: () => "The consumer was not found.",
 };
 
 const INVALID_CONNECTION: Readonly<Record<InvalidConnectionReason, ErrorText>> = {
@@ -114,6 +115,7 @@ export const errors: ErrorTexts = {
     invalid_input: (p) => withDetail("Check what you entered.", p),
     job_running: () => "This connection is busy with a job already.",
     job_state: () => "The job cannot do that in its current state.",
+    invalid_consumer: (p) => withDetail("Check the consumer's settings and rules.", p),
   },
   http: (status) => `The server answered with error ${String(status)}.`,
 };

@@ -1,5 +1,6 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import {
+  BellRing,
   Activity,
   CalendarDays,
   KeyRound,
@@ -33,6 +34,7 @@ const NAV = [
   { to: "/returns", label: t.shell.nav.returns, icon: Undo2 },
   { to: "/calendar", label: t.shell.nav.calendar, icon: CalendarDays },
   { to: "/connections", label: t.shell.nav.connections, icon: Plug },
+  { to: "/consumers", label: t.shell.nav.consumers, icon: BellRing },
   { to: "/tokens", label: t.shell.nav.tokens, icon: KeyRound, adminOnly: true },
   { to: "/status", label: t.shell.nav.status, icon: Activity },
   { to: "/settings", label: t.shell.nav.settings, icon: Settings },

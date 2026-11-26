@@ -10,6 +10,8 @@ import type {
   GetApiV1ReturnsView,
   GetApiV1Status200,
   GetApiV1Connections200Item,
+  GetApiV1Consumers200Item,
+  GetApiV1ConsumersAvailable200Item,
   GetApiV1Jobs200Item,
   GetApiV1ConnectionsIdSignInFlows200Item,
   GetApiV1Tokens200Item,
@@ -45,6 +47,11 @@ export type OrderView = GetApiV1OrdersView;
 export type Return = GetApiV1Returns200Item;
 export type ReturnStatus = Return["status"];
 export type ReturnView = GetApiV1ReturnsView;
+export type ConsumerSetup = GetApiV1Consumers200Item;
+export type AvailableConsumer = GetApiV1ConsumersAvailable200Item;
+export type NotificationRules = ConsumerSetup["rules"];
+export type NotificationEvent = NotificationRules["events"][number];
+export type Digest = NotificationRules["digest"];
 
 export const PARCEL_STATUSES = listingEvery<ParcelStatus>()([
   "registered",

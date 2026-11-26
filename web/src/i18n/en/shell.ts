@@ -7,6 +7,7 @@ export const shell = {
     returns: "Returns",
     calendar: "Calendar",
     connections: "Connections",
+    consumers: "Consumers",
     tokens: "API tokens",
     status: "Status",
     settings: "Settings",

@@ -16,6 +16,7 @@ const STATUS = {
     scheduler: "ok",
     event_stream: "ok",
     backups: "degraded",
+    consumers: "degraded",
   },
   checked_at: "2026-11-25T10:00:00.000Z",
   version: "2.0.0-dev.20261125",
@@ -72,6 +73,19 @@ const STATUS = {
     last_error: "no_space",
     next_at: "2026-11-25T10:00:00.000Z",
   },
+  consumers: [
+    {
+      id: "k1",
+      consumer: "ntfy",
+      label: "Phone",
+      enabled: true,
+      last_attempt_at: "2026-11-25T09:55:00.000Z",
+      last_ok_at: null,
+      last_error: "The ntfy server answered HTTP 403.",
+      pending: 2,
+      failed: 0,
+    },
+  ],
 };
 
 describe("status page", () => {
@@ -99,6 +113,12 @@ describe("status page", () => {
     expect(within(inboxes).getByText(/reconnecting/)).toBeInTheDocument();
     const background = screen.getByRole("region", { name: "Background work" });
     expect(within(background).getByText("The disk is full.")).toBeInTheDocument();
+    const consumers = screen.getByRole("region", { name: "Consumers" });
+    expect(
+      within(consumers).getByText(
+        "Last attempt failed: The ntfy server answered HTTP 403., 2 waiting",
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByText("Diagnostics are for the admin only.")).toBeInTheDocument();
   });
 });
