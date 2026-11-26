@@ -148,7 +148,9 @@ image are shipped (see `DONE.md`). Left:
 - [x] Move return detail reading (deadline, drop-off, cost) from the server into the rules/providers
       (`EmailParseResult.return`, rules `src/mail/returns.ts`)
 - [ ] Verify the Amazon return-window parsing on a live account run (needs a live account run and
-      the owner's go-ahead)
+      the owner's go-ahead). Providers 1.0.2 reads the order cards of the current orders page
+      ("Return window closed on …", "Eligible through …", EN/DE) from synthetic fixtures; tick
+      once one live poll after deploy fills `return_until`
 - [x] Re-read old emails on demand so past returns appear: the inbox job "Read old emails again"
       (`docs/connection-actions-and-jobs.md` §8)
 - [x] PayPal refund emails name no order number (rule `return-paypal`): match them to orders by

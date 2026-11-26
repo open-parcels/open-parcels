@@ -166,8 +166,10 @@ cooldown, with the input `since_year` (optional: the oldest year to read).
 1. **Plan:** the orders page's time filter (`year-2026`, `year-2025`, …) gives the years, newest
    first; `total` is the number of years and `phase` reads "2023: page 4".
 2. **Walk** each year page by page (`?timeFilter=year-<y>&startIndex=<n>`, the next page's index
-   read from the page's links). Each page's orders are emitted from their order lines alone
-   (order number, placed date, item titles; `delivered` when every line says so). Shipments
+   read from the page's links). Each page's orders are emitted from the page alone (order
+   number, placed date, total, item titles, and where the order stands: `delivered` when every
+   line still a parcel says so, `shipped` when one is on its way, `cancelled` when every line
+   is). Shipments
    placed within 90 days and not delivered long ago are queued; their tracking pages are read
    afterwards, at most 8 per batch, and emitted as parcels.
 3. **Checkpoint** after every batch: `{years, year, startIndex, yearPage, pending, orders,
@@ -178,7 +180,15 @@ pages the leg ends with `{status: "pause", seconds: 3600}`; the host bucket (one
 still applies. **Trouble:** a captcha pauses the job (6 h), a sign-in page pauses it as
 `needs_sign_in` (never a new sign-in), and an orders page of an unexpected shape is read once more
 a minute later; the second time the job fails (`OrdersPageChangedError`), keeping its checkpoint.
-Digital orders are not on the orders page and are not imported. The manifest also has the link
+Digital orders are not on the orders page and are not imported.
+
+**Polling run and older orders:** every poll reads the first two orders pages (the newest
+orders) and reports the same order data, plus a parcel per shipment with the placed date and the
+return window ("Return window closed on …", "Eligible through …", in English or German). Orders
+older than those pages are refreshed only by this job: the poll never reads them, and an order
+the job reports `delivered` or `cancelled` moves on (a reported status never goes back). Orders
+the shop never reports as finished stay as they are; without parcels they leave the default
+lists 30 days after they were placed, as every order without a parcel does. The manifest also has the link
 "Your orders" (`https://www.{storefront}/your-orders/orders`).
 
 ## 8. Inbox "Read old emails again"

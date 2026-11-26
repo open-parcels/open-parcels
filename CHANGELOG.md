@@ -2,6 +2,20 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Fixed: Amazon reads the current orders page (providers 1.0.2)
+
+Amazon's orders page now lists each order as an order card (order placed, total, order number,
+one delivery box per shipment with its status, items, return window and "Track package" link).
+The provider only knew the older compact order lines, so polls found no order and still ended
+"ok": no order since then got a date, a total or its delivery from the poll. It now reads order
+cards (English and German accounts) and the compact lines alike, reads the first two orders
+pages, and reports each order with placed date, total and status (`delivered`, `shipped`,
+`cancelled`), its parcels with the placed date and the return window ("Return window closed
+on …", "Return, Replace or Withdraw: Eligible through …"). "Import history" reports the same.
+Manual step: orders older than the first two pages are not read by the poll; run "Import
+history" once on the Amazon connection to bring them up to date (no database migration: only
+Amazon knows which of them were delivered or cancelled).
+
 ### Added: the Providers page, the registry and installs from git repositories
 
 A Providers page lists the installed providers, themes and consumers with their tier (Built in,
