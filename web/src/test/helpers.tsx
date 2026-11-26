@@ -4,7 +4,7 @@ import { render, type RenderResult } from "@testing-library/react";
 import { vi } from "vitest";
 import { createQueryClient } from "../api/client";
 import { setCsrfToken } from "../api/fetcher";
-import type { Connection, Parcel } from "../api/types";
+import type { Carrier, Connection, Parcel } from "../api/types";
 import { App } from "../App";
 import { createAppRouter } from "../router";
 
@@ -131,5 +131,24 @@ export function connection(overrides: Partial<Connection> = {}): Connection {
     last_run_at: null,
     last_ok_at: null,
     ...overrides,
+  };
+}
+
+/** A made-up provider as the carrier list describes it. */
+export function carrier(id: string, name: string, extra: Partial<Carrier> = {}): Carrier {
+  return {
+    id,
+    name,
+    countries: [],
+    aliases: [],
+    logo: null,
+    connection_kinds: ["tracking"],
+    fallback: false,
+    sign_in: "none",
+    sign_in_flows: [],
+    config_schema: {},
+    secret_schema: {},
+    actions: [],
+    ...extra,
   };
 }

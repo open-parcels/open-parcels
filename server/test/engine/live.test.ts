@@ -266,6 +266,7 @@ describe("live courier tracking", () => {
         imagePath: () => null,
         labelMode: () => services.settings.labelMode,
         timeZone: services.config.timeZone,
+        providerName: (id) => id,
       },
     });
     restarted.setTargets(other.id, []);

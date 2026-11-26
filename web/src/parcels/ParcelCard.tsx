@@ -2,7 +2,7 @@
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import type { Parcel } from "../api/types";
-import { CarrierLogo } from "../components/CarrierLogo";
+import { CarrierLogo, useProviderName } from "../components/CarrierLogo";
 import { deliveryLine } from "../lib/format";
 import { LookupBadge, StatusBadge } from "./badges";
 import { t } from "../i18n";
@@ -18,13 +18,14 @@ function etaText(parcel: Parcel): string | null {
 
 export function ParcelCard({ parcel }: { readonly parcel: Parcel }): ReactNode {
   const eta = etaText(parcel);
+  const carrierName = useProviderName(parcel.carrier);
   return (
     <Link to="/parcels/$parcelId" params={{ parcelId: parcel.id }} className="parcel-card">
       <CarrierLogo carrier={parcel.carrier} />
       <div className="parcel-card-body">
         <div className="parcel-card-title">{parcel.display_name}</div>
         <div className="parcel-card-meta">
-          {parcel.raw_status ?? `${parcel.carrier} · ${parcel.tracking_number}`}
+          {parcel.raw_status ?? `${carrierName} · ${parcel.tracking_number}`}
         </div>
         {eta === null ? null : <div className="parcel-card-eta">{eta}</div>}
       </div>

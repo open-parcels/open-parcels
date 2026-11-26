@@ -152,7 +152,7 @@ export class CalendarService {
       parcelId: null,
       returnId: entry.id,
       orderId: entry.order_id,
-      title: item ?? `${entry.shop} ${entry.order_number}`,
+      title: item ?? `${this.presentation.providerName(entry.shop)} ${entry.order_number}`,
       carrier:
         entry.carrier ?? entry.drop_off.find((o) => o.carrier !== null)?.carrier ?? entry.shop,
       trackingNumber: entry.order_number,

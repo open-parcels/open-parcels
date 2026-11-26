@@ -95,6 +95,7 @@ beforeEach(async () => {
       imagePath: (r) => r,
       labelMode: () => "items",
       timeZone: "UTC",
+      providerName: (id) => id,
     },
   });
 });
@@ -187,6 +188,7 @@ describe("PlaceResolver", () => {
         imagePath: (r) => r,
         labelMode: () => "items",
         timeZone: "UTC",
+        providerName: (id) => id,
       },
       enabled: () => context.services.config.geocoding,
     });

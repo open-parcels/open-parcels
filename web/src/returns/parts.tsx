@@ -2,6 +2,7 @@
 import { Link } from "@tanstack/react-router";
 import { Undo2 } from "lucide-react";
 import type { ReactNode } from "react";
+import { ProviderName, useProviderNames } from "../components/CarrierLogo";
 import type { ParcelStatus, Return, ReturnStatus } from "../api/types";
 import { t } from "../i18n";
 import { formatMoney } from "../lib/format";
@@ -50,10 +51,14 @@ function refundLabel(refund: Return["refund"]): string | null {
   return refund.status === "issued" ? t.returns.refunded(amount) : t.returns.refundExpected(amount);
 }
 
-export function dropOffLabel(option: Return["drop_off"][number]): string {
+/** Where a return may be handed in; `nameOf` turns a carrier id into its display name. */
+export function dropOffLabel(
+  option: Return["drop_off"][number],
+  nameOf: (id: string) => string,
+): string {
   return (
     option.description ??
-    `${KIND_LABELS[option.kind]}${option.carrier === null ? "" : ` (${option.carrier})`}`
+    `${KIND_LABELS[option.kind]}${option.carrier === null ? "" : ` (${nameOf(option.carrier)})`}`
   );
 }
 
@@ -75,6 +80,7 @@ export function ReturnCard({
   const cost = costLabel(entry.cost);
   const refund = refundLabel(entry.refund);
   const title = entry.items.map((item) => item.title).join(", ");
+  const nameOf = useProviderNames();
   return (
     <section className="glass-panel return-card" aria-labelledby={titleId}>
       <div className="order-head">
@@ -83,7 +89,7 @@ export function ReturnCard({
           <h3 id={titleId}>{title === "" ? t.returns.untitled : title}</h3>
           {showOrder ? (
             <Link to="/orders/$orderId" params={{ orderId: entry.order_id }} className="mono muted">
-              {entry.shop} {entry.order_number}
+              <ProviderName id={entry.shop} /> {entry.order_number}
             </Link>
           ) : null}
         </div>
@@ -102,7 +108,7 @@ export function ReturnCard({
             <dd>
               <ul className="return-drop-off">
                 {entry.drop_off.map((option) => (
-                  <li key={dropOffLabel(option)}>{dropOffLabel(option)}</li>
+                  <li key={dropOffLabel(option, nameOf)}>{dropOffLabel(option, nameOf)}</li>
                 ))}
               </ul>
             </dd>

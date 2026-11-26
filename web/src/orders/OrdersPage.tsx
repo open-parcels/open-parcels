@@ -1,4 +1,5 @@
 /** Orders from shop connections and mails, sorted into open, delivered and archived. */
+import { useProviderName } from "../components/CarrierLogo";
 import { ItemPictures } from "../components/ItemPictures";
 import { Segmented } from "../components/Segmented";
 import { Link } from "@tanstack/react-router";
@@ -14,6 +15,7 @@ import { OrderBadges, OrderParcels, OrderProgress, orderSummary, ORDER_VIEW_TABS
 function OrderCard({ order }: { readonly order: Order }): ReactNode {
   const titleId = `order-${order.id}`;
   const summary = orderSummary(order);
+  const shop = useProviderName(order.shop);
   return (
     <section className="glass-panel order-card" aria-labelledby={titleId}>
       <div className="order-head">
@@ -21,11 +23,11 @@ function OrderCard({ order }: { readonly order: Order }): ReactNode {
         <div className="order-head-text">
           <h2 id={titleId}>
             <Link to="/orders/$orderId" params={{ orderId: order.id }}>
-              {order.label ?? order.shop}
+              {order.label ?? shop}
             </Link>
           </h2>
           <span className="mono muted">
-            {order.label === null ? order.order_number : `${order.shop} ${order.order_number}`}
+            {order.label === null ? order.order_number : `${shop} ${order.order_number}`}
           </span>
         </div>
         <OrderBadges order={order} />

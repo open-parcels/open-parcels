@@ -13,7 +13,9 @@
 &#xD;
 Set an admin password below, or on first start read the one-time setup code from the container log and enter it in the web UI to choose one. Without a reader password anyone on your network can read (not change) your parcels.&#xD;
 &#xD;
-The image runs as uid 1000. The data folder must be writable for that user (chown 1000:1000), or set Extra Parameters to --user 99:100 and make the folder writable for nobody:users.</Overview>
+The image runs as uid 1000. The data folder must be writable for that user (chown 1000:1000), or set Extra Parameters to --user 99:100 and make the folder writable for nobody:users.&#xD;
+&#xD;
+The image comes from Docker Hub. If Docker Hub has problems, set Repository to the mirror ghcr.io/open-parcels/open-parcels:latest.</Overview>
   <Category>Tools:Utilities HomeAutomation:</Category>
   <WebUI>http://[IP]:[PORT:3000]</WebUI>
   <Icon>https://raw.githubusercontent.com/open-parcels/open-parcels/main/docs/icon.png</Icon>

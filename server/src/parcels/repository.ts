@@ -59,6 +59,8 @@ export interface Presentation {
   labelMode(): ParcelLabelMode;
   /** The server's time zone, in which `expected_days` are local days. */
   readonly timeZone: string;
+  /** A provider's display name from its manifest ("Amazon"), or the id when none is installed. */
+  providerName(id: string): string;
 }
 
 export const RAW_PRESENTATION: Presentation = {
@@ -66,6 +68,7 @@ export const RAW_PRESENTATION: Presentation = {
   imagePath: (remote) => remote,
   labelMode: () => "tracking_number",
   timeZone: "UTC",
+  providerName: (id) => id,
 };
 
 /** Item names joined, for the "Item names" label mode: at most this many characters. */

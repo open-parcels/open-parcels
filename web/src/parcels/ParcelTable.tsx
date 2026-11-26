@@ -4,7 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { createColumnHelper, type SortingState } from "@tanstack/react-table";
 import type { ReactNode } from "react";
 import type { Parcel } from "../api/types";
-import { CarrierLogo } from "../components/CarrierLogo";
+import { CarrierLogo, ProviderName, useProviderNames } from "../components/CarrierLogo";
 import { DataTable, type TableSearch } from "../components/DataTable";
 import { formatRelative, formatExpected } from "../lib/format";
 import { ArchivedBadge, LookupBadge, StatusBadge } from "./badges";
@@ -61,7 +61,11 @@ const COLUMNS = [
     header: t.parcels.columnLookup,
     cell: (info) => <LookupBadge state={info.getValue()} />,
   }),
-  column.accessor("carrier", { id: "carrier", header: t.parcels.columnCarrier }),
+  column.accessor("carrier", {
+    id: "carrier",
+    header: t.parcels.columnCarrier,
+    cell: (info) => <ProviderName id={info.getValue()} />,
+  }),
   column.accessor((parcel) => parcel.expected_from ?? parcel.expected_to ?? "", {
     id: "expected",
     header: t.parcels.columnEta,
@@ -106,6 +110,7 @@ export function ParcelTable(props: {
   readonly search: TableSearch;
 }): ReactNode {
   const { filter, onFilterChange: setFilter, carrier } = props;
+  const nameOf = useProviderNames();
   const controls = (
     <>
       <Segmented
@@ -129,7 +134,7 @@ export function ParcelTable(props: {
           <option value="">{t.parcels.allCarriers}</option>
           {props.carriers.map((id) => (
             <option key={id} value={id}>
-              {id}
+              {nameOf(id)}
             </option>
           ))}
         </select>

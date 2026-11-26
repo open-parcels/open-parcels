@@ -2,6 +2,8 @@
 # `docker compose logs open-parcels` and enter it in the web UI at http://localhost:3000.
 services:
   open-parcels:
+    # Docker Hub is the main registry. Mirror when Docker Hub has problems:
+    # ghcr.io/open-parcels/open-parcels:latest
     image: bluscream1/open-parcels:latest
     container_name: open-parcels
     restart: unless-stopped

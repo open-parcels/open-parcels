@@ -7,7 +7,8 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import { useNavigate } from "@tanstack/react-router";
 import { useMemo, useState, type ReactNode } from "react";
-import { useCalendar, useCarriers } from "../api/queries";
+import { useCalendar } from "../api/queries";
+import { useProviderNames } from "../components/CarrierLogo";
 import { ErrorNotice } from "../components/ui";
 import { t } from "../i18n";
 import { pickOne, useUrlParam } from "../lib/urlState";
@@ -64,18 +65,12 @@ export default function CalendarPage(): ReactNode {
   // right months (OP-153).
   const [range, setRange] = useState<{ from: string; to: string } | null>(null);
   const calendar = useCalendar(range);
-  const carriers = useCarriers();
+  const nameOf = useProviderNames();
   const navigate = useNavigate();
 
   const events = useMemo<EventInput[]>(
-    () =>
-      (calendar.data ?? []).map((entry) =>
-        toCalendarEvent(
-          entry,
-          carriers.data?.find((c) => c.id === entry.carrier)?.name ?? entry.carrier,
-        ),
-      ),
-    [calendar.data, carriers.data],
+    () => (calendar.data ?? []).map((entry) => toCalendarEvent(entry, nameOf)),
+    [calendar.data, nameOf],
   );
 
   const onDates = (arg: DatesSetArg): void => {

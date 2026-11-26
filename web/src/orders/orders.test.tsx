@@ -2,7 +2,7 @@ import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { Order } from "../api/types";
-import { mockApi, parcel, renderApp, SIGNED_IN } from "../test/helpers";
+import { carrier, mockApi, parcel, renderApp, SIGNED_IN } from "../test/helpers";
 import { archiveExplanation } from "./OrderDetailPage";
 import { formatTotal } from "./parts";
 
@@ -16,7 +16,7 @@ function order(overrides: Partial<Order> = {}): Order {
     shop: "demo_shop",
     order_number: "DEMO-1001",
     label: null,
-    display_name: "demo_shop DEMO-1001",
+    display_name: "Demo shop DEMO-1001",
     placed_at: "2026-11-15T10:00:00.000Z",
     status: "partly_delivered",
     digital: false,
@@ -88,7 +88,9 @@ describe("orders page", () => {
   it("shows orders with status, pictures and parcels, and switches views", async () => {
     const calls = mockApi({
       "GET /api/v1/session": () => ({ body: SIGNED_IN }),
-      "GET /api/v1/carriers": () => ({ body: [] }),
+      "GET /api/v1/carriers": () => ({
+        body: [carrier("demo_shop", "Demo shop"), carrier("demo", "Demo courier")],
+      }),
       "GET /api/v1/orders": (request) => ({
         body:
           request.query.get("view") === "archived"
@@ -98,7 +100,9 @@ describe("orders page", () => {
     });
     const user = userEvent.setup();
     renderApp("/orders");
-    const card = await screen.findByRole("region", { name: "demo_shop" });
+    // Shop keys and carrier ids are shown by their provider's display name.
+    const card = await screen.findByRole("region", { name: "Demo shop" });
+    expect(within(card).getByText(/Demo courier · DEMO0000000002/)).toBeInTheDocument();
     expect(within(card).getByText("Partly delivered")).toBeInTheDocument();
     expect(within(card).getByText("DEMO-1001")).toBeInTheDocument();
     expect(within(card).getByText("Lamp parcel")).toBeInTheDocument();
@@ -177,7 +181,7 @@ describe("orders page", () => {
     const user = userEvent.setup();
     renderApp(`/orders/${ORDER_ID}`);
 
-    expect(await screen.findByRole("heading", { name: "demo_shop DEMO-1001" })).toBeInTheDocument();
+    expect(await screen.findByRole("heading", { name: "Demo shop DEMO-1001" })).toBeInTheDocument();
     expect(screen.getByText("In Lamp parcel")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: /Lamp parcel/ })).toHaveAttribute(
       "href",

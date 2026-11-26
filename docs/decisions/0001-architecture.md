@@ -535,8 +535,9 @@ shape only, holds no data, and clients and code generators fetch it before they 
 **One image**, built for `linux/amd64` and `linux/arm64`. arm64 is needed because the Home
 Assistant Pi is aarch64, and HA apps support only amd64 and aarch64.
 
-- It is published to Docker Hub as `bluscream1/open-parcels` and to GHCR as
-  `ghcr.io/open-parcels/open-parcels`.
+- It is published to Docker Hub as `bluscream1/open-parcels`, the main registry every doc,
+  snippet and template names, and to GHCR as `ghcr.io/open-parcels/open-parcels`, a mirror only
+  for when Docker Hub has problems (owner decision 2026-11-26).
 - It listens on port 3000, unchanged, so the existing Unraid mapping 4000→3000 keeps working.
 
 **Builds run locally** with `docker buildx` and QEMU, because workflows don't run under this

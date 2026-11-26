@@ -3,7 +3,7 @@ import { ArrowLeft, Calendar, CheckCircle2, ExternalLink, MapPin, PackageOpen } 
 import { lazy, Suspense, type ReactNode } from "react";
 import { useParcel, useUpdateParcel } from "../api/queries";
 import type { ParcelDetail } from "../api/types";
-import { CarrierLogo, useCarrierName } from "../components/CarrierLogo";
+import { CarrierLogo, ProviderName, useProviderName } from "../components/CarrierLogo";
 import { SplitContainer } from "../components/SplitContainer";
 import { ErrorNotice, Spinner } from "../components/ui";
 import {
@@ -50,7 +50,7 @@ function Facts({ parcel }: { readonly parcel: ParcelDetail }): ReactNode {
         "—"
       ) : (
         <Link to="/orders/$orderId" params={{ orderId: parcel.order.id }}>
-          {parcel.order.shop} {parcel.order.order_number}
+          <ProviderName id={parcel.order.shop} /> {parcel.order.order_number}
         </Link>
       ),
     ],
@@ -218,7 +218,7 @@ function Connections({ parcel }: { readonly parcel: ParcelDetail }): ReactNode {
 }
 
 function Header({ parcel }: { readonly parcel: ParcelDetail }): ReactNode {
-  const carrierName = useCarrierName(parcel.carrier);
+  const carrierName = useProviderName(parcel.carrier);
   const update = useUpdateParcel(parcel.id);
   const canEdit = useIsAdmin();
   const markedDelivered = parcel.manual_status === "delivered";

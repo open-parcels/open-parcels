@@ -25,6 +25,7 @@ import { useThemes } from "../api/queries";
 import { setMode, setTheme, useAppearance, type Mode } from "../lib/theme";
 import { AddParcelDialog } from "../parcels/AddParcelDialog";
 import { BRAND, t } from "../i18n";
+import { HeaderMenu, MODES } from "./HeaderMenu";
 import { ReaderNotice } from "./ReaderNotice";
 
 const NAV = [
@@ -47,8 +48,6 @@ const NAV = [
 }[];
 
 const LIVE_LABELS: Readonly<Record<LiveState, string>> = t.shell.live;
-
-const MODES: readonly Mode[] = ["automatic", "light", "dark"];
 
 /** The two appearance settings: Theme (when more than one is installed) and Mode. */
 function AppearancePickers(): ReactNode {
@@ -113,6 +112,20 @@ export function Shell(): ReactNode {
       ? ROLE_LABELS.anonymous
       : ROLE_LABELS.reader;
 
+  const logIn =
+    admin || method === "ingress"
+      ? null
+      : (): void => {
+          setSigningIn(true);
+        };
+  const logOut =
+    method !== "session"
+      ? null
+      : (): void => {
+          setSigningIn(false);
+          signOut.mutate();
+        };
+
   // Once the admin is logged in, the header's login is done: a later drop to reader (password
   // changed elsewhere) shows the read-only web UI with its Log in button, not the login page.
   if (signingIn && admin) {
@@ -168,44 +181,34 @@ export function Shell(): ReactNode {
               }}
             >
               <Plus size={16} aria-hidden="true" />
-              {t.shell.add}
+              <span className="header-add-text">{t.shell.add}</span>
             </button>
           ) : null}
           <span className={`live live-${live}`} role="status" title={t.shell.liveUpdates}>
-            {LIVE_LABELS[live]}
+            <span className="live-text">{LIVE_LABELS[live]}</span>
           </span>
-          <AppearancePickers />
+          <div className="topbar-inline">
+            <AppearancePickers />
+          </div>
           <span
             className={`badge role-badge role-${admin ? "admin" : "reader"}`}
             title={admin ? t.shell.mayChange : t.shell.mayRead}
           >
             {roleLabel}
           </span>
-          {admin || method === "ingress" ? null : (
-            <button
-              type="button"
-              className="header-link"
-              onClick={() => {
-                setSigningIn(true);
-              }}
-            >
+          {logIn === null ? null : (
+            <button type="button" className="header-link topbar-inline" onClick={logIn}>
               <LogIn size={16} aria-hidden="true" />
               {t.shell.logIn}
             </button>
           )}
-          {method !== "session" ? null : (
-            <button
-              type="button"
-              className="header-link"
-              onClick={() => {
-                setSigningIn(false);
-                signOut.mutate();
-              }}
-            >
+          {logOut === null ? null : (
+            <button type="button" className="header-link topbar-inline" onClick={logOut}>
               <LogOut size={16} aria-hidden="true" />
               {t.shell.logOut}
             </button>
           )}
+          <HeaderMenu onLogIn={logIn} onLogOut={logOut} />
         </div>
       </header>
       <main id="main" className="content">

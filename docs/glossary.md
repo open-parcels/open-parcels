@@ -71,7 +71,7 @@ repository name in links, commands and code. "Planned" names take effect with de
 
 | Repository (current → planned) | Short name (EN) | Short name (DE) | Publishes |
 | --- | --- | --- | --- |
-| `open-parcels` → **`open-parcels-server`** | the server | der Server | images `bluscream1/open-parcels` (today; planned: `open-parcels-server` server only, `open-parcels` all-in-one), `ghcr.io/open-parcels/…` |
+| `open-parcels` → **`open-parcels-server`** | the server | der Server | images `bluscream1/open-parcels` (main registry; planned: `open-parcels-server` server only, `open-parcels` all-in-one), mirror `ghcr.io/open-parcels/…` |
 | **`open-parcels-web`** (planned; the web UI lives in `open-parcels/web` today) | the web UI | die Weboberfläche | image `open-parcels-web`, static zip |
 | `open-parcels-rules` | the rules | die Regeln | npm package `open-parcels-rules`, Python loader |
 | `open-parcels-ha` | the HA integration (Home Assistant integration) | die HA-Integration | HACS integration `open_parcels` |

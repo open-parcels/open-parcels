@@ -4,6 +4,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { ArrowLeft, RotateCcw, ShoppingBag } from "lucide-react";
 import type { ReactNode } from "react";
+import { useProviderName } from "../components/CarrierLogo";
 import { keys, useDeleteOrder, useOrder, useUpdateOrder } from "../api/queries";
 import type { Order } from "../api/types";
 import { ErrorNotice, Spinner } from "../components/ui";
@@ -83,18 +84,19 @@ function Actions({ order }: { readonly order: Order }): ReactNode {
 
 function Header({ order }: { readonly order: Order }): ReactNode {
   const update = useUpdateOrder(order.id);
+  const shop = useProviderName(order.shop);
   return (
     <div className="detail-head">
       <ShoppingBag size={40} className="page-icon" aria-hidden="true" />
       <div className="detail-head-text">
         <div className="muted">
-          {order.shop} <span className="mono">{order.order_number}</span>
+          {shop} <span className="mono">{order.order_number}</span>
         </div>
         <InlineTitle
           titleId="order-title"
           shown={order.display_name}
           label={order.label}
-          placeholder={`${order.shop} ${order.order_number}`}
+          placeholder={`${shop} ${order.order_number}`}
           error={update.error}
           onSave={(label) => {
             update.mutate({ label });

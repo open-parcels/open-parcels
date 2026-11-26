@@ -39,6 +39,14 @@ Then open <http://localhost:3000> and finish the setup with the code from `docke
 you add real accounts, add the **Demo shop** and **Demo courier** connections: three made-up parcels
 in two orders, with a live courier on the map.
 
+### Images
+
+The image is published to Docker Hub as `bluscream1/open-parcels`, the main registry that
+`docker-compose.yml`, the Unraid template and the guides use. GHCR carries the same image as a
+mirror, `ghcr.io/open-parcels/open-parcels` (same tags): use it only when Docker Hub has problems
+(an outage or its pull limit), by replacing the image name, for example
+`image: ghcr.io/open-parcels/open-parcels:latest`.
+
 ## Access
 
 Two passwords, both optional settings (environment, or **Settings → Security**):

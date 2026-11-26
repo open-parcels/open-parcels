@@ -2,7 +2,7 @@
  * A carrier's tile: the provider's bundled logo when it has one (the carrier list gives its URL),
  * otherwise a monogram in the carrier's brand colour or a stable colour from its id.
  */
-import type { CSSProperties, ReactNode } from "react";
+import { useCallback, type CSSProperties, type ReactNode } from "react";
 import { apiUrl } from "../api/fetcher";
 import { useCarriers } from "../api/queries";
 
@@ -35,10 +35,26 @@ function initials(name: string): string {
   return text.slice(0, 3);
 }
 
-/** The carrier's display name from the provider list, or its id. */
-export function useCarrierName(id: string): string {
-  const carriers = useCarriers();
-  return carriers.data?.find((carrier) => carrier.id === id)?.name ?? id;
+/**
+ * A provider's display name from its manifest ("Amazon" for `amazon`), for carrier ids and shop
+ * keys; a key no installed provider has is shown as it is.
+ */
+export function useProviderName(id: string): string {
+  return useProviderNames()(id);
+}
+
+/** `useProviderName` for many ids at once: a function from id to display name. */
+export function useProviderNames(): (id: string) => string {
+  const list = useCarriers().data;
+  return useCallback(
+    (id: string) => list?.find((carrier) => carrier.id === id)?.name ?? id,
+    [list],
+  );
+}
+
+/** A carrier id or shop key, written out as its provider's display name. */
+export function ProviderName({ id }: { readonly id: string }): ReactNode {
+  return useProviderName(id);
 }
 
 /** A carrier's tile from what the carrier list says: its logo, or else a monogram. */
@@ -88,12 +104,12 @@ export function CarrierLogo(props: {
   readonly size?: number;
 }): ReactNode {
   const carriers = useCarriers();
-  const logo = carriers.data?.find((carrier) => carrier.id === props.carrier)?.logo ?? null;
+  const known = carriers.data?.find((carrier) => carrier.id === props.carrier);
   return (
     <LogoTile
       carrier={props.carrier}
-      name={props.carrier}
-      logo={logo}
+      name={known?.name ?? props.carrier}
+      logo={known?.logo ?? null}
       {...(props.size === undefined ? {} : { size: props.size })}
     />
   );

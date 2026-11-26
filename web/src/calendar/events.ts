@@ -4,10 +4,10 @@ import { t } from "../i18n";
 import { costLabel, dropOffLabel } from "../returns/parts";
 
 /** A return's deadline says where to hand it in and what it costs. */
-function returnDetails(entry: CalendarEntry): string[] {
+function returnDetails(entry: CalendarEntry, nameOf: (id: string) => string): string[] {
   const cost = costLabel(entry.cost);
   return [
-    ...entry.drop_off.map((option) => `${t.returns.dropOff}: ${dropOffLabel(option)}`),
+    ...entry.drop_off.map((option) => `${t.returns.dropOff}: ${dropOffLabel(option, nameOf)}`),
     ...(cost === null ? [] : [cost]),
   ];
 }
@@ -17,7 +17,7 @@ function returnDetails(entry: CalendarEntry): string[] {
  * (`2026-11-20`), never the instants, so they land on the right day whatever time zone the
  * browser reports (LibreWolf, for one, reports UTC).
  */
-export function toCalendarEvent(entry: CalendarEntry, carrierName: string): EventInput {
+export function toCalendarEvent(entry: CalendarEntry, nameOf: (id: string) => string): EventInput {
   const span =
     entry.all_day && entry.start_date !== null && entry.end_date !== null
       ? { start: entry.start_date, end: entry.end_date, allDay: true }
@@ -26,8 +26,8 @@ export function toCalendarEvent(entry: CalendarEntry, carrierName: string): Even
   // deadline says so and lists where to hand it in and what it costs.
   const title =
     entry.kind === "return_by"
-      ? [t.calendar.returnBy(entry.title), ...returnDetails(entry)].join(" · ")
-      : `${entry.title} · ${carrierName}`;
+      ? [t.calendar.returnBy(entry.title), ...returnDetails(entry, nameOf)].join(" · ")
+      : `${entry.title} · ${nameOf(entry.carrier)}`;
   return {
     id: entry.uid,
     title,

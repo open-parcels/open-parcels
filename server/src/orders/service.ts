@@ -62,14 +62,19 @@ function orderState(
   return { status, archivedAt };
 }
 
-function toOrder(row: OrderRow, { items, parcels, returns }: OrderParts, now: Date): Order {
+function toOrder(
+  row: OrderRow,
+  { items, parcels, returns }: OrderParts,
+  now: Date,
+  shopName: string,
+): Order {
   const { status, archivedAt } = orderState(row, parcels, now);
   return {
     id: row.id,
     shop: row.shop,
     order_number: row.order_number,
     label: row.label,
-    display_name: row.label ?? `${row.shop} ${row.order_number}`,
+    display_name: row.label ?? `${shopName} ${row.order_number}`,
     placed_at: row.placed_at,
     status,
     digital: isDigitalShop(row.shop),
@@ -262,6 +267,7 @@ export class OrderService {
           returns: returnsOf.get(row.id) ?? [],
         },
         now,
+        this.presentation.providerName(row.shop),
       ),
     );
   }

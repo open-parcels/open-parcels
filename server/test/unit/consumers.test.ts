@@ -66,6 +66,7 @@ const render: Render = {
   timeZone: TZ,
   publicUrl: new URL("https://parcels.example/"),
   fields: ["tracking_number"],
+  providerName: (id) => (id === "dhl" ? "DHL" : id),
 };
 
 describe("notifications from live events", () => {
@@ -142,6 +143,8 @@ describe("notifications from live events", () => {
       status: "out_for_delivery",
       tracking_number: "ABC123",
     });
+    // The text names the carrier by its provider's display name; the field keeps the id.
+    expect(english.items[0]?.body).toContain("DHL ABC123");
     expect(JSON.stringify(english)).not.toContain("latitude");
     const german = buildMessage([stored, stored], { ...render, language: "de" });
     expect(german).toMatchObject({ type: "digest", title: "2 Paket-Neuigkeiten" });

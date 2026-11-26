@@ -3,7 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { MapPin } from "lucide-react";
 import type { ReactNode } from "react";
 import type { Order, OrderStatus, OrderView, ParcelStatus } from "../api/types";
-import { CarrierLogo } from "../components/CarrierLogo";
+import { CarrierLogo, ProviderName } from "../components/CarrierLogo";
 import { deliveryLine, formatMoney, formatRelative } from "../lib/format";
 import { t } from "../i18n";
 import { ArchivedBadge, StatusBadge } from "../parcels/badges";
@@ -106,7 +106,7 @@ export function OrderParcels({ order }: { readonly order: Order }): ReactNode {
               <div className="parcel-card-body">
                 <div className="parcel-card-title">{parcel.display_name}</div>
                 <div className="parcel-card-meta">
-                  {parcel.carrier} · {parcel.tracking_number}
+                  <ProviderName id={parcel.carrier} /> · {parcel.tracking_number}
                 </div>
                 {line === null ? null : <div className="parcel-card-eta">{line}</div>}
                 {place === null || parcel.delivered ? null : (

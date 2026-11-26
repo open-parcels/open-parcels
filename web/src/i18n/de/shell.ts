@@ -13,6 +13,7 @@ export const shell: Messages["shell"] = {
     status: "Status",
     settings: "Einstellungen",
   },
+  menu: "Menü",
   mainNav: "Hauptmenü",
   live: { connecting: "Verbinde…", live: "Live", offline: "Offline" },
   liveUpdates: "Live-Aktualisierung",

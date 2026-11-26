@@ -48,6 +48,8 @@ export interface DispatcherDeps {
   readonly consumers: ReadonlyMap<string, Consumer>;
   readonly timeZone: string;
   readonly publicUrl: () => URL | undefined;
+  /** A provider's display name (`Presentation.providerName`). */
+  readonly providerName: (id: string) => string;
   readonly fetchImpl?: ConsumerFetch;
 }
 
@@ -349,6 +351,7 @@ export class ConsumerDispatcher {
       timeZone: this.deps.timeZone,
       publicUrl: this.deps.publicUrl(),
       fields: consumer.describe().manifest.fields,
+      providerName: this.deps.providerName,
     };
   }
 

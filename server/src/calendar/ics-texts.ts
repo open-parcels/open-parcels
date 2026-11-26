@@ -1,3 +1,4 @@
+import { findCarrier, loadRules } from "open-parcels-rules";
 import type { ParcelStatus } from "../domain/parcel.js";
 import type { DropOffKind, DropOffOption, Return, ReturnStatus } from "../domain/return.js";
 import type { Language } from "../i18n/language.js";
@@ -117,7 +118,11 @@ export const ICS_TEXTS: Readonly<Record<Language, IcsTexts>> = { en: EN, de: DE 
 
 /** One drop-off option in words: the shop's description, else its kind and carrier. */
 export function dropOffText(texts: IcsTexts, option: DropOffOption): string {
-  const carrier = option.carrier === null ? "" : ` (${option.carrier})`;
+  const name =
+    option.carrier === null
+      ? null
+      : (findCarrier(loadRules(), option.carrier)?.name ?? option.carrier);
+  const carrier = name === null ? "" : ` (${name})`;
   return option.description ?? `${texts.kinds[option.kind]}${carrier}`;
 }
 

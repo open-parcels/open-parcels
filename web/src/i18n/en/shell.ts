@@ -12,6 +12,7 @@ export const shell = {
     status: "Status",
     settings: "Settings",
   },
+  menu: "Menu",
   mainNav: "Main",
   live: { connecting: "Connecting…", live: "Live", offline: "Offline" },
   liveUpdates: "Live updates",

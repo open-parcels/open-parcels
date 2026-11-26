@@ -74,7 +74,7 @@ describe("calendar entries", () => {
       url: null,
       pickup_point: null,
     };
-    expect(toCalendarEvent(entry, "DHL")).toMatchObject({
+    expect(toCalendarEvent(entry, () => "DHL")).toMatchObject({
       start: "2026-11-17",
       end: "2026-11-18",
       allDay: true,

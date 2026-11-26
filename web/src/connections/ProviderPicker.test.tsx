@@ -1,28 +1,10 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import axe from "axe-core";
 import { describe, expect, it, vi } from "vitest";
-import type { Carrier } from "../api/types";
 import { t } from "../i18n";
+import { carrier } from "../test/helpers";
 import { pickerEntries, searchEntries, type PickerEntry } from "./picker";
 import { ProviderPicker } from "./ProviderPicker";
-
-function carrier(id: string, name: string, extra: Partial<Carrier> = {}): Carrier {
-  return {
-    id,
-    name,
-    countries: [],
-    aliases: [],
-    logo: null,
-    connection_kinds: ["tracking"],
-    fallback: false,
-    sign_in: "none",
-    sign_in_flows: [],
-    config_schema: {},
-    secret_schema: {},
-    actions: [],
-    ...extra,
-  };
-}
 
 const CARRIERS = [
   carrier("dhl", "DHL", {

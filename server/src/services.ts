@@ -238,6 +238,7 @@ export async function repairOnStart(services: Services): Promise<void> {
 async function consumerServices(
   deps: ServiceDeps,
   bus: EventBus,
+  providerName: (id: string) => string,
 ): Promise<Pick<Services, "consumerCatalog" | "consumers" | "notifications">> {
   const { db, clock, logger } = deps;
   const consumerCatalog = builtinConsumers(clock);
@@ -251,6 +252,7 @@ async function consumerServices(
     consumers: consumerCatalog,
     timeZone: deps.config.timeZone,
     publicUrl: () => deps.config.publicUrl,
+    providerName,
   });
   await notifications.load();
   return { consumerCatalog, consumers, notifications };
@@ -328,6 +330,7 @@ export async function createServices(deps: ServiceDeps): Promise<Services> {
     imagePath: (remote) => images.pathFor(remote),
     labelMode: () => settings.labelMode,
     timeZone: deps.config.timeZone,
+    providerName: (id) => registry.get(id)?.info.name ?? id,
   };
   const { timeZone } = presentation;
   const reconciler = new Reconciler(db, bus, clock, logger, { presentation, timeZone });
@@ -462,7 +465,7 @@ export async function createServices(deps: ServiceDeps): Promise<Services> {
       connections,
     }),
     access,
-    ...(await consumerServices(deps, bus)),
+    ...(await consumerServices(deps, bus, (id) => presentation.providerName(id))),
     backups: new BackupService({
       db,
       clock,

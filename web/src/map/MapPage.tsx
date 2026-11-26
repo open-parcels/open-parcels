@@ -2,6 +2,7 @@ import { Link } from "@tanstack/react-router";
 import { HomeMarker } from "./HomeMarker";
 import { PackageOpen } from "lucide-react";
 import { useMemo, type ReactNode } from "react";
+import { ProviderName } from "../components/CarrierLogo";
 import { Marker, Popup } from "react-leaflet";
 import { useActiveParcels } from "../api/queries";
 import type { Parcel } from "../api/types";
@@ -46,7 +47,9 @@ function PinMarker({ pin }: { readonly pin: Pin }): ReactNode {
             <Link to="/parcels/$parcelId" params={{ parcelId: pin.parcel.id }}>
               {pin.parcel.display_name}
             </Link>
-            <span className="muted">{pin.parcel.carrier}</span>
+            <span className="muted">
+              <ProviderName id={pin.parcel.carrier} />
+            </span>
             <span>
               {pin.parcel.raw_status ?? STATUS_LABELS[pin.parcel.status]}
               {typeof pin.parcel.live?.stops_away === "number"

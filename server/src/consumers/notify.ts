@@ -198,6 +198,8 @@ export interface Render {
   readonly publicUrl: URL | undefined;
   /** The fields the consumer's manifest asks for. */
   readonly fields: readonly ConsumerField[];
+  /** A carrier id or shop key as its provider's display name, for the texts (fields keep ids). */
+  providerName(id: string): string;
 }
 
 function link(data: NotificationData, render: Render): string | null {
@@ -212,8 +214,13 @@ function bodyOf(event: NotificationEvent, data: NotificationData, render: Render
   const when = (iso: string): string => formatWhen(iso, render.language, render.timeZone);
   if (event === "sign_in_needed") return text.signIn(data.name);
   if (event === "backup_failed") return text.backupFailed;
-  if (event === "refunded") return text.refunded(data.shop ?? data.name, data.amount);
-  const lines = [`${data.carrier ?? ""} ${data.tracking_number ?? ""}`.trim()];
+  if (event === "refunded")
+    return text.refunded(
+      data.shop === null ? data.name : render.providerName(data.shop),
+      data.amount,
+    );
+  const carrier = data.carrier === null ? "" : render.providerName(data.carrier);
+  const lines = [`${carrier} ${data.tracking_number ?? ""}`.trim()];
   if (data.expected_from !== null && event !== "delivered") {
     const to = data.expected_to === null ? null : when(data.expected_to);
     lines.push(text.expected(when(data.expected_from), to));

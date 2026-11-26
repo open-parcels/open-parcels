@@ -352,6 +352,83 @@ h3 {
   font-size: 13px;
 }
 
+/* The phone header's menu (Theme, Mode, Log in/out); wider screens show those controls inline. */
+.header-menu {
+  display: none;
+  position: relative;
+}
+
+.header-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background: var(--tint);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.header-menu-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 1000;
+  min-width: 13rem;
+  padding: 6px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.header-menu-heading {
+  padding: 6px 10px 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.header-menu-separator {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--panel-border);
+}
+
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.header-menu-item:hover,
+.header-menu-item:focus-visible {
+  background: var(--accent-soft);
+}
+
+.header-menu-item[aria-disabled="true"] {
+  color: var(--muted);
+  cursor: default;
+}
+
+.header-menu-mark {
+  display: inline-flex;
+  width: 16px;
+}
+
 .content {
   flex: 1;
   width: 100%;
@@ -1300,10 +1377,13 @@ tbody tr:hover {
   border: 1px solid var(--panel-border);
 }
 
-/* Orders */
+/*
+ * Orders: as many columns of at least 380px as fit (one on a phone). `auto-fit` drops the empty
+ * columns, so a list shorter than one row still fills the width instead of leaving it blank.
+ */
 .order-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
   gap: 20px;
 }
 
@@ -2290,8 +2370,50 @@ tbody tr:hover {
     white-space: nowrap;
   }
 
+  /*
+   * One compact row: logo, the live dot, the role badge and the menu button; Theme, Mode and
+   * Log in/out move into the menu, labels stay for screen readers.
+   */
   .topbar-tools {
-    gap: 12px;
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+
+  .topbar-inline {
+    display: none;
+  }
+
+  .header-menu {
+    display: block;
+  }
+
+  .live-text,
+  .header-add-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .live::before {
+    content: "●";
+    color: var(--muted);
+  }
+
+  .live-live::before {
+    color: var(--ok);
+  }
+
+  .live-offline::before {
+    color: var(--danger);
+  }
+
+  .role-badge {
+    padding: 2px 6px;
+    font-size: 10px;
+    letter-spacing: 0.3px;
   }
 
   .page-header {

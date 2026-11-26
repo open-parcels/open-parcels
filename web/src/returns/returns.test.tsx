@@ -108,7 +108,7 @@ describe("return deadlines in the calendar", () => {
       url: null,
       pickup_point: null,
     };
-    expect(toCalendarEvent(entry, "DHL")).toMatchObject({
+    expect(toCalendarEvent(entry, () => "DHL")).toMatchObject({
       title: "Return by: Example kettle · Drop off: Any DHL drop-off point · Free return",
       start: "2026-11-25",
       allDay: true,

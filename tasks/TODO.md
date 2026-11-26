@@ -37,7 +37,9 @@ Groups 1–24 are shipped (see `DONE.md`). Left, optional:
       they show (NAS, 2026-11-26). Left: measure on the Pi
 - [ ] Release 2.0.0: changelog, tags `2.0.0`, `2.0`, `latest` on Docker Hub and GHCR, website and
       Unraid template switched from `:dev` to `:latest`, HA app on the release
-- [ ] Make `ghcr.io/open-parcels/open-parcels` public (owner click) and switch docs to it
+- [x] GHCR: `ghcr.io/open-parcels/open-parcels` is public; owner decision 2026-11-26: Docker Hub
+      stays the main registry everywhere, GHCR is named only as the mirror (server README and
+      Compose file, HA app README/DOCS, website)
 - [ ] Backups: the Status page was looked at in the NAS browser (2026-11-26, read-only view: all
       parts, backups "next in 18 hours, last 6 hours ago (succeeded)"); the Backups card on
       Settings is for the admin only and still needs a look while signed in. The HA app's
@@ -190,12 +192,12 @@ image are shipped (see `DONE.md`). Left:
 
 - [ ] Hermes password once in the Hermes connection
 - [ ] DHL API key (approved?) into the DHL connection
-- [ ] Make `ghcr.io/open-parcels/open-parcels` public
 
 ## 11. After everything above: split, clients, Android app (decision record 0004)
 
 - [ ] Rename `open-parcels` → `open-parcels-server` and every reference; split repositories: `open-parcels-web` (own image + static zip),
-      Compose file for both, all-in-one image stays the default
+      Compose file for both, all-in-one image stays the default. The `Dockerfile` label
+      `org.opencontainers.image.source` must follow the rename to `open-parcels-server`
 - [ ] Unraid: all-in-one template (default) plus server-only and web-only templates; Compose
       Manager Plus documented (Unraid has no native Compose)
 - [ ] Website "Install" chooser: all-in-one (Docker / Unraid / Home Assistant), server only, web
