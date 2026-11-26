@@ -2,6 +2,16 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Changed: the built-in providers come from open-parcels-providers
+
+The 89 built-in providers moved to their own repository,
+[`open-parcels/open-parcels-providers`](https://github.com/open-parcels/open-parcels-providers)
+(one folder each, listed by its repo manifest, one version for the repository). The server
+vendors release `1.0.0` (`server/vendor/`, pinned by SHA-256 in `server/package.json`) and lays
+it out with `npm run providers`, which `npm ci` runs. Nothing changes for users. Manual step for
+existing checkouts: run `npm ci` (or `npm run providers`) after pulling, since
+`server/src/carriers/` is no longer tracked.
+
 ### Added: the parcel list is searched, sorted and counted by the server
 
 `GET /api/v1/parcels` takes `q` (every word must appear in the tracking number, label, carrier,

@@ -9,7 +9,7 @@ Migration plan for TODO §3 "Split `open-parcels-rules`". It narrows decision re
 - **Moves:** the email rules of a shop or carrier that has a provider, with their test vectors
   and `.eml` fixtures. They become the provider's `emailRules` (same format as the rules'
   `data/mail/*.yaml`, `schema/mail-rule.schema.json`), and its manifest names their sender
-  domains in `email.from_domains`. Fixtures move to `server/test/fixtures/email/<provider>/`.
+  domains in `email.from_domains`. Fixtures move to `server/test/fixtures/email/<provider>/` (since 2026-11-26 `providers/<name>/fixtures/email/` in `open-parcels-providers`).
 - **Stays in the rules (the shared core):** the rule engine, tracking-number formats, carriers,
   status tables, locales, the `ignore` rules, schema.org and the format-detection fallback for
   unknown senders, and the email rules of shops and carriers without a provider. Rules for

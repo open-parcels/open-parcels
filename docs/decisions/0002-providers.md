@@ -974,10 +974,16 @@ few additions:
 3. **The provider host is built** (§2.7), and bundled providers move into the verified pool
    behind `OPENPARCELS_PROVIDER_ISOLATION=pool`. The recorded-fixture suites run against both
    modes until the pool is the default.
-4. **Extraction** to `open-parcels/open-parcels-providers`: one monorepo, one directory per
-   provider, each with its own manifest, version and tags (`hermes_de@1.4.2`). The registry
-   points at `repository + path + commit`. The image keeps bundling a pinned snapshot of it, so
+4. **Extraction** to `open-parcels/open-parcels-providers`: one repository, one folder per
+   provider (`providers/<name>/`), each with its own manifest, listed by the repo manifest. The
+   registry points at `repository + path + commit`. The image keeps a pinned release of it, so
    the HA Pi and air-gapped users get every official carrier without installing anything.
+   **Owner decisions (2026-11-26):** the name is `open-parcels-providers` in the GitHub
+   organisation `open-parcels`; the repository starts fresh, without history (the history stays
+   in the server repository); every change is tagged as a release, with one version `vX.Y.Z`
+   for the whole repository (no per-provider versions or tags such as `hermes_de@1.4.2`). Done
+   on 2026-11-26 with release `1.0.0`, vendored and pinned by digest
+   ([`official-providers-repo.md`](../official-providers-repo.md)).
 
 ### 3.2 `open-parcels-rules`: shrink it to a shared library
 

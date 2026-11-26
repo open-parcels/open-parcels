@@ -86,8 +86,11 @@ image are shipped (see `DONE.md`). Left:
       (`docs/rules-split.md`). Email rules of Amazon, DHL and Hermes (rules
       2.0.0-dev.15) and DPD Germany, UPS, FedEx, USPS, Evri, Canada Post (2.0.0-dev.16) moved;
       next: shops as declarative providers; status tables, keys and carrier entries later (P5)
-- [ ] One repo with a folder per provider for the official providers; repo manifest lists them
-      (plan: `docs/official-providers-repo.md`)
+- [x] One repo with a folder per provider for the official providers; repo manifest lists them
+      (`open-parcels/open-parcels-providers`, release 1.0.0 vendored and pinned;
+      `docs/official-providers-repo.md`)
+- [ ] Providers repo, rest: the provider SDK package, the repo's own gate, bundles instead of
+      sources (`docs/official-providers-repo.md` steps 2–3)
 - [ ] Registry repo (verified tier, signed index, blocklist), custom git URLs, community discovery
       via the `open-parcels-provider` topic (on by default, yellow warning, review-prompt copy button)
 - [ ] Providers page: installed / available tabs, tier badges, install from URL, auto-update

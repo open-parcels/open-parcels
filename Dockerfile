@@ -22,10 +22,14 @@ WORKDIR /app
 COPY package.json package-lock.json tsconfig.base.json ./
 COPY server/package.json server/
 COPY web/package.json web/
-# The shared rules ship as a vendored, integrity-pinned tarball (no install scripts).
+# The shared rules ship as a vendored, integrity-pinned tarball (no install scripts), the built-in
+# providers as the pinned open-parcels-providers release, laid out by the root postinstall.
 COPY server/vendor/ server/vendor/
+COPY server/src/tools/providers.ts server/src/tools/
 RUN npm ci --workspace server --workspace web --include-workspace-root
 COPY server/ server/
+# Again after the sources: a context with a local provider layout never reaches the image.
+RUN npm run providers
 RUN npm run build --workspace server
 
 # --- Bundle: the server and its tools as ESM bundles, plus only the native modules ---------------

@@ -12,9 +12,15 @@ secret.key
 imap-config.json
 parsed_mails.json
 *.eml
-# Made-up email fixtures of providers' email rules (never real mail).
-!server/test/fixtures/email/*/*.eml
 *.har
+
+# The built-in providers, laid out from the pinned open-parcels-providers release by
+# `npm run providers` (server/src/tools/providers.ts); that repository is their only source.
+/server/src/carriers/*
+!/server/src/carriers/demo/
+!/server/src/carriers/demo_shop/
+/server/test/carriers/*/
+/server/test/fixtures/
 
 # Local research material and scratch space
 .references/

@@ -1,3 +1,5 @@
+# Used instead of .gitignore (format:check passes --ignore-path): the built-in providers laid out
+# from the open-parcels-providers release are git-ignored but checked like any other source.
 node_modules
 dist
 coverage
@@ -7,6 +9,11 @@ package-lock.json
 .references
 .scratch
 .playwright-mcp
+.claude
+packages
+.vite
+data
+logs
 docs/decisions
 docs/openapi.json
 *.md

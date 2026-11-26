@@ -12,7 +12,7 @@ what this service is, the stack, the data model, the API and event contract, and
 | Path | What |
 |---|---|
 | `server/` | The backend: Fastify API, engine, carrier providers (TypeScript, Node 26) |
-| `server/src/carriers/` | Carrier providers, one folder each. They may import only the provider API; ESLint enforces it. Each folder's `open-parcels-provider.json` manifest says what the provider is and every host it may reach ([`docs/provider-manifest-and-sandbox.md`](docs/provider-manifest-and-sandbox.md)); a new host goes into the manifest with its reason, or requests to it are refused |
+| `server/src/carriers/` | Carrier providers, one folder each, laid out by `npm run providers` (run by `npm ci`) from the pinned release of [`open-parcels-providers`](https://github.com/open-parcels/open-parcels-providers) and git-ignored: change a provider there, then bump the pin (`docs/official-providers-repo.md`). Only `demo` and `demo_shop` live here. They may import only the provider API; ESLint enforces it. Each folder's `open-parcels-provider.json` manifest says what the provider is and every host it may reach ([`docs/provider-manifest-and-sandbox.md`](docs/provider-manifest-and-sandbox.md)); a new host goes into the manifest with its reason, or requests to it are refused |
 | `server/themes/` | Built-in themes, listed by `open-parcels-repo.json`; declarative manifests checked on load ([`docs/themes.md`](docs/themes.md)) |
 | `server/test/` | vitest suites: `unit/`, `api/`, and recorded made-up fixtures |
 | `web/` | The web UI (React + Vite) |
@@ -76,7 +76,7 @@ Status page shows `2.0.0-dev.<date> (<commit>)`.
 - **Carrier knowledge that other projects could reuse goes to `open-parcels-rules`, not here.**
   That covers regexes, status tables and locale tables, and the email rules of shops and carriers
   without a provider. The email rules of a shop or carrier with a provider live in that provider
-  (`emailRules`, fixtures in `server/test/fixtures/email/<provider>/`; `docs/rules-split.md`).
+  (`emailRules`, fixtures in the providers repo's `providers/<name>/fixtures/email/`; `docs/rules-split.md`).
 - **Don't name the projects an endpoint was learned from** in code, docs or commit messages.
 - **Migrate, don't keep legacy code.** A rename or format change is done in one step: no
   deprecated aliases, old fields next to new ones, old names accepted in requests or code that

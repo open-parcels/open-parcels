@@ -7,7 +7,7 @@ what is built now, and says how consumers ([0005](decisions/0005-consumers.md)) 
 ## 1. The manifest (format 1)
 
 Every provider has one manifest, `open-parcels-provider.json`, at the root of its folder. Built-in
-providers keep theirs in `server/src/carriers/<id>/`; one folder is one provider (the demo shop
+providers keep theirs in `providers/<name>/` of `open-parcels-providers`, laid out into `server/src/carriers/<name>/`; one folder is one provider (the demo shop
 moves to its own folder). The schema is `server/src/provider/manifest.ts` (zod), the only parser.
 Installed providers (P3) bring the same document; YAML is only another spelling of it and is
 parsed into the same schema then. The schema moves to the engine package with the split (P5).
