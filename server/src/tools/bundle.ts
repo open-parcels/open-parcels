@@ -138,6 +138,8 @@ async function main(): Promise<void> {
   cpSync(resolver.resolve("open-parcels-rules/bundle.json"), path.join(outDir, "bundle.json"));
   // The providers' logos, next to dist/ as in the source tree (src/logos.ts reads ../logos).
   cpSync(path.join(serverDir, "logos"), path.join(out, "server", "logos"), { recursive: true });
+  // The built-in themes, the same way (src/builtin-themes.ts reads ../themes).
+  cpSync(path.join(serverDir, "themes"), path.join(out, "server", "themes"), { recursive: true });
   for (const dir of runtimeClosure(root, NATIVE)) {
     cpSync(dir, path.join(out, path.relative(root, dir)), {
       recursive: true,

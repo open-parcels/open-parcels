@@ -6,7 +6,11 @@ import type { CSSProperties, ReactNode } from "react";
 import { apiUrl } from "../api/fetcher";
 import { useCarriers } from "../api/queries";
 
-/** Brand colours for monograms of carriers without a bundled logo. */
+/**
+ * Brand colours for monograms of carriers without a bundled logo: the carrier's own identity, so
+ * they stay the same in every theme. Other monograms take a colour from the id and the theme's
+ * `--monogram-text`.
+ */
 const BRAND: Readonly<Record<string, readonly [string, string]>> = {
   gls: ["#061ab1", "#ffd100"],
   amazon: ["#232f3e", "#ff9900"],
@@ -22,7 +26,7 @@ function colours(id: string): readonly [string, string] {
   for (const char of id) {
     hash = (hash * 31 + char.charCodeAt(0)) % 360;
   }
-  return [`hsl(${hash} 55% 42%)`, "#ffffff"];
+  return [`hsl(${hash} 55% 42%)`, "var(--monogram-text)"];
 }
 
 function initials(name: string): string {

@@ -1,5 +1,6 @@
-// Contrast of the design tokens (WCAG 2.2 AA), in the dark and the light theme. jsdom cannot
-// compute colours, so the axe checks of the pages leave contrast to this test.
+// Contrast of the default theme's design tokens (WCAG 2.2 AA), in dark and light mode. jsdom
+// cannot compute colours, so the axe checks of the pages leave contrast to this test. Installed
+// themes pass the same checks when the server loads them (server/src/themes/contrast.ts).
 /// <reference types="node" />
 import { readFileSync } from "node:fs";
 import path from "node:path";
@@ -52,7 +53,7 @@ function contrast(a: Rgba, b: Rgba): number {
 }
 
 const dark = tokens(":root");
-const THEMES = { dark, light: { ...dark, ...tokens(':root[data-theme="light"]') } };
+const MODES = { dark, light: { ...dark, ...tokens(':root[data-mode="light"]') } };
 
 /** Tokens used as text colours. */
 const TEXT = [
@@ -67,9 +68,10 @@ const TEXT = [
   "info",
   "purple",
   "violet",
+  "rose",
 ];
 
-describe.each(Object.entries(THEMES))("the %s theme", (_name, theme) => {
+describe.each(Object.entries(MODES))("the %s mode", (_name, theme) => {
   const bg = parse(theme["bg"]);
   const panel = over(parse(theme["panel"]), bg);
 
@@ -88,8 +90,8 @@ describe.each(Object.entries(THEMES))("the %s theme", (_name, theme) => {
   });
 });
 
-describe("the light theme", () => {
-  it("is the same whether the system or the user picked it", () => {
-    expect(tokens(':root:not([data-theme="dark"])')).toEqual(tokens(':root[data-theme="light"]'));
+describe("light mode", () => {
+  it("is the same whether the device or the user picked it", () => {
+    expect(tokens(':root:not([data-mode="dark"])')).toEqual(tokens(':root[data-mode="light"]'));
   });
 });

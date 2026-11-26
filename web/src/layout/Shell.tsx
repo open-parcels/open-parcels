@@ -19,7 +19,9 @@ import { useLiveUpdates, type LiveState } from "../api/events";
 import { SetupPage, SignInPage } from "../auth/AuthPages";
 import { useSession, useSignOut } from "../auth/session";
 import { ErrorNotice, Spinner } from "../components/ui";
-import { useTheme, type ThemeChoice } from "../lib/theme";
+import { apiUrl } from "../api/fetcher";
+import { useThemes } from "../api/queries";
+import { setMode, setTheme, useAppearance, type Mode } from "../lib/theme";
 import { AddParcelDialog } from "../parcels/AddParcelDialog";
 import { BRAND, t } from "../i18n";
 import { ReaderNotice } from "./ReaderNotice";
@@ -44,22 +46,51 @@ const NAV = [
 
 const LIVE_LABELS: Readonly<Record<LiveState, string>> = t.shell.live;
 
-function ThemePicker(): ReactNode {
-  const [theme, setTheme] = useTheme();
+const MODES: readonly Mode[] = ["automatic", "light", "dark"];
+
+/** The two appearance settings: Theme (when more than one is installed) and Mode. */
+function AppearancePickers(): ReactNode {
+  const themes = useThemes();
+  const { theme, mode, fixed } = useAppearance();
+  const list = themes.data ?? [];
+  const chosen = list.find((candidate) => candidate.id === theme) ?? list[0];
   return (
-    <label className="theme-picker">
-      <span className="visually-hidden">{t.shell.theme}</span>
-      <select
-        value={theme}
-        onChange={(e) => {
-          setTheme(e.target.value as ThemeChoice);
-        }}
-      >
-        <option value="system">{t.shell.themes.system}</option>
-        <option value="dark">{t.shell.themes.dark}</option>
-        <option value="light">{t.shell.themes.light}</option>
-      </select>
-    </label>
+    <>
+      {list.length > 1 ? (
+        <label className="theme-picker">
+          <span className="visually-hidden">{t.shell.theme}</span>
+          <select
+            value={chosen?.id}
+            onChange={(e) => {
+              setTheme(e.target.value);
+            }}
+          >
+            {list.map((candidate) => (
+              <option key={candidate.id} value={candidate.id}>
+                {candidate.name}
+              </option>
+            ))}
+          </select>
+        </label>
+      ) : null}
+      <label className="theme-picker">
+        <span className="visually-hidden">{t.shell.mode}</span>
+        <select
+          value={fixed ?? mode}
+          disabled={fixed !== null}
+          title={fixed === null ? undefined : t.shell.modeFixed(chosen?.name ?? "")}
+          onChange={(e) => {
+            setMode(e.target.value as Mode);
+          }}
+        >
+          {MODES.map((value) => (
+            <option key={value} value={value}>
+              {t.shell.modes[value]}
+            </option>
+          ))}
+        </select>
+      </label>
+    </>
   );
 }
 
@@ -73,6 +104,7 @@ export function Shell(): ReactNode {
   const [signingIn, setSigningIn] = useState(false);
   const method = session.data?.method ?? null;
   const admin = session.data?.role === "admin";
+  const { logo } = useAppearance();
   const roleLabel = admin
     ? ROLE_LABELS.admin
     : method === "anonymous"
@@ -104,7 +136,7 @@ export function Shell(): ReactNode {
       </a>
       <header className="topbar">
         <Link to="/" className="brand">
-          <img className="brand-logo" src="favicon.svg" alt="" />
+          <img className="brand-logo" src={logo === null ? "favicon.svg" : apiUrl(logo)} alt="" />
           {BRAND}
         </Link>
         <nav aria-label={t.shell.mainNav}>
@@ -140,7 +172,7 @@ export function Shell(): ReactNode {
           <span className={`live live-${live}`} role="status" title={t.shell.liveUpdates}>
             {LIVE_LABELS[live]}
           </span>
-          <ThemePicker />
+          <AppearancePickers />
           <span
             className={`badge role-badge role-${admin ? "admin" : "reader"}`}
             title={admin ? t.shell.mayChange : t.shell.mayRead}

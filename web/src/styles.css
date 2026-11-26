@@ -1,7 +1,13 @@
 /*
- * The original open-parcels look: dark glass panels over a soft blue/violet glow, the Outfit
- * typeface (when installed; no font is fetched from a third party), pill navigation and pill
- * status tags. Dark by default; light follows the system unless the user picked a theme.
+ * The default theme: dark glass panels over a soft blue/violet glow, the Outfit typeface (when
+ * installed; no font is fetched from a third party), pill navigation and pill status tags.
+ *
+ * Every colour, shadow, font, radius and spacing below is a design token; the rules further down
+ * use only these (`var(--…)`, tints through `color-mix`), never a literal colour, so a theme can
+ * replace them all. The default theme's manifest (`server/themes/default/open-parcels-theme.json`)
+ * holds the same values, and a test keeps both equal. An installed theme sets its tokens on the
+ * page's root element. Dark by default; light follows the device unless the user picked a mode
+ * (`data-mode`).
  */
 :root {
   color-scheme: dark;
@@ -14,7 +20,10 @@
   --tint: rgba(255, 255, 255, 0.05);
   --tint-strong: rgba(255, 255, 255, 0.1);
   --field: rgba(0, 0, 0, 0.2);
+  --backdrop: rgba(15, 23, 42, 0.6);
   --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-raised: 0 4px 20px rgba(0, 0, 0, 0.2);
+  --shadow-overlay: 0 20px 50px rgba(0, 0, 0, 0.5);
   --text: #f8fafc;
   --text-soft: #cbd5e1;
   --muted: #94a3b8;
@@ -23,6 +32,7 @@
   --accent-soft: rgba(59, 130, 246, 0.18);
   --accent-line: rgba(59, 130, 246, 0.3);
   --accent-text: #ffffff;
+  --monogram-text: #ffffff;
   --violet: #a78bfa;
   --focus: #93c5fd;
   --danger: #f87171;
@@ -31,13 +41,30 @@
   --yellow: #facc15;
   --info: #22d3ee;
   --purple: #c084fc;
+  --rose: #fb7185;
+  --map-filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+  --map-route: #a78bfa;
+  --map-route-reached: #3b82f6;
+  --map-marker-shadow: rgba(0, 0, 0, 0.6);
+  --map-home: #10b981;
+  --map-parcel: #818cf8;
+  --map-truck: #ea580c;
+  --map-van: #f59e0b;
+  --map-plane: #60a5fa;
+  --map-ship: #3b82f6;
+  --map-train: #a855f7;
+  --map-heli: #06b6d4;
+  --map-bike: #22c55e;
+  --map-start: #ef4444;
+  --map-stop: #9ca3af;
   --radius: 16px;
+  --space: 20px;
   --font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --mono: "SF Mono", "Fira Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
 }
 
 @media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
+  :root:not([data-mode="dark"]) {
     color-scheme: light;
     --bg: #eef2f9;
     --glow-1: rgba(59, 130, 246, 0.14);
@@ -64,10 +91,11 @@
     --yellow: #854d0e;
     --info: #0e7490;
     --purple: #7e22ce;
+    --rose: #be123c;
   }
 }
 
-:root[data-theme="light"] {
+:root[data-mode="light"] {
   color-scheme: light;
   --bg: #eef2f9;
   --glow-1: rgba(59, 130, 246, 0.14);
@@ -94,6 +122,7 @@
   --yellow: #854d0e;
   --info: #0e7490;
   --purple: #7e22ce;
+  --rose: #be123c;
 }
 
 *,
@@ -189,7 +218,7 @@ h3 {
 }
 
 .card {
-  padding: 20px 24px;
+  padding: var(--space) calc(var(--space) * 1.2);
   margin-bottom: 1rem;
 }
 
@@ -206,7 +235,7 @@ h3 {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem 1.5rem;
-  padding: 20px 40px;
+  padding: var(--space) calc(var(--space) * 2);
 }
 
 .brand {
@@ -326,10 +355,10 @@ h3 {
 .content {
   flex: 1;
   width: 100%;
-  padding: 0 40px 40px;
+  padding: 0 calc(var(--space) * 2) calc(var(--space) * 2);
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: var(--space);
 }
 
 /* Page headers in a glass strip, as on the original table pages. */
@@ -507,7 +536,7 @@ fieldset.inline {
 .button.primary:hover:not(:disabled) {
   background: var(--accent-hover);
   border-color: var(--accent-hover);
-  box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--accent) 40%, transparent);
 }
 
 .button.small {
@@ -521,7 +550,7 @@ fieldset.inline {
 }
 
 .button.danger:hover:not(:disabled) {
-  background: rgba(239, 68, 68, 0.1);
+  background: color-mix(in srgb, var(--danger) 10%, transparent);
 }
 
 .icon-button {
@@ -825,14 +854,14 @@ tbody tr:hover {
 
 .status-registered {
   color: var(--accent-hover);
-  background: rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.25);
+  background: color-mix(in srgb, var(--accent-hover) 15%, transparent);
+  border-color: color-mix(in srgb, var(--accent-hover) 25%, transparent);
 }
 
 .status-in_transit {
   color: var(--yellow);
-  background: rgba(234, 179, 8, 0.15);
-  border-color: rgba(234, 179, 8, 0.25);
+  background: color-mix(in srgb, var(--yellow) 15%, transparent);
+  border-color: color-mix(in srgb, var(--yellow) 25%, transparent);
 }
 
 .status-out_for_delivery,
@@ -840,14 +869,14 @@ tbody tr:hover {
 .connection-needs_sign_in,
 .check-degraded {
   color: var(--warn);
-  background: rgba(249, 115, 22, 0.15);
-  border-color: rgba(249, 115, 22, 0.25);
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+  border-color: color-mix(in srgb, var(--warn) 25%, transparent);
 }
 
 .status-at_pickup_point {
   color: var(--purple);
-  background: rgba(168, 85, 247, 0.15);
-  border-color: rgba(168, 85, 247, 0.25);
+  background: color-mix(in srgb, var(--purple) 15%, transparent);
+  border-color: color-mix(in srgb, var(--purple) 25%, transparent);
 }
 
 .status-delivered,
@@ -855,22 +884,22 @@ tbody tr:hover {
 .connection-ok,
 .check-ok {
   color: var(--ok);
-  background: rgba(34, 197, 94, 0.15);
-  border-color: rgba(34, 197, 94, 0.25);
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+  border-color: color-mix(in srgb, var(--ok) 25%, transparent);
 }
 
 .status-returning {
-  color: #fb7185;
-  background: rgba(244, 63, 94, 0.15);
-  border-color: rgba(244, 63, 94, 0.25);
+  color: var(--rose);
+  background: color-mix(in srgb, var(--rose) 15%, transparent);
+  border-color: color-mix(in srgb, var(--rose) 25%, transparent);
 }
 
 .status-problem,
 .connection-error,
 .check-unavailable {
   color: var(--danger);
-  background: rgba(239, 68, 68, 0.15);
-  border-color: rgba(239, 68, 68, 0.25);
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  border-color: color-mix(in srgb, var(--danger) 25%, transparent);
 }
 
 .lookup-pending,
@@ -900,10 +929,6 @@ tbody tr:hover {
   50% {
     opacity: 0.55;
   }
-}
-
-:root[data-theme="light"] .status-returning {
-  color: #be123c;
 }
 
 .live {
@@ -943,9 +968,9 @@ tbody tr:hover {
   border-radius: 10px;
   font-weight: 700;
   letter-spacing: 0.3px;
-  color: #fff;
+  color: var(--monogram-text);
   text-transform: uppercase;
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--monogram-text) 15%, transparent);
 }
 
 .carrier-logo::before {
@@ -982,7 +1007,7 @@ tbody tr:hover {
 .parcel-card:focus-visible {
   background: var(--tint-strong);
   transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-raised);
 }
 
 .parcel-card {
@@ -1029,7 +1054,7 @@ tbody tr:hover {
   height: 100%;
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: var(--space);
   overflow: hidden;
 }
 
@@ -1393,7 +1418,7 @@ tbody tr:hover {
 .order-progress span {
   display: block;
   height: 100%;
-  background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+  background: linear-gradient(90deg, var(--accent), var(--violet));
 }
 
 /* Maps */
@@ -1412,7 +1437,7 @@ tbody tr:hover {
 
 /* Dark map from the standard light tiles: only the tiles are filtered, never the markers. */
 .map-dark .leaflet-tile-pane {
-  filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+  filter: var(--map-filter);
 }
 
 /* Map style menu, top right, above Leaflet's panes and controls. */
@@ -1492,7 +1517,7 @@ tbody tr:hover {
 
 .leaflet-popup-content-wrapper {
   border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-overlay);
 }
 
 .popup-content {
@@ -1620,7 +1645,7 @@ tbody tr:hover {
 .connection-stats .connection-stat {
   padding: 0.5rem 0.6rem;
   border-radius: 10px;
-  background: rgba(148, 163, 184, 0.08);
+  background: var(--tint);
 }
 
 .connection-stat {
@@ -1710,7 +1735,7 @@ tbody tr:hover {
 }
 
 .icon-button.danger:hover {
-  color: var(--red, #ef4444);
+  color: var(--danger);
 }
 
 .connection-mail-icon {
@@ -1722,7 +1747,7 @@ tbody tr:hover {
   height: 32px;
   border-radius: 8px;
   color: var(--accent-hover);
-  background: rgba(59, 130, 246, 0.15);
+  background: color-mix(in srgb, var(--accent-hover) 15%, transparent);
 }
 
 .nested {
@@ -1862,7 +1887,7 @@ tbody tr:hover {
   background: var(--panel-solid);
   color: var(--text);
   padding: 0;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+  box-shadow: var(--shadow-overlay);
   animation: modal-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -1875,7 +1900,7 @@ tbody tr:hover {
 }
 
 .dialog::backdrop {
-  background: rgba(15, 23, 42, 0.6);
+  background: var(--backdrop);
   backdrop-filter: blur(8px);
 }
 
@@ -2135,14 +2160,14 @@ tbody tr:hover {
 .badge.setting-source-override,
 .badge.setting-apply-live {
   color: var(--accent-hover);
-  background: rgba(59, 130, 246, 0.15);
-  border-color: rgba(59, 130, 246, 0.25);
+  background: color-mix(in srgb, var(--accent-hover) 15%, transparent);
+  border-color: color-mix(in srgb, var(--accent-hover) 25%, transparent);
 }
 
 .badge.setting-pending {
   color: var(--yellow);
-  background: rgba(234, 179, 8, 0.15);
-  border-color: rgba(234, 179, 8, 0.25);
+  background: color-mix(in srgb, var(--yellow) 15%, transparent);
+  border-color: color-mix(in srgb, var(--yellow) 25%, transparent);
 }
 
 /* Parcel route map. */

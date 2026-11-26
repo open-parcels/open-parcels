@@ -11,9 +11,10 @@ per-provider tags). Nothing here is built yet; no repository is created by this 
   each with its `open-parcels-provider.json`, code, email rules, logo, tests and fixtures, as
   today's `server/src/carriers/<id>/` plus `server/test/fixtures/email/<id>/`.
 - **The repo manifest** (`open-parcels-repo.json` at the root) lists every provider (`id`,
-  `kind`, `folder`) and, later, themes and consumers (0002 owner decision 10, 0005). Its schema
-  lives next to the provider manifest's (`server/src/provider/manifest.ts`) and moves to the
-  engine package with it.
+  `kind`, `folder`), themes and, later, consumers (0002 owner decision 10, 0005). Its schema
+  (`server/src/provider/repo-manifest.ts`, with the `themes:` list built for
+  [`themes.md`](themes.md)) lives next to the provider manifest's and moves to the engine package
+  with it.
 - **One version for the repo.** A tag `vX.Y.Z` versions every provider in it; a provider's
   manifest carries no version of its own (0002 still shows per-provider tags such as
   `hermes_de@1.4.2`; the owner decision replaces them, and 0002 §3.1 step 4 is updated with

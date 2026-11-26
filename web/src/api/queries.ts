@@ -23,6 +23,7 @@ import {
   getApiV1Data,
   getApiV1Diagnostics,
   getApiV1Status,
+  getApiV1Themes,
   getApiV1DataBackups,
   postApiV1DataBackups,
   getApiV1Orders,
@@ -71,6 +72,7 @@ export const keys = {
   jobs: ["jobs"] as const,
   signInFlows: (connectionId: string | undefined) => ["sign-in-flows", connectionId] as const,
   carriers: ["carriers"] as const,
+  themes: ["themes"] as const,
   inboxForm: ["inbox-form"] as const,
   tokens: ["tokens"] as const,
   logins: ["logins"] as const,
@@ -134,6 +136,18 @@ export function useCarriers() {
     queryKey: keys.carriers,
     queryFn: ({ signal }) => getApiV1Carriers({ signal }),
     staleTime: 5 * 60_000,
+  });
+}
+
+/** An installed theme as the server lists it (`docs/themes.md`). */
+export type ThemeView = Awaited<ReturnType<typeof getApiV1Themes>>[number];
+
+/** The installed themes; they change only with a server update or an install. */
+export function useThemes() {
+  return useQuery({
+    queryKey: keys.themes,
+    queryFn: ({ signal }) => getApiV1Themes({ signal }),
+    staleTime: Infinity,
   });
 }
 

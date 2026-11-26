@@ -36,7 +36,7 @@ function PinMarker({ pin }: { readonly pin: Pin }): ReactNode {
     <>
       {route === null || pin.from === null ? null : (
         <>
-          <AnimatedRoute positions={route} color="#a78bfa" />
+          <AnimatedRoute positions={route} />
           <Marker position={pin.from} icon={iconSource} title={t.map.lastCarrierEvent} />
         </>
       )}

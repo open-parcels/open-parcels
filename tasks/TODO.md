@@ -61,7 +61,10 @@ image are shipped (see `DONE.md`). Left:
       community themes can't run code or leak data. Distributed standalone or inside a provider
       repo (the repo manifest lists themes), installed from the providers page with the same tiers
       and trust warnings. Precondition: the web UI must use design tokens (CSS custom properties)
-      everywhere, no hard-coded colours.
+      everywhere, no hard-coded colours. Built (`docs/themes.md`): tokens everywhere, the two
+      settings with migration, manifest format 1 with contrast and file checks, the repo
+      manifest's `themes:` list, the default and the example theme. Left: installing from repos
+      on the providers page (waits for the registry).
 - [x] Email routing: inboxes dispatch matching emails to providers' `parseEmail` (sender domain +
       DKIM/DMARC check, `OPENPARCELS_EMAIL_ROUTING` on by default); design note §3
 - [ ] Email routing follow-ups (0002 §2.14): subject/body filters and priority, per-route switches

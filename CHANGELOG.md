@@ -2,6 +2,16 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Changed: themes, and the light/dark setting becomes the mode
+
+The header's light/dark-only setting is replaced by two settings: Theme (the default theme or an
+installed one) and Mode (Automatic, Light, Dark); see [`docs/themes.md`](docs/themes.md). The
+stored choice moves to the mode by itself on the first start (`system` becomes Automatic) and the
+old local-storage key is removed. Themes are declarative manifests checked on load (schema,
+contrast, bundled files only); the server ships the default theme and the example theme Paper
+(`GET /api/v1/themes`). The web UI's styles now use design tokens only, so status tags, map
+markers and lines follow the theme.
+
 ### Changed: DPD Germany, UPS, FedEx, USPS, Evri and Canada Post read their own emails (rules 2.0.0-dev.16)
 
 The next step of splitting the shared rules ([`docs/rules-split.md`](docs/rules-split.md)): the

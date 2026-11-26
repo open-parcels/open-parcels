@@ -1,0 +1,7 @@
+{
+  "schema": 1,
+  "themes": [
+    { "id": "default", "folder": "default" },
+    { "id": "paper", "folder": "paper" }
+  ]
+}

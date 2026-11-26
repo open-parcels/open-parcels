@@ -9,12 +9,13 @@ import type { LatLng } from "./mapIcons";
 
 /* Made-up places far from anywhere real. */
 
-/** Every `positions` array each animated line was drawn with, by colour. */
+/** Every `positions` array each animated line was drawn with, by colour token. */
 const drawn = new Map<string, (readonly LatLng[])[]>();
 
 vi.mock("./AnimatedRoute", () => ({
-  AnimatedRoute: (props: { readonly positions: readonly LatLng[]; readonly color: string }) => {
-    drawn.set(props.color, [...(drawn.get(props.color) ?? []), props.positions]);
+  AnimatedRoute: (props: { readonly positions: readonly LatLng[]; readonly token?: string }) => {
+    const token = props.token ?? "map-route";
+    drawn.set(token, [...(drawn.get(token) ?? []), props.positions]);
     return null;
   },
 }));

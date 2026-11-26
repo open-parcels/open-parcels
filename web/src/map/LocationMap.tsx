@@ -103,10 +103,10 @@ export default function LocationMap({ parcel }: { readonly parcel: ParcelDetail 
   return (
     <div className="route-map">
       <SharedMap label={t.map.parcelRoute} center={current} zoom={12} bounds={bounds}>
-        {reachedPath === null ? null : <AnimatedRoute positions={reachedPath} color="#3b82f6" />}
-        {aheadPath === null ? null : (
-          <AnimatedRoute positions={aheadPath} color="#a78bfa" opacity={0.45} />
+        {reachedPath === null ? null : (
+          <AnimatedRoute positions={reachedPath} token="map-route-reached" />
         )}
+        {aheadPath === null ? null : <AnimatedRoute positions={aheadPath} opacity={0.45} />}
         {stops.map((stop, index) => {
           const last = index === stops.length - 1 && courier === null;
           return (

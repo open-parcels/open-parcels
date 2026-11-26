@@ -19615,6 +19615,544 @@
           }
         }
       }
+    },
+    "/api/v1/themes": {
+      "get": {
+        "summary": "The installed themes, the default theme first.",
+        "tags": [
+          "settings"
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "tokens": {
+                        "type": "object",
+                        "properties": {
+                          "font": {
+                            "type": "string"
+                          },
+                          "mono": {
+                            "type": "string"
+                          },
+                          "radius": {
+                            "type": "string"
+                          },
+                          "space": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "font",
+                          "mono",
+                          "radius",
+                          "space"
+                        ],
+                        "additionalProperties": false,
+                        "description": "The mode-independent tokens."
+                      },
+                      "light": {
+                        "nullable": true,
+                        "description": "The light variant; null when the theme has none.",
+                        "type": "object",
+                        "properties": {
+                          "bg": {
+                            "type": "string"
+                          },
+                          "glow-1": {
+                            "type": "string"
+                          },
+                          "glow-2": {
+                            "type": "string"
+                          },
+                          "panel": {
+                            "type": "string"
+                          },
+                          "panel-solid": {
+                            "type": "string"
+                          },
+                          "panel-border": {
+                            "type": "string"
+                          },
+                          "tint": {
+                            "type": "string"
+                          },
+                          "tint-strong": {
+                            "type": "string"
+                          },
+                          "field": {
+                            "type": "string"
+                          },
+                          "backdrop": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "text-soft": {
+                            "type": "string"
+                          },
+                          "muted": {
+                            "type": "string"
+                          },
+                          "accent": {
+                            "type": "string"
+                          },
+                          "accent-hover": {
+                            "type": "string"
+                          },
+                          "accent-soft": {
+                            "type": "string"
+                          },
+                          "accent-line": {
+                            "type": "string"
+                          },
+                          "accent-text": {
+                            "type": "string"
+                          },
+                          "monogram-text": {
+                            "type": "string"
+                          },
+                          "violet": {
+                            "type": "string"
+                          },
+                          "focus": {
+                            "type": "string"
+                          },
+                          "danger": {
+                            "type": "string"
+                          },
+                          "ok": {
+                            "type": "string"
+                          },
+                          "warn": {
+                            "type": "string"
+                          },
+                          "yellow": {
+                            "type": "string"
+                          },
+                          "info": {
+                            "type": "string"
+                          },
+                          "purple": {
+                            "type": "string"
+                          },
+                          "rose": {
+                            "type": "string"
+                          },
+                          "map-route": {
+                            "type": "string"
+                          },
+                          "map-route-reached": {
+                            "type": "string"
+                          },
+                          "map-marker-shadow": {
+                            "type": "string"
+                          },
+                          "map-home": {
+                            "type": "string"
+                          },
+                          "map-parcel": {
+                            "type": "string"
+                          },
+                          "map-truck": {
+                            "type": "string"
+                          },
+                          "map-van": {
+                            "type": "string"
+                          },
+                          "map-plane": {
+                            "type": "string"
+                          },
+                          "map-ship": {
+                            "type": "string"
+                          },
+                          "map-train": {
+                            "type": "string"
+                          },
+                          "map-heli": {
+                            "type": "string"
+                          },
+                          "map-bike": {
+                            "type": "string"
+                          },
+                          "map-start": {
+                            "type": "string"
+                          },
+                          "map-stop": {
+                            "type": "string"
+                          },
+                          "shadow": {
+                            "type": "string"
+                          },
+                          "shadow-raised": {
+                            "type": "string"
+                          },
+                          "shadow-overlay": {
+                            "type": "string"
+                          },
+                          "map-filter": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "bg",
+                          "glow-1",
+                          "glow-2",
+                          "panel",
+                          "panel-solid",
+                          "panel-border",
+                          "tint",
+                          "tint-strong",
+                          "field",
+                          "backdrop",
+                          "text",
+                          "text-soft",
+                          "muted",
+                          "accent",
+                          "accent-hover",
+                          "accent-soft",
+                          "accent-line",
+                          "accent-text",
+                          "monogram-text",
+                          "violet",
+                          "focus",
+                          "danger",
+                          "ok",
+                          "warn",
+                          "yellow",
+                          "info",
+                          "purple",
+                          "rose",
+                          "map-route",
+                          "map-route-reached",
+                          "map-marker-shadow",
+                          "map-home",
+                          "map-parcel",
+                          "map-truck",
+                          "map-van",
+                          "map-plane",
+                          "map-ship",
+                          "map-train",
+                          "map-heli",
+                          "map-bike",
+                          "map-start",
+                          "map-stop",
+                          "shadow",
+                          "shadow-raised",
+                          "shadow-overlay",
+                          "map-filter"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "dark": {
+                        "nullable": true,
+                        "description": "The dark variant; null when the theme has none.",
+                        "type": "object",
+                        "properties": {
+                          "bg": {
+                            "type": "string"
+                          },
+                          "glow-1": {
+                            "type": "string"
+                          },
+                          "glow-2": {
+                            "type": "string"
+                          },
+                          "panel": {
+                            "type": "string"
+                          },
+                          "panel-solid": {
+                            "type": "string"
+                          },
+                          "panel-border": {
+                            "type": "string"
+                          },
+                          "tint": {
+                            "type": "string"
+                          },
+                          "tint-strong": {
+                            "type": "string"
+                          },
+                          "field": {
+                            "type": "string"
+                          },
+                          "backdrop": {
+                            "type": "string"
+                          },
+                          "text": {
+                            "type": "string"
+                          },
+                          "text-soft": {
+                            "type": "string"
+                          },
+                          "muted": {
+                            "type": "string"
+                          },
+                          "accent": {
+                            "type": "string"
+                          },
+                          "accent-hover": {
+                            "type": "string"
+                          },
+                          "accent-soft": {
+                            "type": "string"
+                          },
+                          "accent-line": {
+                            "type": "string"
+                          },
+                          "accent-text": {
+                            "type": "string"
+                          },
+                          "monogram-text": {
+                            "type": "string"
+                          },
+                          "violet": {
+                            "type": "string"
+                          },
+                          "focus": {
+                            "type": "string"
+                          },
+                          "danger": {
+                            "type": "string"
+                          },
+                          "ok": {
+                            "type": "string"
+                          },
+                          "warn": {
+                            "type": "string"
+                          },
+                          "yellow": {
+                            "type": "string"
+                          },
+                          "info": {
+                            "type": "string"
+                          },
+                          "purple": {
+                            "type": "string"
+                          },
+                          "rose": {
+                            "type": "string"
+                          },
+                          "map-route": {
+                            "type": "string"
+                          },
+                          "map-route-reached": {
+                            "type": "string"
+                          },
+                          "map-marker-shadow": {
+                            "type": "string"
+                          },
+                          "map-home": {
+                            "type": "string"
+                          },
+                          "map-parcel": {
+                            "type": "string"
+                          },
+                          "map-truck": {
+                            "type": "string"
+                          },
+                          "map-van": {
+                            "type": "string"
+                          },
+                          "map-plane": {
+                            "type": "string"
+                          },
+                          "map-ship": {
+                            "type": "string"
+                          },
+                          "map-train": {
+                            "type": "string"
+                          },
+                          "map-heli": {
+                            "type": "string"
+                          },
+                          "map-bike": {
+                            "type": "string"
+                          },
+                          "map-start": {
+                            "type": "string"
+                          },
+                          "map-stop": {
+                            "type": "string"
+                          },
+                          "shadow": {
+                            "type": "string"
+                          },
+                          "shadow-raised": {
+                            "type": "string"
+                          },
+                          "shadow-overlay": {
+                            "type": "string"
+                          },
+                          "map-filter": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "bg",
+                          "glow-1",
+                          "glow-2",
+                          "panel",
+                          "panel-solid",
+                          "panel-border",
+                          "tint",
+                          "tint-strong",
+                          "field",
+                          "backdrop",
+                          "text",
+                          "text-soft",
+                          "muted",
+                          "accent",
+                          "accent-hover",
+                          "accent-soft",
+                          "accent-line",
+                          "accent-text",
+                          "monogram-text",
+                          "violet",
+                          "focus",
+                          "danger",
+                          "ok",
+                          "warn",
+                          "yellow",
+                          "info",
+                          "purple",
+                          "rose",
+                          "map-route",
+                          "map-route-reached",
+                          "map-marker-shadow",
+                          "map-home",
+                          "map-parcel",
+                          "map-truck",
+                          "map-van",
+                          "map-plane",
+                          "map-ship",
+                          "map-train",
+                          "map-heli",
+                          "map-bike",
+                          "map-start",
+                          "map-stop",
+                          "shadow",
+                          "shadow-raised",
+                          "shadow-overlay",
+                          "map-filter"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "fonts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "family": {
+                              "type": "string"
+                            },
+                            "url": {
+                              "type": "string"
+                            },
+                            "weight": {
+                              "type": "string"
+                            },
+                            "style": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "family",
+                            "url",
+                            "weight",
+                            "style"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "logo": {
+                        "nullable": true,
+                        "description": "URL of the header logo; null: the web UI's own.",
+                        "type": "string"
+                      },
+                      "icon": {
+                        "nullable": true,
+                        "description": "URL of the browser tab icon; null: the web UI's own.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "description",
+                      "tokens",
+                      "light",
+                      "dark",
+                      "fonts",
+                      "logo",
+                      "icon"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/themes/{id}/files/{file}": {
+      "get": {
+        "summary": "A file bundled with a theme (logo, icon, font); the theme list gives its URL.",
+        "tags": [
+          "settings"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "v",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "path",
+            "name": "file",
+            "required": true
+          }
+        ],
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
     }
   },
   "security": [

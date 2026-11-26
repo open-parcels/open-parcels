@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "id": "paper",
+  "name": "Paper",
+  "description": "An example theme: warm paper tones, serif type and tighter corners. Light only, so it fixes the mode.",
+  "variants": {
+    "light": {
+      "tokens": {
+        "bg": "#f5f0e6",
+        "glow-1": "rgba(180, 120, 60, 0.12)",
+        "glow-2": "rgba(120, 140, 90, 0.1)",
+        "panel": "rgba(255, 252, 245, 0.9)",
+        "panel-solid": "#fffcf5",
+        "panel-border": "rgba(60, 45, 30, 0.15)",
+        "tint": "rgba(60, 45, 30, 0.05)",
+        "tint-strong": "rgba(60, 45, 30, 0.1)",
+        "field": "rgba(255, 253, 248, 0.95)",
+        "backdrop": "rgba(43, 33, 24, 0.5)",
+        "shadow": "0 6px 20px rgba(60, 45, 30, 0.12)",
+        "shadow-raised": "0 3px 12px rgba(60, 45, 30, 0.15)",
+        "shadow-overlay": "0 16px 40px rgba(43, 33, 24, 0.3)",
+        "text": "#2b2118",
+        "text-soft": "#3d3026",
+        "muted": "#5c4b3b",
+        "accent": "#8a3b12",
+        "accent-hover": "#7a3410",
+        "accent-soft": "rgba(138, 59, 18, 0.12)",
+        "accent-line": "rgba(138, 59, 18, 0.3)",
+        "accent-text": "#ffffff",
+        "violet": "#6b3fa0",
+        "focus": "#7a3410",
+        "danger": "#a21c1c",
+        "ok": "#2f5d1e",
+        "warn": "#8f420a",
+        "yellow": "#6e5200",
+        "info": "#155e75",
+        "purple": "#6b2a8c",
+        "rose": "#a01848",
+        "map-route": "#8a3b12",
+        "map-route-reached": "#155e75",
+        "map-marker-shadow": "rgba(43, 33, 24, 0.5)"
+      }
+    }
+  },
+  "font": "Georgia, \"Iowan Old Style\", \"Palatino Linotype\", serif",
+  "radius": "6px",
+  "space": "18px",
+  "logo": "logo.svg",
+  "icon": "logo.svg"
+}

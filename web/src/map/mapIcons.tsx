@@ -17,7 +17,8 @@ import { createRoot } from "react-dom/client";
 
 export type LatLng = [number, number];
 
-function createDivIcon(iconNode: ReactNode, color: string, containerSize = 32): L.DivIcon {
+/** `token` names a design token (`--map-…`), so markers follow the theme and the mode. */
+function createDivIcon(iconNode: ReactNode, token: string, containerSize = 32): L.DivIcon {
   // Rendered once into a detached element: react-dom/server would add React's server renderer to
   // the bundle just for these icons.
   const container = document.createElement("div");
@@ -26,14 +27,14 @@ function createDivIcon(iconNode: ReactNode, color: string, containerSize = 32): 
     root.render(
       <div
         style={{
-          color,
+          color: `var(--${token})`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           width: `${containerSize}px`,
           height: `${containerSize}px`,
           boxSizing: "border-box",
-          filter: "drop-shadow(0px 2px 4px rgba(0,0,0,0.6))",
+          filter: "drop-shadow(0px 2px 4px var(--map-marker-shadow))",
         }}
       >
         {iconNode}
@@ -51,23 +52,23 @@ function createDivIcon(iconNode: ReactNode, color: string, containerSize = 32): 
   });
 }
 
-export const iconHome = createDivIcon(<Home size={28} />, "#10b981", 36);
-const iconPackage = createDivIcon(<Package size={24} />, "#818cf8", 32);
-const iconTruck = createDivIcon(<Truck size={24} />, "#ea580c", 32);
-export const iconVan = createDivIcon(<Van size={24} />, "#f59e0b", 32);
-const iconPlane = createDivIcon(<Plane size={24} />, "#60a5fa", 32);
-const iconShip = createDivIcon(<Ship size={24} />, "#3b82f6", 32);
-const iconTrain = createDivIcon(<Train size={24} />, "#a855f7", 32);
-export const iconSource = createDivIcon(<MapPin size={24} />, "#ef4444", 28);
-export const iconIntermediate = createDivIcon(<MapPin size={20} />, "#9ca3af", 24);
+export const iconHome = createDivIcon(<Home size={28} />, "map-home", 36);
+const iconPackage = createDivIcon(<Package size={24} />, "map-parcel", 32);
+const iconTruck = createDivIcon(<Truck size={24} />, "map-truck", 32);
+export const iconVan = createDivIcon(<Van size={24} />, "map-van", 32);
+const iconPlane = createDivIcon(<Plane size={24} />, "map-plane", 32);
+const iconShip = createDivIcon(<Ship size={24} />, "map-ship", 32);
+const iconTrain = createDivIcon(<Train size={24} />, "map-train", 32);
+export const iconSource = createDivIcon(<MapPin size={24} />, "map-start", 28);
+export const iconIntermediate = createDivIcon(<MapPin size={20} />, "map-stop", 24);
 /** A stop placed from its place name only: hollow and fainter, as its spot is a town's centre. */
 export const iconApproximate = createDivIcon(
   <MapPin size={20} strokeDasharray="3 2" opacity={0.75} />,
-  "#9ca3af",
+  "map-stop",
   24,
 );
-const iconHeli = createDivIcon(<Helicopter size={24} />, "#06b6d4", 32);
-const iconBike = createDivIcon(<Bike size={24} />, "#22c55e", 32);
+const iconHeli = createDivIcon(<Helicopter size={24} />, "map-heli", 32);
+const iconBike = createDivIcon(<Bike size={24} />, "map-bike", 32);
 
 const TRANSPORT_ICONS: Readonly<Record<string, L.DivIcon>> = {
   plane: iconPlane,

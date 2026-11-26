@@ -9980,6 +9980,163 @@ export type GetApiV1Sync410 = {
   params: GetApiV1Sync410Params;
 };
 
+/**
+ * The mode-independent tokens.
+ */
+export type GetApiV1Themes200ItemTokens = {
+  font: string;
+  mono: string;
+  radius: string;
+  space: string;
+};
+
+/**
+ * The light variant; null when the theme has none.
+ * @nullable
+ */
+export type GetApiV1Themes200ItemLight = {
+  bg: string;
+  "glow-1": string;
+  "glow-2": string;
+  panel: string;
+  "panel-solid": string;
+  "panel-border": string;
+  tint: string;
+  "tint-strong": string;
+  field: string;
+  backdrop: string;
+  text: string;
+  "text-soft": string;
+  muted: string;
+  accent: string;
+  "accent-hover": string;
+  "accent-soft": string;
+  "accent-line": string;
+  "accent-text": string;
+  "monogram-text": string;
+  violet: string;
+  focus: string;
+  danger: string;
+  ok: string;
+  warn: string;
+  yellow: string;
+  info: string;
+  purple: string;
+  rose: string;
+  "map-route": string;
+  "map-route-reached": string;
+  "map-marker-shadow": string;
+  "map-home": string;
+  "map-parcel": string;
+  "map-truck": string;
+  "map-van": string;
+  "map-plane": string;
+  "map-ship": string;
+  "map-train": string;
+  "map-heli": string;
+  "map-bike": string;
+  "map-start": string;
+  "map-stop": string;
+  shadow: string;
+  "shadow-raised": string;
+  "shadow-overlay": string;
+  "map-filter": string;
+} | null;
+
+/**
+ * The dark variant; null when the theme has none.
+ * @nullable
+ */
+export type GetApiV1Themes200ItemDark = {
+  bg: string;
+  "glow-1": string;
+  "glow-2": string;
+  panel: string;
+  "panel-solid": string;
+  "panel-border": string;
+  tint: string;
+  "tint-strong": string;
+  field: string;
+  backdrop: string;
+  text: string;
+  "text-soft": string;
+  muted: string;
+  accent: string;
+  "accent-hover": string;
+  "accent-soft": string;
+  "accent-line": string;
+  "accent-text": string;
+  "monogram-text": string;
+  violet: string;
+  focus: string;
+  danger: string;
+  ok: string;
+  warn: string;
+  yellow: string;
+  info: string;
+  purple: string;
+  rose: string;
+  "map-route": string;
+  "map-route-reached": string;
+  "map-marker-shadow": string;
+  "map-home": string;
+  "map-parcel": string;
+  "map-truck": string;
+  "map-van": string;
+  "map-plane": string;
+  "map-ship": string;
+  "map-train": string;
+  "map-heli": string;
+  "map-bike": string;
+  "map-start": string;
+  "map-stop": string;
+  shadow: string;
+  "shadow-raised": string;
+  "shadow-overlay": string;
+  "map-filter": string;
+} | null;
+
+export type GetApiV1Themes200ItemFontsItem = {
+  family: string;
+  url: string;
+  weight: string;
+  style: string;
+};
+
+export type GetApiV1Themes200Item = {
+  id: string;
+  name: string;
+  /** @nullable */
+  description: string | null;
+  /** The mode-independent tokens. */
+  tokens: GetApiV1Themes200ItemTokens;
+  /**
+   * The light variant; null when the theme has none.
+   * @nullable
+   */
+  light: GetApiV1Themes200ItemLight;
+  /**
+   * The dark variant; null when the theme has none.
+   * @nullable
+   */
+  dark: GetApiV1Themes200ItemDark;
+  fonts: GetApiV1Themes200ItemFontsItem[];
+  /**
+   * URL of the header logo; null: the web UI's own.
+   * @nullable
+   */
+  logo: string | null;
+  /**
+   * URL of the browser tab icon; null: the web UI's own.
+   * @nullable
+   */
+  icon: string | null;
+};
+
+export type GetApiV1ThemesIdFilesFileParams = {
+  v?: string;
+};
+
 const getHeaders = (
   ...sources: (RequestInit["headers"] | Record<string, string | undefined>)[]
 ) => {
@@ -11483,6 +11640,57 @@ export const getApiV1Sync = async (
   options?: Parameters<typeof apiFetch>[1],
 ): Promise<GetApiV1Sync200> => {
   return apiFetch<GetApiV1Sync200>(getGetApiV1SyncUrl(params), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiV1ThemesUrl = () => {
+  return `/api/v1/themes`;
+};
+
+/**
+ * @summary The installed themes, the default theme first.
+ */
+export const getApiV1Themes = async (
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<GetApiV1Themes200Item[]> => {
+  return apiFetch<GetApiV1Themes200Item[]>(getGetApiV1ThemesUrl(), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetApiV1ThemesIdFilesFileUrl = (
+  id: string,
+  file: string,
+  params?: GetApiV1ThemesIdFilesFileParams,
+) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : String(value));
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/v1/themes/${id}/files/${file}?${stringifiedParams}`
+    : `/api/v1/themes/${id}/files/${file}`;
+};
+
+/**
+ * @summary A file bundled with a theme (logo, icon, font); the theme list gives its URL.
+ */
+export const getApiV1ThemesIdFilesFile = async (
+  id: string,
+  file: string,
+  params?: GetApiV1ThemesIdFilesFileParams,
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<void> => {
+  return apiFetch<void>(getGetApiV1ThemesIdFilesFileUrl(id, file, params), {
     ...options,
     method: "GET",
   });

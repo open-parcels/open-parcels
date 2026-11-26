@@ -38,6 +38,7 @@ import { registerConnectionDataRoutes } from "./routes/connection-data.js";
 import { registerConnectionRoutes } from "./routes/connections.js";
 import { registerJobRoutes } from "./routes/jobs.js";
 import { registerSyncRoutes } from "./routes/sync.js";
+import { registerThemeRoutes } from "./routes/themes.js";
 import { registerTokenRoutes } from "./routes/tokens.js";
 import { registerWebUi } from "./web-ui.js";
 
@@ -214,6 +215,7 @@ export async function buildApp(services: Services, options: BuildAppOptions = {}
   registerDiagnosticsRoutes(typed, services);
   registerEventRoutes(typed, services);
   registerSyncRoutes(typed, services);
+  registerThemeRoutes(typed, services);
 
   app.get("/api/v1/openapi.json", { schema: { hide: true } }, () => app.swagger());
   const servesWebUi =

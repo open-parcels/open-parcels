@@ -2,6 +2,7 @@ import L from "leaflet";
 import { antPath } from "leaflet-ant-path";
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
+import { useTokenValue } from "../lib/theme";
 import type { LatLng } from "./mapIcons";
 
 /**
@@ -10,13 +11,14 @@ import type { LatLng } from "./mapIcons";
  */
 export function AnimatedRoute(props: {
   readonly positions: readonly LatLng[];
-  readonly color?: string;
+  /** The design token of its colour (`map-route` unless given). */
+  readonly token?: string;
   readonly dashArray?: string;
   /** 1 for the way travelled; lower for the way still ahead. */
   readonly opacity?: number;
 }): null {
   const map = useMap();
-  const color = props.color ?? "#a78bfa";
+  const color = useTokenValue(props.token ?? "map-route");
   const dashArray = props.dashArray ?? "10, 20";
   const opacity = props.opacity ?? 1;
 
@@ -32,7 +34,7 @@ export function AnimatedRoute(props: {
       dashArray: dashes,
       weight: 4,
       opacity,
-      color: solid ? color : "rgba(0,0,0,0)",
+      color: solid ? color : "transparent",
       pulseColor: color,
       paused: solid,
       reverse: false,

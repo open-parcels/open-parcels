@@ -13,6 +13,7 @@ what this service is, the stack, the data model, the API and event contract, and
 |---|---|
 | `server/` | The backend: Fastify API, engine, carrier providers (TypeScript, Node 26) |
 | `server/src/carriers/` | Carrier providers, one folder each. They may import only the provider API; ESLint enforces it. Each folder's `open-parcels-provider.json` manifest says what the provider is and every host it may reach ([`docs/provider-manifest-and-sandbox.md`](docs/provider-manifest-and-sandbox.md)); a new host goes into the manifest with its reason, or requests to it are refused |
+| `server/themes/` | Built-in themes, listed by `open-parcels-repo.json`; declarative manifests checked on load ([`docs/themes.md`](docs/themes.md)) |
 | `server/test/` | vitest suites: `unit/`, `api/`, and recorded made-up fixtures |
 | `web/` | The web UI (React + Vite) |
 | `docs/decisions/` | Decision records |
