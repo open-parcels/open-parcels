@@ -273,7 +273,7 @@ describe("Home Assistant suite import", () => {
     expect(marker.value).not.toContain(HERMES_REFRESH);
   });
 
-  it("keys the credential fingerprint and still honours an unkeyed one from before", async () => {
+  it("keys the credential fingerprint; an unkeyed one counts as a new sign-in", async () => {
     await run(fixture());
     const hermes = await connectionByLabel("Hermes (user@example.invalid)");
     const read = async () =>
@@ -297,14 +297,14 @@ describe("Home Assistant suite import", () => {
     expect(stored.credentials).toMatch(/^[0-9a-f]{16}$/);
     expect(stored.credentials).not.toBe(plain);
 
-    // A marker written by an earlier version (unkeyed) is not mistaken for a new HA sign-in.
+    // Unkeyed markers are rewritten by migration 0032; the importer reads the keyed form only.
     await context.services.db
       .updateTable("settings")
       .set({ value: JSON.stringify({ ...stored, credentials: plain }) })
       .where("key", "=", markerKey("e-hermes"))
       .execute();
     const again = await run(fixture());
-    expect(again.connections.find((s) => s.provider === "hermes")?.credentialsWritten).toBe(false);
+    expect(again.connections.find((s) => s.provider === "hermes")?.credentialsWritten).toBe(true);
   });
 
   it("creates connections it cannot sign in as needing a sign-in, with the reason", async () => {

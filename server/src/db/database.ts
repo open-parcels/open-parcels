@@ -32,6 +32,7 @@ import * as m0028 from "./migrations/0028-list-order-index.js";
 import * as m0029 from "./migrations/0029-jobs.js";
 import * as m0030 from "./migrations/0030-imported.js";
 import * as m0031 from "./migrations/0031-consumers.js";
+import * as m0032 from "./migrations/0032-ha-marker-fingerprints.js";
 import type { Database } from "./schema.js";
 
 /**
@@ -70,6 +71,7 @@ export const MIGRATIONS: Readonly<Record<string, Migration>> = {
   "0029-jobs": m0029,
   "0030-imported": m0030,
   "0031-consumers": m0031,
+  "0032-ha-marker-fingerprints": m0032,
 };
 
 const staticProvider: MigrationProvider = {

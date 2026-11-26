@@ -42,6 +42,16 @@ per consumer; the Status page shows each consumer's last delivery (`GET /api/v1/
 `consumers` and the `consumers` check). Database migration 0031 adds the tables; nothing is sent
 until a consumer is added, and the first start does not send old news.
 
+### Changed: Home Assistant import markers with an unkeyed fingerprint become adopted
+
+The HA importer no longer recognises the unkeyed credential fingerprint that versions before
+2026-11-19 stored. Database migration 0032 rewrites such markers (last written before the keyed
+fingerprint shipped) into adopted markers: they cannot be re-keyed, because the fingerprint hashes
+the sign-in data as Home Assistant had it, which the database does not hold, and deleting them
+would make a re-import create a second connection. A re-import now keeps those connections, labels
+and tokens as they are; a Home Assistant sign-in changed since is not carried over, so sign in
+again in the web UI if needed.
+
 ### Changed: themes, and the light/dark setting becomes the mode
 
 The header's light/dark-only setting is replaced by two settings: Theme (the default theme or an

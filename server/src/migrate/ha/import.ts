@@ -1,4 +1,4 @@
-import { createHash, createHmac } from "node:crypto";
+import { createHmac } from "node:crypto";
 import { newParcelRow } from "../../parcels/new-row.js";
 import type { Kysely, Transaction } from "kysely";
 import { z } from "zod";
@@ -88,11 +88,6 @@ function credentialsFingerprint(secrets: SecretBox, plan: ConnectionPlan): strin
     .update(credentialsJson(plan))
     .digest("hex")
     .slice(0, 16);
-}
-
-/** The unkeyed fingerprint earlier versions stored; still recognised so a re-run keeps tokens. */
-function legacyFingerprint(plan: ConnectionPlan): string {
-  return createHash("sha256").update(credentialsJson(plan)).digest("hex").slice(0, 16);
 }
 
 async function readMarker(trx: Transaction<Database>, entryId: string): Promise<Marker | null> {
@@ -196,8 +191,7 @@ async function writeConnection(ctx: Context, plan: ConnectionPlan): Promise<Writ
   }
   if (marker !== null && existing?.provider === plan.provider) {
     // Same HA sign-in as last time: the connection may have rotated its tokens since, so keep them.
-    const fresh =
-      marker.credentials !== fingerprint && marker.credentials !== legacyFingerprint(plan);
+    const fresh = marker.credentials !== fingerprint;
     await ctx.trx
       .updateTable("connections")
       .set({

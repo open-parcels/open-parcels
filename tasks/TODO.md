@@ -149,9 +149,8 @@ image are shipped (see `DONE.md`). Left:
       only Banggood newsletters, no order email
 - [x] Fallback services on a private network: per-connection opt-in "Allow an address on your
       own network" (universal lookup; manifest `private_network_opt_in`)
-- [ ] Unkeyed fingerprints of Home Assistant import markers (written before keyed ones) are still
-      recognised (`legacyFingerprint`); they cannot be migrated without the HA credentials, so
-      drop the fallback once no install has such markers
+- [x] Unkeyed fingerprints of Home Assistant import markers: migration 0032 turns them into
+      adopted markers (they cannot be re-keyed without the HA credentials); the fallback is gone
 
 ## 6. Home Assistant integration (open-parcels-ha)
 
@@ -168,7 +167,7 @@ image are shipped (see `DONE.md`). Left:
 
 ## 8. Browser extension (open-parcels-extension)
 
-- [ ] Server follow-ups of extension 0.2.0: `docs/extension-protocol.md` (bridge only on sites
+- [x] Server follow-ups of extension 0.2.0: `docs/extension-protocol.md` (bridge only on sites
       enabled from the toolbar; enable + per-request approval with Allow once / Always allow /
       Deny and a 10-minute cool-down after Deny; cancel reasons `busy` and `error`; main-frame
       watching, results only to the requesting origin; stored state = approval choices, refused

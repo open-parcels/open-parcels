@@ -201,6 +201,7 @@ describe("migrations", () => {
         "0029-jobs",
         "0030-imported",
         "0031-consumers",
+        "0032-ha-marker-fingerprints",
       ]);
       expect(await migrateToLatest(db)).toEqual([]);
       // Every table rebuild kept its references whole (OP-025).
