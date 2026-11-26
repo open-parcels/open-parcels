@@ -27,7 +27,11 @@ events, the web UI, Home Assistant, the website and every document. Chosen by th
 | Seller | The third-party merchant behind an order on a marketplace shop, when it differs from the shop | merchant, vendor, marketplace seller, Verkäufer |
 | Storefront | One country site of a shop (amazon.de, amazon.com) | marketplace, region, domain |
 | Event | One entry in a parcel's history ("handed to courier, Hamburg, 10:42"); a parcel's history is its list of events | scan, tracking event, status update, history entry, checkpoint |
-| Live event | A message on the server's event stream (SSE) that clients such as Home Assistant receive; say "live event" wherever it could be confused with a parcel event | stream event, outbox event, SSE message, notification |
+| Live event | A message on the server's event stream (SSE) that clients such as Home Assistant receive; say "live event" wherever it could be confused with a parcel event | stream event, outbox event, SSE message |
+| Notification | One message a consumer sends about a parcel state change (or a needed sign-in, a failed backup); one per state change, however many connections report it ([`consumers.md`](consumers.md)) | alert, push, message, Meldung |
+| Notification rule | A consumer's settings for which notifications it sends and when: events, directions, connections, quiet hours, digest, language | filter, subscription, notification settings |
+| Quiet hours | Notification rule: a daily time range in which nothing is sent; what falls into it waits until it ends. Not the scheduler's quiet window | do not disturb, night mode, Ruhezeit |
+| Digest | Notification rule: several notifications sent together, hourly or daily, instead of one each | summary, batch, Zusammenfassung |
 | Home Assistant event | An event on Home Assistant's bus fired by the integration (open_parcels_*); always named with "Home Assistant" | HA event, bus event |
 | Inbox | A connection to an e-mail account folder that open-parcels reads (IMAP) | mailbox, mail source, mail account, Postfach |
 | Email | One message in an inbox ("shipping email", "return email"); write "email" without a hyphen | mail, message, e-mail, Nachricht |
@@ -118,6 +122,10 @@ chosen once in `web/src/i18n/de/` and are added here when they matter.
 | Receiving / Sending | Empfang / Versand |
 | Backup | Sicherung |
 | Theme / Mode | Design / Modus |
+| Consumer | Ausgabe (**proposal, waits for the owner's confirmation**; used in `web/src/i18n/de/` until then) |
+| Notification / Notification rule | Benachrichtigung / Benachrichtigungsregel |
+| Quiet hours | Ruhezeit |
+| Digest | Zusammenfassung |
 
 ## Renames this implies
 

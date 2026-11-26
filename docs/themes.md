@@ -57,8 +57,9 @@ Every theme is a folder with `open-parcels-theme.json` and the files it names. T
 ## 3. Built-in themes and the repo manifest
 
 - `server/themes/open-parcels-repo.json` is a repo manifest (`server/src/provider/repo-manifest.ts`,
-  format 1, `themes: [{ id, folder }]`), the same format a provider repository will use; `providers`
-  and `consumers` are added by the steps that read them ([`official-providers-repo.md`](official-providers-repo.md)).
+  format 1, `themes: [{ id, folder }]`), the same format a provider repository will use; it also
+  takes `consumers: [{ id, folder }]` ([`consumers.md`](consumers.md)), and `providers` is added by
+  the step that reads it ([`official-providers-repo.md`](official-providers-repo.md)).
 - **`default`:** the web UI's own look. Its manifest holds the same values as the stylesheet, and a
   test keeps both equal; the stylesheet paints the page before the theme list arrives.
 - **`paper`:** an example with one light variant, its own font stack, radius, spacing and logo.
