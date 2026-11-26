@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "webhook",
+  "name": "Webhook",
+  "description": "A signed JSON POST (HMAC-SHA256) to an address the user chose.",
+  "fields": ["tracking_number", "carrier", "items", "shop", "pickup_point", "expected_delivery"],
+  "permissions": {
+    "network": [{ "config": "url", "reason": "The address the user chose." }],
+    "smtp": false
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "apprise",
+  "name": "Apprise",
+  "description": "Hands notifications to an apprise-api server, which reaches many services.",
+  "fields": [],
+  "permissions": {
+    "network": [{ "config": "server", "reason": "The apprise-api server the user chose." }],
+    "smtp": false
+  }
+}

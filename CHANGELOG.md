@@ -2,6 +2,19 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Added: consumers and notification rules
+
+Consumers send notifications about parcels to a service the user chooses
+([`docs/consumers.md`](docs/consumers.md), decision record 0005): ntfy (with click link and view
+action), email over SMTP (HTML and text), a webhook (JSON signed with HMAC-SHA256 in
+`X-Open-Parcels-Signature`) and Apprise via `apprise-api`. Each has notification rules (events,
+directions, connections, quiet hours, an hourly or daily digest, English or German) and a "Send
+test notification" button on the new Consumers page. Notifications come from the live event
+outbox, one per parcel state change however many connections report it, with retries and backoff
+per consumer; the Status page shows each consumer's last delivery (`GET /api/v1/status` gains
+`consumers` and the `consumers` check). Database migration 0031 adds the tables; nothing is sent
+until a consumer is added, and the first start does not send old news.
+
 ### Changed: themes, and the light/dark setting becomes the mode
 
 The header's light/dark-only setting is replaced by two settings: Theme (the default theme or an

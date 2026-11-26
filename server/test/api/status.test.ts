@@ -70,6 +70,7 @@ describe("health and status", () => {
           scheduler: "ok",
           event_stream: "ok",
           backups: "ok",
+          consumers: "ok",
         },
       },
     });

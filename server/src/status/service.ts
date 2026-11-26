@@ -22,6 +22,7 @@ export const CHECK_NAMES = [
   "scheduler",
   "event_stream",
   "backups",
+  "consumers",
 ] as const;
 export type CheckName = (typeof CHECK_NAMES)[number];
 
@@ -39,6 +40,21 @@ interface ConnectionStatus {
   readonly next_run_at: string | null;
   /** The carrier asked for a pause (rate limit, captcha) until then; manual syncs wait too. */
   readonly backoff_until: string | null;
+}
+
+/** A configured consumer's last delivery (`docs/consumers.md` §3). */
+interface ConsumerStatusLine {
+  readonly id: string;
+  readonly consumer: string;
+  readonly label: string;
+  readonly enabled: boolean;
+  readonly last_attempt_at: string | null;
+  readonly last_ok_at: string | null;
+  readonly last_error: string | null;
+  /** Notifications waiting to be delivered (due later, or retrying). */
+  readonly pending: number;
+  /** Notifications it gave up on. */
+  readonly failed: number;
 }
 
 interface InboxStatus extends ConnectionStatus {
@@ -79,6 +95,25 @@ export interface StatusReport {
     readonly last_error: BackupError | null;
     readonly next_at: string | null;
   };
+  readonly consumers: ConsumerStatusLine[];
+}
+
+async function consumerLines(services: Services): Promise<ConsumerStatusLine[]> {
+  const [list, queues] = await Promise.all([
+    services.consumers.list(),
+    services.notifications.status(),
+  ]);
+  return list.map((view) => ({
+    id: view.id,
+    consumer: view.consumer,
+    label: view.label,
+    enabled: view.enabled,
+    last_attempt_at: view.lastAttemptAt,
+    last_ok_at: view.lastOkAt,
+    last_error: view.lastError,
+    pending: queues.get(view.id)?.pending ?? 0,
+    failed: queues.get(view.id)?.failed ?? 0,
+  }));
 }
 
 /** States that need the owner: a run failing, or a sign-in the carrier refused. */
@@ -154,6 +189,7 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
         live_sessions: 0,
       },
       backups: { enabled: false, last_ok: null, last_at: null, last_error: null, next_at: null },
+      consumers: [],
     };
   }
 
@@ -163,7 +199,7 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
     .where("state", "!=", "disabled")
     .orderBy("created_at")
     .execute();
-  const [stored, live, backups] = await Promise.all([
+  const [stored, live, backups, consumers] = await Promise.all([
     services.db
       .selectFrom("outbox")
       .select((eb) => eb.fn.countAll<number>().as("n"))
@@ -173,6 +209,7 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
       .select((eb) => eb.fn.countAll<number>().as("n"))
       .executeTakeFirst(),
     services.backups.status(),
+    consumerLines(services),
   ]);
   const carriers = rows.filter((row) => row.kind !== "mail");
   const inboxes = rows
@@ -201,6 +238,9 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
     scheduler: !scheduler.running || stalled || scheduler.lastError !== null ? "degraded" : "ok",
     event_stream: "ok",
     backups: backups.failing ? "degraded" : "ok",
+    consumers: consumers.some((line) => line.enabled && line.last_error !== null)
+      ? "degraded"
+      : "ok",
   };
   return {
     ...base,
@@ -229,5 +269,6 @@ export async function collectStatus(services: Services): Promise<StatusReport> {
       last_error: backups.last?.error ?? null,
       next_at: backups.next_at,
     },
+    consumers,
   };
 }

@@ -83,10 +83,14 @@ image are shipped (see `DONE.md`). Left:
 - [ ] Port the audit's "rewrite" items (OP-088 … OP-139) as acceptance tests of the new kit
 - [ ] OP-108: decide on the DHL Poland proof-of-work
 
-- [ ] Consumers (decision record 0005): `consumers:` in the repo manifest, notification rules in
-      the core (events, direction, quiet hours, digest, no duplicates), built-in ntfy, email
-      (SMTP), webhook (HMAC-signed) and Apprise consumers, "Send test notification", delivery
-      status on the Status page; installable consumers through the registry
+- [x] Consumers (decision record 0005, [`docs/consumers.md`](../docs/consumers.md)): `consumers:`
+      in the repo manifest, notification rules in the core (events, direction, connections,
+      quiet hours, digest, language, no duplicates), delivery from the outbox with backoff per
+      consumer, built-in ntfy, email (SMTP), webhook (HMAC-signed) and Apprise consumers, "Send
+      test notification", last delivery on the Status page, the Consumers page
+- [ ] Consumers, rest: installable consumers through the registry (they run in the sandbox,
+      `sandboxedConsumer`), the return-by reminder (needs a schedule), the owner's confirmation of
+      the German term "Ausgabe" (`docs/glossary.md`)
 
 ## 4. Returns follow-ups
 

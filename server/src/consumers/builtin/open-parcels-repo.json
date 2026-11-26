@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "consumers": [
+    { "id": "apprise", "folder": "apprise" },
+    { "id": "email", "folder": "email" },
+    { "id": "ntfy", "folder": "ntfy" },
+    { "id": "webhook", "folder": "webhook" }
+  ]
+}

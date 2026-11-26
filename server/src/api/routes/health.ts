@@ -85,6 +85,21 @@ const statusSchema = summarySchema.extend({
     last_error: backupErrorSchema,
     next_at: z.string().nullable(),
   }),
+  consumers: z
+    .array(
+      z.object({
+        id: z.string(),
+        consumer: z.string(),
+        label: z.string(),
+        enabled: z.boolean(),
+        last_attempt_at: z.string().nullable(),
+        last_ok_at: z.string().nullable(),
+        last_error: z.string().nullable().describe("Why the last attempt did not deliver."),
+        pending: z.number().int().describe("Notifications waiting (due later, or retrying)."),
+        failed: z.number().int().describe("Notifications it gave up on."),
+      }),
+    )
+    .describe("Each configured consumer's last delivery."),
 });
 
 /**

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "email",
+  "name": "Email (SMTP)",
+  "description": "An email with an HTML and a text part, sent through the user's SMTP server.",
+  "fields": ["tracking_number", "carrier", "items", "shop", "pickup_point", "expected_delivery"],
+  "permissions": {
+    "network": [{ "config": "host", "reason": "The SMTP server the user chose." }],
+    "smtp": true
+  }
+}

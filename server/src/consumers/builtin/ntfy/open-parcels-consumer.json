@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "id": "ntfy",
+  "name": "ntfy",
+  "description": "Push notifications to an ntfy topic, with a link to the parcel.",
+  "fields": ["tracking_number", "carrier", "expected_delivery"],
+  "permissions": {
+    "network": [{ "config": "server", "reason": "The ntfy server the user chose." }],
+    "smtp": false
+  }
+}

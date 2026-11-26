@@ -38,8 +38,9 @@ async function runMaintenance(services: Services): Promise<void> {
   const tiles = await services.tiles.prune();
   const collages = await services.collages.prune();
   const retention = await services.parcels.applyRetention(services.config.retention);
+  const notifications = await services.notifications.prune();
   services.logger.debug(
-    { sessions, logins, tombstones, events, images, tiles, collages, ...retention },
+    { sessions, logins, tombstones, events, images, tiles, collages, notifications, ...retention },
     "Maintenance finished.",
   );
 }
@@ -114,6 +115,7 @@ export async function startServer(processEnv: NodeJS.ProcessEnv): Promise<Runnin
   services.live.start();
   services.places.start();
   await services.mail.start();
+  services.notifications.start();
   const health = new HealthWatch(services);
   health.start();
 
@@ -157,6 +159,7 @@ export async function startServer(processEnv: NodeJS.ProcessEnv): Promise<Runnin
       services.jobs.stop();
       services.live.stop();
       services.places.stop();
+      services.notifications.stop();
       services.providerPool?.stop();
       health.stop();
       await services.mail.stop();

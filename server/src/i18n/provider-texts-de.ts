@@ -193,4 +193,46 @@ export const PROVIDER_TEXTS_DE: Readonly<Record<string, string>> = Object.fromEn
     "The email address of your Vinted Go account. Vinted Go sends a link to it.",
     "Die E-Mail-Adresse deines Vinted-Go-Kontos. Vinted Go schickt einen Link dorthin.",
   ],
+  // Consumers (docs/consumers.md)
+  ["Server", "Server"],
+  [
+    "The ntfy server, e.g. https://ntfy.example.com.",
+    "Der ntfy-Server, z. B. https://ntfy.example.com.",
+  ],
+  ["Topic", "Thema"],
+  ["The topic to publish to.", "Das Thema, an das gesendet wird."],
+  ["Priority", "Priorität"],
+  ["1 (min) to 5 (max).", "1 (niedrigste) bis 5 (höchste)."],
+  ["For a server or topic that needs one.", "Für einen Server oder ein Thema, das eines verlangt."],
+  ["The address that receives the POST.", "Die Adresse, die den POST empfängt."],
+  ["Signing secret", "Signaturgeheimnis"],
+  [
+    "Shared secret for the HMAC-SHA256 signature; at least 16 characters.",
+    "Gemeinsames Geheimnis für die HMAC-SHA256-Signatur; mindestens 16 Zeichen.",
+  ],
+  [
+    "The apprise-api server, e.g. http://apprise:8000.",
+    "Der apprise-api-Server, z. B. http://apprise:8000.",
+  ],
+  ["Configuration key", "Konfigurationsschlüssel"],
+  [
+    "Key of a configuration saved in apprise-api; leave empty to send Apprise URLs.",
+    "Schlüssel einer in apprise-api gespeicherten Konfiguration; leer lassen, um Apprise-URLs zu senden.",
+  ],
+  ["Apprise URLs", "Apprise-URLs"],
+  [
+    "One per line, used when no configuration key is set.",
+    "Eine pro Zeile, verwendet, wenn kein Konfigurationsschlüssel gesetzt ist.",
+  ],
+  ["SMTP server", "SMTP-Server"],
+  ["e.g. smtp.example.com", "z. B. smtp.example.com"],
+  ["Security", "Sicherheit"],
+  [
+    "starttls (port 587), tls (port 465) or none (a server on your own network).",
+    "starttls (Port 587), tls (Port 465) oder none (ein Server im eigenen Netz).",
+  ],
+  ["From", "Absender"],
+  ["Sender address.", "Absenderadresse."],
+  ["To", "Empfänger"],
+  ["Who receives the emails.", "Wer die E-Mails bekommt."],
 ] satisfies [string, string][]);

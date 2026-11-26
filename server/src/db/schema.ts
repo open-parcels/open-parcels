@@ -356,6 +356,48 @@ export interface JobTable {
   resume_at: Timestamp | null;
 }
 
+/** A configured consumer. See migration 0031 and `docs/consumers.md`. */
+interface ConsumerTable {
+  id: string;
+  /** The consumer's id (`ntfy`, `email`, …). */
+  consumer: string;
+  label: string;
+  /** JSON, checked against the consumer's config schema. */
+  config: string;
+  /** The encrypted secret JSON (token, password, signing secret); the AAD is the row's id. */
+  secret_blob: Buffer | null;
+  /** JSON `NotificationRules`. */
+  rules: string;
+  enabled: number;
+  created_at: Timestamp;
+  updated_at: Timestamp;
+  last_attempt_at: Timestamp | null;
+  last_ok_at: Timestamp | null;
+  /** Why the last attempt did not deliver; null after a success. */
+  last_error: string | null;
+}
+
+/** One parcel state change (or sign-in or backup problem), stored once by its key. */
+interface NotificationTable {
+  id: Generated<number>;
+  key: string;
+  event: string;
+  /** JSON `NotificationData`: no courier position. */
+  data: string;
+  created_at: Timestamp;
+}
+
+/** One notification for one configured consumer. */
+interface NotificationDeliveryTable {
+  notification_id: number;
+  consumer_id: string;
+  state: "pending" | "sent" | "failed" | "expired";
+  attempts: Generated<number>;
+  due_at: Timestamp;
+  created_at: Timestamp;
+  finished_at: Timestamp | null;
+}
+
 export interface Database {
   owner: OwnerTable;
   sessions: SessionTable;
@@ -383,7 +425,12 @@ export interface Database {
   sign_in_attempts: SignInAttemptTable;
   sync_changes: SyncChangeTable;
   jobs: JobTable;
+  consumers: ConsumerTable;
+  notifications: NotificationTable;
+  notification_deliveries: NotificationDeliveryTable;
 }
+
+export type ConsumerRow = Selectable<ConsumerTable>;
 
 export type JobRow = Selectable<JobTable>;
 

@@ -49,6 +49,7 @@ const ERROR_CODES = [
   "invalid_input",
   "job_running",
   "job_state",
+  "invalid_consumer",
 ] as const;
 export type ErrorCode = (typeof ERROR_CODES)[number];
 
@@ -65,7 +66,8 @@ export type NotFoundResource =
   | "sign_in"
   | "setting"
   | "pictures"
-  | "job";
+  | "job"
+  | "consumer";
 
 export type ErrorParams = Readonly<Record<string, string | number>>;
 
@@ -112,6 +114,7 @@ const NOT_FOUND_TEXT: Readonly<Record<NotFoundResource, string>> = {
   setting: "The setting",
   pictures: "The item pictures",
   job: "The job",
+  consumer: "The consumer",
 };
 export const notFound = (resource: NotFoundResource): ApiError =>
   new ApiError(404, "not_found", `${NOT_FOUND_TEXT[resource]} was not found.`, { resource });

@@ -187,6 +187,14 @@
                             "degraded",
                             "unavailable"
                           ]
+                        },
+                        "consumers": {
+                          "type": "string",
+                          "enum": [
+                            "ok",
+                            "degraded",
+                            "unavailable"
+                          ]
                         }
                       },
                       "required": [
@@ -195,7 +203,8 @@
                         "inboxes",
                         "scheduler",
                         "event_stream",
-                        "backups"
+                        "backups",
+                        "consumers"
                       ],
                       "additionalProperties": false
                     }
@@ -275,6 +284,14 @@
                             "degraded",
                             "unavailable"
                           ]
+                        },
+                        "consumers": {
+                          "type": "string",
+                          "enum": [
+                            "ok",
+                            "degraded",
+                            "unavailable"
+                          ]
                         }
                       },
                       "required": [
@@ -283,7 +300,8 @@
                         "inboxes",
                         "scheduler",
                         "event_stream",
-                        "backups"
+                        "backups",
+                        "consumers"
                       ],
                       "additionalProperties": false
                     }
@@ -373,6 +391,14 @@
                             "degraded",
                             "unavailable"
                           ]
+                        },
+                        "consumers": {
+                          "type": "string",
+                          "enum": [
+                            "ok",
+                            "degraded",
+                            "unavailable"
+                          ]
                         }
                       },
                       "required": [
@@ -381,7 +407,8 @@
                         "inboxes",
                         "scheduler",
                         "event_stream",
-                        "backups"
+                        "backups",
+                        "consumers"
                       ],
                       "additionalProperties": false
                     },
@@ -739,6 +766,64 @@
                         "next_at"
                       ],
                       "additionalProperties": false
+                    },
+                    "consumers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "consumer": {
+                            "type": "string"
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "last_attempt_at": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "last_ok_at": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "last_error": {
+                            "nullable": true,
+                            "description": "Why the last attempt did not deliver.",
+                            "type": "string"
+                          },
+                          "pending": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991,
+                            "description": "Notifications waiting (due later, or retrying)."
+                          },
+                          "failed": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991,
+                            "description": "Notifications it gave up on."
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "consumer",
+                          "label",
+                          "enabled",
+                          "last_attempt_at",
+                          "last_ok_at",
+                          "last_error",
+                          "pending",
+                          "failed"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "Each configured consumer's last delivery."
                     }
                   },
                   "required": [
@@ -754,7 +839,8 @@
                     "inboxes",
                     "scheduler",
                     "event_stream",
-                    "backups"
+                    "backups",
+                    "consumers"
                   ],
                   "additionalProperties": false
                 }
@@ -952,7 +1038,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1037,7 +1124,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1232,7 +1320,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1317,7 +1406,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1402,7 +1492,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1538,7 +1629,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1645,7 +1737,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1849,7 +1942,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -1934,7 +2028,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2180,7 +2275,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2345,7 +2441,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -2642,7 +2739,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3332,7 +3430,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3599,7 +3698,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3684,7 +3784,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3821,7 +3922,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -3906,7 +4008,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -5387,7 +5490,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -5472,7 +5576,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -6204,7 +6309,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -6968,7 +7074,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -7087,7 +7194,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -8338,7 +8446,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -9011,7 +9120,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -9131,7 +9241,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -9675,7 +9786,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10334,7 +10446,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10562,7 +10675,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10647,7 +10761,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10766,7 +10881,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10903,7 +11019,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -10988,7 +11105,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11110,7 +11228,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11195,7 +11314,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11338,7 +11458,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11482,7 +11603,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11707,7 +11829,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -11975,7 +12098,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12060,7 +12184,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12145,7 +12270,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12230,7 +12356,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12597,7 +12724,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12814,7 +12942,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12899,7 +13028,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -12984,7 +13114,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13069,7 +13200,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13286,7 +13418,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13371,7 +13504,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13456,7 +13590,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13541,7 +13676,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13758,7 +13894,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13843,7 +13980,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -13928,7 +14066,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14013,7 +14152,1350 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consumers/available": {
+      "get": {
+        "summary": "The consumers that can be added, with their forms.",
+        "tags": [
+          "consumers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "tier": {
+                        "type": "string",
+                        "enum": [
+                          "builtin"
+                        ],
+                        "description": "Installed consumers come with the registry."
+                      },
+                      "fields": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "tracking_number",
+                            "carrier",
+                            "items",
+                            "shop",
+                            "pickup_point",
+                            "expected_delivery"
+                          ]
+                        },
+                        "description": "Parcel fields it gets beyond the texts."
+                      },
+                      "hosts": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        },
+                        "description": "Hosts it may reach: a name, or `config:<field>` for the host the user types there."
+                      },
+                      "smtp": {
+                        "type": "boolean"
+                      },
+                      "config_schema": {
+                        "description": "JSON Schema of the settings form."
+                      },
+                      "secret_schema": {
+                        "nullable": true,
+                        "description": "JSON Schema of the secret form, if any."
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "name",
+                      "description",
+                      "tier",
+                      "fields",
+                      "hosts",
+                      "smtp",
+                      "config_schema",
+                      "secret_schema"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consumers": {
+      "get": {
+        "summary": "Configured consumers with their rules and last delivery.",
+        "tags": [
+          "consumers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string",
+                        "format": "uuid",
+                        "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                      },
+                      "consumer": {
+                        "type": "string",
+                        "description": "Which consumer: ntfy, email, webhook, apprise, …"
+                      },
+                      "label": {
+                        "type": "string"
+                      },
+                      "config": {},
+                      "has_secret": {
+                        "type": "boolean",
+                        "description": "Whether a secret is stored. It is never returned."
+                      },
+                      "rules": {
+                        "type": "object",
+                        "properties": {
+                          "events": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "registered",
+                                "in_transit",
+                                "out_for_delivery",
+                                "at_pickup_point",
+                                "delivered",
+                                "delivery_time_changed",
+                                "returning",
+                                "problem",
+                                "refunded",
+                                "sign_in_needed",
+                                "backup_failed"
+                              ]
+                            },
+                            "description": "The notification events to send."
+                          },
+                          "directions": {
+                            "minItems": 1,
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "receiving",
+                                "sending"
+                              ]
+                            },
+                            "description": "Parcels of these directions."
+                          },
+                          "connections": {
+                            "nullable": true,
+                            "description": "Only parcels reported by these connections; null: every connection.",
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "format": "uuid",
+                              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                            }
+                          },
+                          "quiet_hours": {
+                            "nullable": true,
+                            "description": "Nothing is sent between these times (server time zone); held until they end.",
+                            "type": "object",
+                            "properties": {
+                              "from": {
+                                "type": "string",
+                                "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                              },
+                              "to": {
+                                "type": "string",
+                                "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                              }
+                            },
+                            "required": [
+                              "from",
+                              "to"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "digest": {
+                            "type": "string",
+                            "enum": [
+                              "immediately",
+                              "hourly",
+                              "daily"
+                            ],
+                            "description": "immediately; hourly (on the hour) or daily (08:00): all due ones in one message."
+                          },
+                          "language": {
+                            "type": "string",
+                            "enum": [
+                              "en",
+                              "de"
+                            ],
+                            "description": "Language of the texts."
+                          }
+                        },
+                        "required": [
+                          "events",
+                          "directions",
+                          "connections",
+                          "quiet_hours",
+                          "digest",
+                          "language"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      },
+                      "last_attempt_at": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "last_ok_at": {
+                        "nullable": true,
+                        "type": "string"
+                      },
+                      "last_error": {
+                        "nullable": true,
+                        "description": "Why the last attempt did not deliver.",
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "consumer",
+                      "label",
+                      "config",
+                      "has_secret",
+                      "rules",
+                      "enabled",
+                      "last_attempt_at",
+                      "last_ok_at",
+                      "last_error"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "summary": "Add a consumer. Its secret is encrypted at rest and never returned.",
+        "tags": [
+          "consumers"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "consumer": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 40
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "config": {
+                    "default": {}
+                  },
+                  "secret": {
+                    "default": null
+                  },
+                  "rules": {
+                    "type": "object",
+                    "properties": {
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "registered",
+                            "in_transit",
+                            "out_for_delivery",
+                            "at_pickup_point",
+                            "delivered",
+                            "delivery_time_changed",
+                            "returning",
+                            "problem",
+                            "refunded",
+                            "sign_in_needed",
+                            "backup_failed"
+                          ]
+                        },
+                        "description": "The notification events to send."
+                      },
+                      "directions": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "receiving",
+                            "sending"
+                          ]
+                        },
+                        "description": "Parcels of these directions."
+                      },
+                      "connections": {
+                        "nullable": true,
+                        "description": "Only parcels reported by these connections; null: every connection.",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        }
+                      },
+                      "quiet_hours": {
+                        "nullable": true,
+                        "description": "Nothing is sent between these times (server time zone); held until they end.",
+                        "type": "object",
+                        "properties": {
+                          "from": {
+                            "type": "string",
+                            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                          },
+                          "to": {
+                            "type": "string",
+                            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                          }
+                        },
+                        "required": [
+                          "from",
+                          "to"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "digest": {
+                        "type": "string",
+                        "enum": [
+                          "immediately",
+                          "hourly",
+                          "daily"
+                        ],
+                        "description": "immediately; hourly (on the hour) or daily (08:00): all due ones in one message."
+                      },
+                      "language": {
+                        "type": "string",
+                        "enum": [
+                          "en",
+                          "de"
+                        ],
+                        "description": "Language of the texts."
+                      }
+                    },
+                    "required": [
+                      "events",
+                      "directions",
+                      "connections",
+                      "quiet_hours",
+                      "digest",
+                      "language"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "enabled": {
+                    "default": true,
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "consumer",
+                  "label",
+                  "rules"
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "consumer": {
+                      "type": "string",
+                      "description": "Which consumer: ntfy, email, webhook, apprise, …"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "config": {},
+                    "has_secret": {
+                      "type": "boolean",
+                      "description": "Whether a secret is stored. It is never returned."
+                    },
+                    "rules": {
+                      "type": "object",
+                      "properties": {
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "registered",
+                              "in_transit",
+                              "out_for_delivery",
+                              "at_pickup_point",
+                              "delivered",
+                              "delivery_time_changed",
+                              "returning",
+                              "problem",
+                              "refunded",
+                              "sign_in_needed",
+                              "backup_failed"
+                            ]
+                          },
+                          "description": "The notification events to send."
+                        },
+                        "directions": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "receiving",
+                              "sending"
+                            ]
+                          },
+                          "description": "Parcels of these directions."
+                        },
+                        "connections": {
+                          "nullable": true,
+                          "description": "Only parcels reported by these connections; null: every connection.",
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                          }
+                        },
+                        "quiet_hours": {
+                          "nullable": true,
+                          "description": "Nothing is sent between these times (server time zone); held until they end.",
+                          "type": "object",
+                          "properties": {
+                            "from": {
+                              "type": "string",
+                              "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "to": {
+                              "type": "string",
+                              "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                            }
+                          },
+                          "required": [
+                            "from",
+                            "to"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "digest": {
+                          "type": "string",
+                          "enum": [
+                            "immediately",
+                            "hourly",
+                            "daily"
+                          ],
+                          "description": "immediately; hourly (on the hour) or daily (08:00): all due ones in one message."
+                        },
+                        "language": {
+                          "type": "string",
+                          "enum": [
+                            "en",
+                            "de"
+                          ],
+                          "description": "Language of the texts."
+                        }
+                      },
+                      "required": [
+                        "events",
+                        "directions",
+                        "connections",
+                        "quiet_hours",
+                        "digest",
+                        "language"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "last_attempt_at": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "last_ok_at": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "last_error": {
+                      "nullable": true,
+                      "description": "Why the last attempt did not deliver.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "consumer",
+                    "label",
+                    "config",
+                    "has_secret",
+                    "rules",
+                    "enabled",
+                    "last_attempt_at",
+                    "last_ok_at",
+                    "last_error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consumers/{id}": {
+      "patch": {
+        "summary": "Change a consumer's label, settings, secret, rules or switch it on or off.",
+        "tags": [
+          "consumers"
+        ],
+        "description": "`secret`: leave it out to keep the stored one, null to remove it.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "config": {},
+                  "secret": {},
+                  "rules": {
+                    "type": "object",
+                    "properties": {
+                      "events": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "registered",
+                            "in_transit",
+                            "out_for_delivery",
+                            "at_pickup_point",
+                            "delivered",
+                            "delivery_time_changed",
+                            "returning",
+                            "problem",
+                            "refunded",
+                            "sign_in_needed",
+                            "backup_failed"
+                          ]
+                        },
+                        "description": "The notification events to send."
+                      },
+                      "directions": {
+                        "minItems": 1,
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "receiving",
+                            "sending"
+                          ]
+                        },
+                        "description": "Parcels of these directions."
+                      },
+                      "connections": {
+                        "nullable": true,
+                        "description": "Only parcels reported by these connections; null: every connection.",
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "format": "uuid",
+                          "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                        }
+                      },
+                      "quiet_hours": {
+                        "nullable": true,
+                        "description": "Nothing is sent between these times (server time zone); held until they end.",
+                        "type": "object",
+                        "properties": {
+                          "from": {
+                            "type": "string",
+                            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                          },
+                          "to": {
+                            "type": "string",
+                            "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                          }
+                        },
+                        "required": [
+                          "from",
+                          "to"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "digest": {
+                        "type": "string",
+                        "enum": [
+                          "immediately",
+                          "hourly",
+                          "daily"
+                        ],
+                        "description": "immediately; hourly (on the hour) or daily (08:00): all due ones in one message."
+                      },
+                      "language": {
+                        "type": "string",
+                        "enum": [
+                          "en",
+                          "de"
+                        ],
+                        "description": "Language of the texts."
+                      }
+                    },
+                    "required": [
+                      "events",
+                      "directions",
+                      "connections",
+                      "quiet_hours",
+                      "digest",
+                      "language"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    "consumer": {
+                      "type": "string",
+                      "description": "Which consumer: ntfy, email, webhook, apprise, …"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "config": {},
+                    "has_secret": {
+                      "type": "boolean",
+                      "description": "Whether a secret is stored. It is never returned."
+                    },
+                    "rules": {
+                      "type": "object",
+                      "properties": {
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "registered",
+                              "in_transit",
+                              "out_for_delivery",
+                              "at_pickup_point",
+                              "delivered",
+                              "delivery_time_changed",
+                              "returning",
+                              "problem",
+                              "refunded",
+                              "sign_in_needed",
+                              "backup_failed"
+                            ]
+                          },
+                          "description": "The notification events to send."
+                        },
+                        "directions": {
+                          "minItems": 1,
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "receiving",
+                              "sending"
+                            ]
+                          },
+                          "description": "Parcels of these directions."
+                        },
+                        "connections": {
+                          "nullable": true,
+                          "description": "Only parcels reported by these connections; null: every connection.",
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "format": "uuid",
+                            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                          }
+                        },
+                        "quiet_hours": {
+                          "nullable": true,
+                          "description": "Nothing is sent between these times (server time zone); held until they end.",
+                          "type": "object",
+                          "properties": {
+                            "from": {
+                              "type": "string",
+                              "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                            },
+                            "to": {
+                              "type": "string",
+                              "pattern": "^(?:[01]\\d|2[0-3]):[0-5]\\d$"
+                            }
+                          },
+                          "required": [
+                            "from",
+                            "to"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "digest": {
+                          "type": "string",
+                          "enum": [
+                            "immediately",
+                            "hourly",
+                            "daily"
+                          ],
+                          "description": "immediately; hourly (on the hour) or daily (08:00): all due ones in one message."
+                        },
+                        "language": {
+                          "type": "string",
+                          "enum": [
+                            "en",
+                            "de"
+                          ],
+                          "description": "Language of the texts."
+                        }
+                      },
+                      "required": [
+                        "events",
+                        "directions",
+                        "connections",
+                        "quiet_hours",
+                        "digest",
+                        "language"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "enabled": {
+                      "type": "boolean"
+                    },
+                    "last_attempt_at": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "last_ok_at": {
+                      "nullable": true,
+                      "type": "string"
+                    },
+                    "last_error": {
+                      "nullable": true,
+                      "description": "Why the last attempt did not deliver.",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "consumer",
+                    "label",
+                    "config",
+                    "has_secret",
+                    "rules",
+                    "enabled",
+                    "last_attempt_at",
+                    "last_ok_at",
+                    "last_error"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Remove a consumer and its queued notifications.",
+        "tags": [
+          "consumers"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    null
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer"
+                      ],
+                      "description": "Stable machine-readable error code."
+                    },
+                    "message": {
+                      "type": "string",
+                      "description": "English explanation, for logs and scripts."
+                    },
+                    "params": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "description": "Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words."
+                    }
+                  },
+                  "required": [
+                    "error",
+                    "message",
+                    "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/consumers/{id}/test": {
+      "post": {
+        "summary": "Send a test notification now, past the rules and the queue.",
+        "tags": [
+          "consumers"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "string",
+              "format": "uuid",
+              "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+            },
+            "in": "path",
+            "name": "id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "ok": {
+                      "type": "boolean"
+                    },
+                    "retry": {
+                      "type": "boolean",
+                      "description": "Not delivered, but it may work later (the service was down)."
+                    },
+                    "message": {
+                      "nullable": true,
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "ok",
+                    "retry",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "error": {
+                      "type": "string",
+                      "enum": [
+                        "unauthorized",
+                        "forbidden",
+                        "csrf",
+                        "admin_required",
+                        "not_found",
+                        "invalid_request",
+                        "internal",
+                        "invalid_range",
+                        "carrier_not_detected",
+                        "duplicate",
+                        "backup_failed",
+                        "delete_backup_failed",
+                        "confirmation_required",
+                        "invalid_setting",
+                        "geocode_failed",
+                        "tile",
+                        "image",
+                        "too_many_attempts",
+                        "current_required",
+                        "invalid_password",
+                        "no_environment_password",
+                        "already_set_up",
+                        "bad_setup_code",
+                        "wrong_password",
+                        "login_ended",
+                        "sync_expired",
+                        "invalid_connection",
+                        "connection_backing_off",
+                        "sign_in_expired",
+                        "sign_in_timeout",
+                        "sign_in_refused",
+                        "sign_in_failed",
+                        "sign_in_wrong_step",
+                        "sign_in_poll_too_soon",
+                        "sign_in_unavailable",
+                        "sign_in_captcha",
+                        "no_sign_in",
+                        "no_such_action",
+                        "action_unavailable",
+                        "action_cooldown",
+                        "invalid_input",
+                        "job_running",
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14412,7 +15894,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14669,7 +16152,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14754,7 +16238,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -14918,7 +16403,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15306,7 +16792,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15391,7 +16878,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15476,7 +16964,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15561,7 +17050,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -15646,7 +17136,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16049,7 +17540,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16134,7 +17626,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16219,7 +17712,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16304,7 +17798,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16389,7 +17884,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16770,7 +18266,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16855,7 +18352,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -16940,7 +18438,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17025,7 +18524,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17110,7 +18610,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17241,7 +18742,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -17536,7 +19038,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
@@ -19580,7 +21083,8 @@
                         "action_cooldown",
                         "invalid_input",
                         "job_running",
-                        "job_state"
+                        "job_state",
+                        "invalid_consumer"
                       ],
                       "description": "Stable machine-readable error code."
                     },
