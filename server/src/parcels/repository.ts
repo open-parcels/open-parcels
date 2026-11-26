@@ -1,6 +1,7 @@
 import type { Kysely, Selectable } from "kysely";
 import type { Database, OrderItemTable, ParcelRow } from "../db/schema.js";
 import { parcelVisible } from "../db/visibility.js";
+import { parcelPageQuery, type ParcelFilter } from "./list-query.js";
 import {
   effectiveDelivered,
   effectiveStatus,
@@ -12,22 +13,8 @@ import {
   type ParcelLabelMode,
   type Live,
   type Parcel,
-  type ParcelStatus,
 } from "../domain/parcel.js";
 import { expectedDays } from "./expected-days.js";
-
-export interface ParcelFilter {
-  readonly active?: boolean;
-  readonly status?: ParcelStatus;
-  readonly carrier?: string;
-  readonly includeArchived?: boolean;
-  readonly limit?: number;
-  /** Rows to skip, for paging through more parcels than one page holds. */
-  readonly offset?: number;
-}
-
-/** Parcels per page when no limit is given. */
-export const PARCEL_PAGE_DEFAULT = 500;
 
 export function groupBy<T>(rows: readonly T[], key: (row: T) => string): Map<string, T[]> {
   const groups = new Map<string, T[]>();
@@ -197,45 +184,9 @@ export class ParcelRepository {
     private readonly presentation: Presentation = RAW_PRESENTATION,
   ) {}
 
+  /** One page of the parcel list (`list-query.ts`). */
   async list(filter: ParcelFilter, withHistory: boolean): Promise<Parcel[]> {
-    let query = this.db.selectFrom("parcels").selectAll().where(parcelVisible);
-    if (filter.includeArchived !== true) {
-      query = query.where("archived_at", "is", null);
-    }
-    // A status set by hand wins over the carrier's, for filters as everywhere else.
-    if (filter.active !== undefined) {
-      const isDelivered = filter.active ? 0 : 1;
-      query = query.where((eb) =>
-        eb.or([
-          eb.and([eb("manual_status", "is", null), eb("delivered", "=", isDelivered)]),
-          eb.and([
-            eb("manual_status", "is not", null),
-            filter.active
-              ? eb("manual_status", "!=", "delivered")
-              : eb("manual_status", "=", "delivered"),
-          ]),
-        ]),
-      );
-    }
-    if (filter.status !== undefined) {
-      const status = filter.status;
-      query = query.where((eb) =>
-        eb.or([
-          eb.and([eb("manual_status", "is", null), eb("status", "=", status)]),
-          eb("manual_status", "=", status),
-        ]),
-      );
-    }
-    if (filter.carrier !== undefined) {
-      query = query.where("carrier", "=", filter.carrier);
-    }
-    // The id breaks ties, so pages never repeat or skip a parcel changed at the same instant.
-    const rows = await query
-      .orderBy("updated_at", "desc")
-      .orderBy("id", "asc")
-      .limit(filter.limit ?? PARCEL_PAGE_DEFAULT)
-      .offset(filter.offset ?? 0)
-      .execute();
+    const rows = await parcelPageQuery(this.db, filter, this.presentation.labelMode()).execute();
     const related = await this.#loadRelated(rows, withHistory);
     return rows.map((row) => this.#toParcel(row, related));
   }

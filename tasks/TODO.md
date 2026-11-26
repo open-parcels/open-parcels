@@ -25,19 +25,20 @@ Groups 1–24 are shipped (see `DONE.md`). Left, optional:
       dialog), the edit dialogs and the job input dialog, the map (Leaflet's controls and
       markers) and the calendar (FullCalendar's toolbar and events) by keyboard, the connection
       picker's search and the sign-in steps; a screen-reader pass (NVDA/Orca) of live updates
-      (the live badge, toasts, "Show 200 more") and the sign-in steps
+      (the live badge, toasts, "Show more") and the sign-in steps
 - [ ] Mobile layout pass: phone CSS at 360–480 px done (nav on its own row, icons only; tables
       scroll inside their card; smaller paddings; dialogs nearly full width; calendar toolbar
       wraps and opens the list view on phones; map menu kept clear). Still to look at on a real
       phone: the parcels table (scrolls, maybe cards), the split map/list pages and Leaflet's
       controls, FullCalendar's week/day views, the sign-in dialog's steps, the Settings place
       picker map, and Safari's dialog height (`100dvh`)
-- [ ] Performance follow-ups (`docs/performance.md`, "Left as it is"): the order list paged in SQL
-      is re-measured (NAS, 2026-11-26: 48–67 ms p95, every endpoint under budget). Left: the web UI
-      still loads every page of parcels, because the parcels table searches, sorts and counts in
-      the browser and the map and connections pages use every parcel (~4 MB with "Include
-      archived" at 10,000 parcels); paging them needs search and sort on the server; measure on
-      the Pi
+- [ ] Performance follow-ups (`docs/performance.md`, "Left as it is"): the parcel list is
+      searched, sorted, counted and paged in SQL, the map and the Connections page read only what
+      they show (NAS, 2026-11-26). Left: measure on the Pi
+- [ ] Privacy, owner decision (no behaviour changed): without logging in, the read-only view
+      shows the inbox email addresses and connection labels such as "amazon.de · <name>".
+      Decide whether readers should see them, see them masked, or need the reader password
+      for them
 - [ ] Release 2.0.0: changelog, tags `2.0.0`, `2.0`, `latest` on Docker Hub and GHCR, website and
       Unraid template switched from `:dev` to `:latest`, HA app on the release
 - [ ] Make `ghcr.io/open-parcels/open-parcels` public (owner click) and switch docs to it

@@ -6,13 +6,13 @@ import {
   useInboxForm,
   useClearConnection,
   useDeleteConnection,
-  useParcels,
+  useParcelCounts,
   useConnections,
   useJobs,
   useSyncConnection,
   useUpdateConnection,
 } from "../api/queries";
-import type { Carrier, CarrierAction, Parcel, Connection, Job } from "../api/types";
+import type { Carrier, CarrierAction, Connection, Job } from "../api/types";
 import { CarrierLogo } from "../components/CarrierLogo";
 import { useIsAdmin } from "../auth/session";
 import { ErrorNotice, ReadOnlyHint, Spinner } from "../components/ui";
@@ -43,31 +43,14 @@ function canSignIn(connection: Connection, carriers: readonly Carrier[] | undefi
   );
 }
 
-export interface ConnectionStats {
+/** Parcels per connection (archived included): on the way, delivered, and all it has found. */
+interface ConnectionStats {
   readonly active: number;
   readonly delivered: number;
   readonly total: number;
 }
 
 const NO_STATS: ConnectionStats = { active: 0, delivered: 0, total: 0 };
-
-/** Parcels per connection (archived included): on the way, delivered, and all it has found. */
-export function statsByConnection(
-  parcels: readonly Parcel[],
-): ReadonlyMap<string, ConnectionStats> {
-  const stats = new Map<string, ConnectionStats>();
-  for (const parcel of parcels) {
-    for (const ref of new Set(parcel.connections.map((entry) => entry.connection_id))) {
-      const current = stats.get(ref) ?? NO_STATS;
-      stats.set(ref, {
-        active: current.active + (parcel.delivered || parcel.archived_at !== null ? 0 : 1),
-        delivered: current.delivered + (parcel.delivered ? 1 : 0),
-        total: current.total + 1,
-      });
-    }
-  }
-  return stats;
-}
 
 function Stat(props: { readonly label: string; readonly value: number | string }): ReactNode {
   return (
@@ -266,10 +249,14 @@ export function ConnectionsPage(): ReactNode {
   const connections = useConnections();
   const carriers = useCarriers();
   const inboxActions = useInboxForm().data?.actions;
-  const parcels = useParcels(true);
+  // Counted by the server: parcels per connection and on the way, not the parcels themselves.
+  const counts = useParcelCounts().data;
   const jobs = useJobs();
   const newest = useMemo(() => newestJobs(jobs.data ?? []), [jobs.data]);
-  const stats = useMemo(() => statsByConnection(parcels.data ?? []), [parcels.data]);
+  const stats = useMemo(
+    () => new Map((counts?.connections ?? []).map((entry) => [entry.connection_id, entry])),
+    [counts],
+  );
   const list = connections.data ?? [];
   const working = list.filter(
     (connection) => connection.state === "ok" || connection.state === "idle",
@@ -290,12 +277,7 @@ export function ConnectionsPage(): ReactNode {
             <Stat label={t.connections.statConnections} value={list.length} />
             <Stat label={t.connections.statWorking} value={working} />
             <Stat label={t.connections.statAttention} value={attention} />
-            <Stat
-              label={t.connections.statOnTheWayTotal}
-              value={
-                parcels.data?.filter((p) => !p.delivered && p.archived_at === null).length ?? "…"
-              }
-            />
+            <Stat label={t.connections.statOnTheWayTotal} value={counts?.active ?? "…"} />
           </div>
         )}
         {admin ? (

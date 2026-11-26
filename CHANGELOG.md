@@ -2,6 +2,18 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Added: the parcel list is searched, sorted and counted by the server
+
+`GET /api/v1/parcels` takes `q` (every word must appear in the tracking number, label, carrier,
+status, the carrier's status text, an item name or the order's shop, number or name) and `sort`
+(`updated_at`, `name`, `status`, `lookup`, `carrier`, `expected`; `-` for descending; default
+`-updated_at`). Without them it answers as before, so the Home Assistant integration's full sync
+is unchanged. `GET /api/v1/parcels/counts` gives the parcels on the way, delivered and archived,
+per carrier and per connection. The web UI's parcel table loads 200 parcels per "Show more" (the
+count reads "200+"), the map loads only the parcels on the way, and the Connections page reads
+the counts instead of every parcel. Sorting is by one column; links with `?sort=label` or
+`?sort=eta` fall back to the newest change first (the columns are `name` and `expected` now).
+
 ### Changed: the Status page's database error is a code
 
 `GET /api/v1/status` reports why the database does not answer as `database.error`, a code

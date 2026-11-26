@@ -3,7 +3,7 @@ import { HomeMarker } from "./HomeMarker";
 import { PackageOpen } from "lucide-react";
 import { useMemo, type ReactNode } from "react";
 import { Marker, Popup } from "react-leaflet";
-import { useParcels } from "../api/queries";
+import { useActiveParcels } from "../api/queries";
 import type { Parcel } from "../api/types";
 import { SplitContainer } from "../components/SplitContainer";
 import { ErrorNotice, Spinner } from "../components/ui";
@@ -85,11 +85,9 @@ function TransitList({ parcels }: { readonly parcels: readonly Parcel[] }): Reac
 }
 
 export default function MapPage(): ReactNode {
-  const parcels = useParcels(false);
-  const active = useMemo(
-    () => (parcels.data ?? []).filter((parcel) => !parcel.delivered),
-    [parcels.data],
-  );
+  // Only the parcels on the way: the server leaves out delivered and archived ones.
+  const parcels = useActiveParcels();
+  const active = useMemo(() => parcels.data ?? [], [parcels.data]);
   const pins = useMemo(() => active.map(pinFor).filter((pin) => pin !== undefined), [active]);
   const { home } = useHome();
   const homePoint = home?.point;

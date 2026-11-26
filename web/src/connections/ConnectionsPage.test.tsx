@@ -46,6 +46,29 @@ describe("connections", () => {
     expect(screen.queryByRole("button", { name: /Sign in/ })).not.toBeInTheDocument();
   });
 
+  it("shows the server's parcel counts per connection, without loading the parcels", async () => {
+    const calls = mockApi({
+      "GET /api/v1/session": () => ({ body: SIGNED_IN }),
+      "GET /api/v1/connections": () => ({ body: [{ ...disabled, state: "ok" }] }),
+      "GET /api/v1/carriers": () => ({ body: [] }),
+      "GET /api/v1/parcels/counts": () => ({
+        body: {
+          active: 7,
+          delivered: 40,
+          archived: 30,
+          carriers: [],
+          connections: [{ connection_id: "s3", active: 3, delivered: 21, total: 25 }],
+        },
+      }),
+    });
+    renderApp("/connections");
+    await screen.findByRole("heading", { name: "DHL account" });
+    for (const value of ["7", "3", "21", "25"]) {
+      expect(await screen.findByText(value, { selector: ".connection-stat-value" })).toBeVisible();
+    }
+    expect(calls.some((call) => call.path === "/api/v1/parcels")).toBe(false);
+  });
+
   it("shows a connection that never had a successful run as not run yet, never OK", async () => {
     mockApi({
       "GET /api/v1/session": () => ({ body: SIGNED_IN }),

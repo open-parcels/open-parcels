@@ -1,7 +1,8 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
-import { mockApi, parcel, renderApp, SIGNED_IN } from "../test/helpers";
+import type { Parcel } from "../api/types";
+import { mockApi, parcel, renderApp, SIGNED_IN, type Recorded } from "../test/helpers";
 
 const PARCELS = [
   parcel({ id: "00000000-0000-4000-8000-00000000000a", label: "Book", carrier: "dhl" }),
@@ -26,10 +27,37 @@ const PARCELS = [
   }),
 ];
 
+/** The server's part, roughly: the Show filter, carrier, search and one page. */
+function serve(all: readonly Parcel[]) {
+  return (request: Recorded) => {
+    const active = request.query.get("active");
+    const carrier = request.query.get("carrier");
+    const search = request.query.get("q")?.toLowerCase();
+    const offset = Number(request.query.get("offset") ?? "0");
+    const limit = Number(request.query.get("limit") ?? "500");
+    const rows = all.filter(
+      (one) =>
+        (active === null || one.delivered === (active === "false")) &&
+        (carrier === null || one.carrier === carrier) &&
+        (search === undefined || one.display_name.toLowerCase().includes(search)),
+    );
+    return { body: rows.slice(offset, offset + limit) };
+  };
+}
+
+const COUNTS = {
+  active: 2,
+  delivered: 1,
+  archived: 0,
+  carriers: ["dhl", "dpd", "hermes"].map((carrier) => ({ carrier, parcels: 1 })),
+  connections: [],
+};
+
 function api() {
   return mockApi({
     "GET /api/v1/session": () => ({ body: SIGNED_IN }),
-    "GET /api/v1/parcels": () => ({ body: PARCELS }),
+    "GET /api/v1/parcels": serve(PARCELS),
+    "GET /api/v1/parcels/counts": () => ({ body: COUNTS }),
     "GET /api/v1/carriers": () => ({ body: [] }),
   });
 }
@@ -46,28 +74,56 @@ describe("parcel list", () => {
     expect(within(table).queryByText("Shoes")).not.toBeInTheDocument();
   });
 
-  it("filters by delivered, carrier and search", async () => {
-    api();
+  it("asks the server to filter by delivered, carrier and search", async () => {
+    const calls = api();
     const user = userEvent.setup();
     renderApp();
     const table = await screen.findByRole("table", { name: "Parcels" });
+    const lastQuery = () => calls.filter((call) => call.path === "/api/v1/parcels").at(-1)?.query;
 
     await user.click(screen.getByLabelText("Delivered"));
-    expect(within(table).getByText("Shoes")).toBeInTheDocument();
+    expect(await within(table).findByText("Shoes")).toBeInTheDocument();
     expect(within(table).queryByText("Book")).not.toBeInTheDocument();
+    expect(lastQuery()?.get("active")).toBe("false");
 
     await user.click(screen.getByLabelText("All"));
     await user.selectOptions(screen.getByLabelText("Carrier"), "dhl");
-    expect(within(table).getByText("Book")).toBeInTheDocument();
-    expect(within(table).queryByText("Shoes")).not.toBeInTheDocument();
+    expect(await within(table).findByText("Book")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(table).queryByText("Shoes")).not.toBeInTheDocument();
+    });
+    expect(lastQuery()?.get("carrier")).toBe("dhl");
+    expect(lastQuery()?.has("active")).toBe(false);
 
     await user.selectOptions(screen.getByLabelText("Carrier"), "");
     await user.type(screen.getByLabelText("Search parcels"), "shoes");
-    expect(within(table).getByText("Shoes")).toBeInTheDocument();
-    expect(within(table).queryByText("Book")).not.toBeInTheDocument();
+    expect(await within(table).findByText("Shoes")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(within(table).queryByText("Book")).not.toBeInTheDocument();
+    });
+    expect(lastQuery()?.get("q")).toBe("shoes");
   });
 
-  it("draws a long list in steps of 200 rows, searching all of them", async () => {
+  it("sorts on the server by the clicked column", async () => {
+    const calls = api();
+    const user = userEvent.setup();
+    renderApp();
+    await screen.findByRole("table", { name: "Parcels" });
+    expect(calls.find((call) => call.path === "/api/v1/parcels")?.query.get("sort")).toBe(
+      "-updated_at",
+    );
+    await user.click(screen.getByRole("button", { name: "Carrier" }));
+    await waitFor(() => {
+      expect(
+        calls
+          .filter((call) => call.path === "/api/v1/parcels")
+          .at(-1)
+          ?.query.get("sort"),
+      ).toBe("carrier");
+    });
+  });
+
+  it("loads the list one server page at a time", async () => {
     const many = Array.from({ length: 450 }, (_, n) =>
       parcel({
         id: `00000000-0000-4000-8000-${String(n).padStart(12, "0")}`,
@@ -75,25 +131,31 @@ describe("parcel list", () => {
         label: `Scale ${String(n)}`,
       }),
     );
-    mockApi({
+    const calls = mockApi({
       "GET /api/v1/session": () => ({ body: SIGNED_IN }),
-      "GET /api/v1/parcels": () => ({ body: many }),
+      "GET /api/v1/parcels": serve(many),
+      "GET /api/v1/parcels/counts": () => ({ body: COUNTS }),
       "GET /api/v1/carriers": () => ({ body: [] }),
     });
     const user = userEvent.setup();
     renderApp();
     const table = await screen.findByRole("table", { name: "Parcels" });
-    // A header row and the first 200 parcels; the count still names all 450.
+    // A header row and the first page; the count says more follow.
     expect(within(table).getAllByRole("row")).toHaveLength(201);
-    expect(screen.getByText("450 of 450")).toBeInTheDocument();
-    await user.click(screen.getByRole("button", { name: "Show 200 more" }));
-    expect(within(table).getAllByRole("row")).toHaveLength(401);
-    await user.click(screen.getByRole("button", { name: "Show 50 more" }));
-    expect(within(table).getAllByRole("row")).toHaveLength(451);
-    expect(screen.queryByRole("button", { name: /^Show \d+ more$/ })).not.toBeInTheDocument();
-    // The search covers parcels that were never drawn.
-    await user.type(screen.getByLabelText("Search parcels"), "Scale 449");
-    expect(within(table).getByText("Scale 449")).toBeInTheDocument();
+    expect(screen.getAllByText("200+").length).toBeGreaterThan(0);
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    await waitFor(() => {
+      expect(within(table).getAllByRole("row")).toHaveLength(401);
+    });
+    await user.click(screen.getByRole("button", { name: "Show more" }));
+    await waitFor(() => {
+      expect(within(table).getAllByRole("row")).toHaveLength(451);
+    });
+    expect(screen.queryByRole("button", { name: "Show more" })).not.toBeInTheDocument();
+    const offsets = calls
+      .filter((call) => call.path === "/api/v1/parcels")
+      .map((call) => call.query.get("offset"));
+    expect(offsets).toEqual(["0", "200", "400"]);
     // 450 table rows in jsdom took just over the 5 s default on the NAS's capped test container.
   }, 15_000);
 

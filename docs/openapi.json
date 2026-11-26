@@ -4060,7 +4060,7 @@
         "tags": [
           "parcels"
         ],
-        "description": "Pages of `limit` parcels (default 500), from `offset`. A full page carries the `X-Next-Offset` header with the offset of the next page; the last page has none.",
+        "description": "Pages of `limit` parcels (default 500), from `offset`. A full page carries the `X-Next-Offset` header with the offset of the next page; the last page has none. `q` keeps parcels in which every word appears in the tracking number, label, carrier, status, the carrier's status text, an item name, or the order's shop, number or name. `sort` (default `-updated_at`): `updated_at`, `name` (label, else item names in that label mode, else tracking number), `status`, `lookup`, `carrier` or `expected`; a leading `-` sorts descending, parcels without a value come last.",
         "parameters": [
           {
             "schema": {
@@ -4123,6 +4123,37 @@
             },
             "in": "query",
             "name": "include_history",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "maxLength": 200
+            },
+            "in": "query",
+            "name": "q",
+            "required": false
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "updated_at",
+                "name",
+                "status",
+                "lookup",
+                "carrier",
+                "expected",
+                "-updated_at",
+                "-name",
+                "-status",
+                "-lookup",
+                "-carrier",
+                "-expected"
+              ]
+            },
+            "in": "query",
+            "name": "sort",
             "required": false
           },
           {
@@ -5613,6 +5644,106 @@
                     "error",
                     "message",
                     "params"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/parcels/counts": {
+      "get": {
+        "summary": "How many parcels there are, per carrier and per connection.",
+        "tags": [
+          "parcels"
+        ],
+        "description": "Visible parcels, archived ones included. `active`: not delivered and not archived; `delivered`: delivered, archived or not; `archived`: archived. `carriers`: parcels per carrier. `connections`: per connection that reported parcels, each parcel counted once.",
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "active": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "delivered": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "archived": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "carriers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "carrier": {
+                            "type": "string"
+                          },
+                          "parcels": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "carrier",
+                          "parcels"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "connections": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "connection_id": {
+                            "type": "string"
+                          },
+                          "active": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "delivered": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          },
+                          "total": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9007199254740991
+                          }
+                        },
+                        "required": [
+                          "connection_id",
+                          "active",
+                          "delivered",
+                          "total"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "active",
+                    "delivered",
+                    "archived",
+                    "carriers",
+                    "connections"
                   ],
                   "additionalProperties": false
                 }

@@ -1978,6 +1978,9 @@ export type GetApiV1ParcelsParams = {
   carrier?: string;
   include_archived?: GetApiV1ParcelsIncludeArchived;
   include_history?: GetApiV1ParcelsIncludeHistory;
+  /** @maxLength 200 */
+  q?: string;
+  sort?: GetApiV1ParcelsSort;
   /**
    * @minimum 1
    * @maximum 1000
@@ -2002,6 +2005,19 @@ export type GetApiV1ParcelsStatus =
   | "unknown";
 export type GetApiV1ParcelsIncludeArchived = "true" | "false";
 export type GetApiV1ParcelsIncludeHistory = "true" | "false";
+export type GetApiV1ParcelsSort =
+  | "updated_at"
+  | "name"
+  | "status"
+  | "lookup"
+  | "carrier"
+  | "expected"
+  | "-updated_at"
+  | "-name"
+  | "-status"
+  | "-lookup"
+  | "-carrier"
+  | "-expected";
 export type GetApiV1Parcels200ItemStatus =
   | "registered"
   | "in_transit"
@@ -2786,6 +2802,54 @@ export type PostApiV1Parcels409 = {
   message: string;
   /** Values a client's own text for the code needs, e.g. `resource` for `not_found`, `seconds` for `too_many_attempts`, `detail` for a carrier's or validator's own words. */
   params: PostApiV1Parcels409Params;
+};
+
+export type GetApiV1ParcelsCounts200CarriersItem = {
+  carrier: string;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  parcels: number;
+};
+
+export type GetApiV1ParcelsCounts200ConnectionsItem = {
+  connection_id: string;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  active: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  delivered: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  total: number;
+};
+
+export type GetApiV1ParcelsCounts200 = {
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  active: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  delivered: number;
+  /**
+   * @minimum 0
+   * @maximum 9007199254740991
+   */
+  archived: number;
+  carriers: GetApiV1ParcelsCounts200CarriersItem[];
+  connections: GetApiV1ParcelsCounts200ConnectionsItem[];
 };
 
 export type GetApiV1ParcelsId200Status =
@@ -11551,7 +11615,7 @@ export const getGetApiV1ParcelsUrl = (params?: GetApiV1ParcelsParams) => {
 };
 
 /**
- * Pages of `limit` parcels (default 500), from `offset`. A full page carries the `X-Next-Offset` header with the offset of the next page; the last page has none.
+ * Pages of `limit` parcels (default 500), from `offset`. A full page carries the `X-Next-Offset` header with the offset of the next page; the last page has none. `q` keeps parcels in which every word appears in the tracking number, label, carrier, status, the carrier's status text, an item name, or the order's shop, number or name. `sort` (default `-updated_at`): `updated_at`, `name` (label, else item names in that label mode, else tracking number), `status`, `lookup`, `carrier` or `expected`; a leading `-` sorts descending, parcels without a value come last.
  * @summary List parcels, newest change first.
  */
 export const getApiV1Parcels = async (
@@ -11580,6 +11644,23 @@ export const postApiV1Parcels = async (
     method: "POST",
     headers: getHeaders({ "Content-Type": "application/json" }, options?.headers),
     body: JSON.stringify(postApiV1ParcelsBody),
+  });
+};
+
+export const getGetApiV1ParcelsCountsUrl = () => {
+  return `/api/v1/parcels/counts`;
+};
+
+/**
+ * Visible parcels, archived ones included. `active`: not delivered and not archived; `delivered`: delivered, archived or not; `archived`: archived. `carriers`: parcels per carrier. `connections`: per connection that reported parcels, each parcel counted once.
+ * @summary How many parcels there are, per carrier and per connection.
+ */
+export const getApiV1ParcelsCounts = async (
+  options?: Parameters<typeof apiFetch>[1],
+): Promise<GetApiV1ParcelsCounts200> => {
+  return apiFetch<GetApiV1ParcelsCounts200>(getGetApiV1ParcelsCountsUrl(), {
+    ...options,
+    method: "GET",
   });
 };
 

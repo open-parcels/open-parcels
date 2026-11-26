@@ -38,7 +38,9 @@ import {
   getApiV1OrdersId,
   getApiV1Returns,
   getApiV1Parcels,
+  getApiV1ParcelsCounts,
   getApiV1ParcelsId,
+  type GetApiV1ParcelsSort,
   getApiV1Connections,
   getApiV1Jobs,
   getApiV1ConnectionsIdData,
@@ -69,7 +71,9 @@ import type { OrderView, ParcelDetail, ReturnView } from "./types";
 
 export const keys = {
   parcels: ["parcels"] as const,
-  parcelList: (archived: boolean) => ["parcels", "list", { archived }] as const,
+  parcelList: (query: ParcelQuery) => ["parcels", "list", query] as const,
+  activeParcels: ["parcels", "active"] as const,
+  parcelCounts: ["parcels", "counts"] as const,
   parcel: (id: string) => ["parcels", "one", id] as const,
   orders: ["orders"] as const,
   orderList: (view: OrderView) => ["orders", "list", { view }] as const,
@@ -95,8 +99,8 @@ export const keys = {
 
 /**
  * Every page of a paged list: the server says a full page may have more after it, so pages are
- * read until one comes back short. Parcels are searched and counted in the browser, so a list cut
- * at one page would quietly miss parcels.
+ * read until one comes back short. For lists a page needs whole, such as the map's parcels on the
+ * way.
  */
 export async function allPages<T>(
   limit: number,
@@ -110,27 +114,63 @@ export async function allPages<T>(
   }
 }
 
-/** The server's largest pages for these lists. */
-const PARCEL_PAGE = 1000;
-/** Orders come one server page per "Show more": the order list is not searched in the browser. */
-const ORDER_PAGE = 200;
+/** The server's largest page of parcels. */
+const PARCEL_PAGE_MAX = 1000;
+/** Parcels and orders come one server page per "Show more"; the server searches and sorts. */
+const LIST_PAGE = 200;
 
-export function useParcels(includeArchived: boolean) {
-  return useQuery({
-    queryKey: keys.parcelList(includeArchived),
-    queryFn: ({ signal }) =>
-      allPages(PARCEL_PAGE, (offset) =>
-        getApiV1Parcels(
-          {
-            limit: PARCEL_PAGE,
-            offset,
-            ...(includeArchived ? { include_archived: "true" } : {}),
-          },
-          { signal },
-        ),
+/** What the parcel table asks the server for; the server filters, searches and sorts. */
+export interface ParcelQuery {
+  readonly archived: boolean;
+  /** true: on the way, false: delivered, undefined: both. */
+  readonly active: boolean | undefined;
+  readonly carrier: string;
+  readonly search: string;
+  readonly sort: GetApiV1ParcelsSort;
+}
+
+/** The parcels of the table, one server page at a time: `fetchNextPage` loads the next one. */
+export function useParcels(query: ParcelQuery) {
+  return useInfiniteQuery({
+    queryKey: keys.parcelList(query),
+    queryFn: ({ signal, pageParam }) =>
+      getApiV1Parcels(
+        {
+          limit: LIST_PAGE,
+          offset: pageParam,
+          sort: query.sort,
+          ...(query.archived ? { include_archived: "true" } : {}),
+          ...(query.active === undefined ? {} : { active: query.active ? "true" : "false" }),
+          ...(query.carrier === "" ? {} : { carrier: query.carrier }),
+          ...(query.search.trim() === "" ? {} : { q: query.search.trim() }),
+        },
+        { signal },
       ),
-    // Switching "Include archived" keeps showing the current list until the other one arrives.
+    initialPageParam: 0,
+    // A full page may have more after it; a short one is the last.
+    getNextPageParam: (last, _pages, offset) =>
+      last.length < LIST_PAGE ? undefined : offset + LIST_PAGE,
+    // Changing a filter, the search or the sort keeps showing the current rows until the new ones arrive.
     placeholderData: keepPreviousData,
+  });
+}
+
+/** The parcels on the way (not delivered, not archived), for the map: a few hundred at most. */
+export function useActiveParcels() {
+  return useQuery({
+    queryKey: keys.activeParcels,
+    queryFn: ({ signal }) =>
+      allPages(PARCEL_PAGE_MAX, (offset) =>
+        getApiV1Parcels({ active: "true", limit: PARCEL_PAGE_MAX, offset }, { signal }),
+      ),
+  });
+}
+
+/** Parcels on the way, delivered and archived, per carrier and per connection. */
+export function useParcelCounts() {
+  return useQuery({
+    queryKey: keys.parcelCounts,
+    queryFn: ({ signal }) => getApiV1ParcelsCounts({ signal }),
   });
 }
 
@@ -298,11 +338,11 @@ export function useOrders(view: OrderView) {
   return useInfiniteQuery({
     queryKey: keys.orderList(view),
     queryFn: ({ signal, pageParam }) =>
-      getApiV1Orders({ view, limit: ORDER_PAGE, offset: pageParam }, { signal }),
+      getApiV1Orders({ view, limit: LIST_PAGE, offset: pageParam }, { signal }),
     initialPageParam: 0,
     // A full page may have more after it; a short one is the last.
     getNextPageParam: (last, _pages, offset) =>
-      last.length < ORDER_PAGE ? undefined : offset + ORDER_PAGE,
+      last.length < LIST_PAGE ? undefined : offset + LIST_PAGE,
     placeholderData: keepPreviousData,
   });
 }

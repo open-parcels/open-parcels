@@ -20,7 +20,16 @@ function endpoints(now: number): readonly (readonly [string, string])[] {
   const to = new Date(now + 28 * DAY).toISOString();
   return [
     ["parcels, first page (100)", "/api/v1/parcels?limit=100"],
-    ["parcels, web UI page (1000)", "/api/v1/parcels?limit=1000"],
+    ["parcels, web UI page (200)", "/api/v1/parcels?active=true&limit=200"],
+    [
+      "parcels + archived, search and sort by name",
+      "/api/v1/parcels?include_archived=true&q=SC00000&sort=name&limit=200",
+    ],
+    [
+      "parcels + archived, sort by expected, page at 4000",
+      "/api/v1/parcels?include_archived=true&sort=-expected&limit=200&offset=4000",
+    ],
+    ["parcel counts", "/api/v1/parcels/counts"],
     [
       "parcels + archived, page at 5000",
       "/api/v1/parcels?include_archived=true&limit=100&offset=5000",

@@ -1,53 +1,101 @@
 import {
   flexRender,
   getCoreRowModel,
-  getFilteredRowModel,
-  getSortedRowModel,
   useReactTable,
   type ColumnDef,
   type SortingState,
   type Updater,
 } from "@tanstack/react-table";
 import { ChevronDown, ChevronsUpDown, ChevronUp, Search } from "lucide-react";
-import { useId, type ReactNode } from "react";
+import { useEffect, useId, useState, type ReactNode } from "react";
 import { useUrlParam } from "../lib/urlState";
 import { t } from "../i18n";
-import { useShowMore } from "./ShowMore";
+import { formatNumber } from "../lib/locale";
+
+/** How long typing pauses before the search goes to the address and the server. */
+const SEARCH_DELAY_MS = 300;
 
 export interface DataTableProps<TData> {
   /** Column definitions; build them with `createColumnHelper<TData>()`. */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any -- TanStack's column helper yields ColumnDef<T, any>; the value type differs per column.
   readonly columns: ColumnDef<TData, any>[];
+  /** The rows loaded so far, already searched, filtered and sorted by the server. */
   readonly data: TData[];
+  /** Another page follows on the server: "Show more" loads it and the count reads "200+". */
+  readonly hasMore: boolean;
+  readonly loadingMore: boolean;
+  readonly onMore: () => void;
   readonly caption: string;
   readonly emptyText?: string;
   readonly searchLabel?: string;
   /** Controls placed beside the search box, such as filters. */
   readonly extraControls?: ReactNode;
-  readonly defaultSort?: SortingState;
-  /** Keep search and sorting in the address under these keys (`?q=…&sort=-column`). */
-  readonly urlKeys: { readonly search: string; readonly sort: string };
+  /** The sort the server applied, and how to change it (`useTableSort`). */
+  readonly sorting: SortingState;
+  readonly onSortingChange: (next: SortingState) => void;
+  /** The search the server applied, and the box's text (`useTableSearch`). */
+  readonly search: TableSearch;
   readonly rowClassName?: (row: TData) => string | undefined;
 }
 
-/** `-updated_at,label` → updated_at descending, then label ascending; unknown columns are dropped. */
-function parseSort(raw: string | null, ids: ReadonlySet<string | undefined>): SortingState | null {
+/** `-updated_at` → updated_at descending; one column, unknown columns are dropped. */
+function parseSort(raw: string | null, ids: ReadonlySet<string>): SortingState | null {
   if (raw === null) return null;
-  if (raw === "none") return [];
-  const sorting = raw
-    .split(",")
-    .map((part) => part.trim())
-    .filter((part) => part !== "")
-    .map((part) => ({ id: part.replace(/^-/, ""), desc: part.startsWith("-") }))
-    .filter((entry) => ids.has(entry.id));
-  return sorting.length === 0 ? null : sorting;
+  const part = raw.split(",")[0]?.trim() ?? "";
+  const entry = { id: part.replace(/^-/, ""), desc: part.startsWith("-") };
+  return ids.has(entry.id) ? [entry] : null;
 }
 
-/** Empty sorting is written as "none" so it stays empty instead of falling back to the default. */
-function formatSort(sorting: SortingState): string {
-  return sorting.length === 0
-    ? "none"
-    : sorting.map((entry) => `${entry.desc ? "-" : ""}${entry.id}`).join(",");
+function formatSort(sorting: SortingState): string | null {
+  const entry = sorting[0];
+  return entry === undefined ? null : `${entry.desc ? "-" : ""}${entry.id}`;
+}
+
+/** A table's sort kept in the address under `key`: `?sort=-updated_at`, `?sort=name`. */
+export function useTableSort(
+  key: string,
+  ids: readonly string[],
+  fallback: SortingState,
+): [SortingState, (next: SortingState) => void] {
+  const [sortParam, setSortParam] = useUrlParam(key);
+  const sorting = parseSort(sortParam, new Set(ids)) ?? fallback;
+  return [
+    sorting,
+    (next) => {
+      // Clicking a sorted column a third time goes back to the default sort.
+      setSortParam(next.length === 0 ? null : formatSort(next));
+    },
+  ];
+}
+
+export interface TableSearch {
+  /** The search in the address, which the server applied. */
+  readonly applied: string;
+  /** The box's text, which reaches the address once typing pauses. */
+  readonly draft: string;
+  readonly setDraft: (text: string) => void;
+}
+
+/** A table's search kept in the address under `key` (`?q=…`), written once typing pauses. */
+export function useTableSearch(key: string): TableSearch {
+  const [searchParam, setSearchParam] = useUrlParam(key);
+  const applied = searchParam ?? "";
+  const [typed, setTyped] = useState({ text: applied, from: applied });
+  // The address changed elsewhere (a link, the back button): the box follows it.
+  const draft = typed.from === applied ? typed.text : applied;
+  const setDraft = (text: string): void => {
+    setTyped({ text, from: applied });
+  };
+  useEffect(() => {
+    if (draft === applied) return undefined;
+    const timer = setTimeout(() => {
+      setSearchParam(draft);
+    }, SEARCH_DELAY_MS);
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [draft, applied, setSearchParam]);
+  return { applied, draft, setDraft };
 }
 
 function SortIcon({ sorted }: { readonly sorted: false | "asc" | "desc" }): ReactNode {
@@ -58,34 +106,28 @@ function SortIcon({ sorted }: { readonly sorted: false | "asc" | "desc" }): Reac
   return <Icon size={12} className="sort-icon active" aria-hidden="true" />;
 }
 
-/** A sortable, searchable table built on TanStack Table. Headers are buttons, so sorting works by keyboard. */
+/**
+ * A table of rows the server searched, filtered, sorted and paged. Headers are buttons, so
+ * sorting works by keyboard; the sort and the search live in the address.
+ */
 export function DataTable<TData>(props: DataTableProps<TData>): ReactNode {
-  const [sortParam, setSortParam] = useUrlParam(props.urlKeys.sort);
-  const [searchParam, setSearchParam] = useUrlParam(props.urlKeys.search);
-  const ids = new Set(props.columns.map((column) => column.id));
-  const sorting = parseSort(sortParam, ids) ?? props.defaultSort ?? [];
-  const filter = searchParam ?? "";
+  const { sorting, search } = props;
   const setSorting = (updater: Updater<SortingState>): void => {
-    const next = typeof updater === "function" ? updater(sorting) : updater;
-    setSortParam(formatSort(next));
-  };
-  const setFilter = (updater: Updater<string>): void => {
-    setSearchParam(typeof updater === "function" ? updater(filter) : updater);
+    props.onSortingChange(typeof updater === "function" ? updater(sorting) : updater);
   };
   const searchId = useId();
   // eslint-disable-next-line react-hooks/incompatible-library -- TanStack Table returns fresh functions on purpose.
   const table = useReactTable({
     data: props.data,
     columns: props.columns,
-    state: { sorting, globalFilter: filter },
+    state: { sorting },
     onSortingChange: setSorting,
-    onGlobalFilterChange: setFilter,
+    manualSorting: true,
+    manualFiltering: true,
+    enableMultiSort: false,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
   });
   const rows = table.getRowModel().rows;
-  const { visible, more } = useShowMore(rows, `${filter}|${formatSort(sorting)}`);
 
   return (
     <div className="data-table">
@@ -99,15 +141,16 @@ export function DataTable<TData>(props: DataTableProps<TData>): ReactNode {
             id={searchId}
             type="search"
             placeholder={`${props.searchLabel ?? t.common.search}…`}
-            value={filter}
+            value={search.draft}
             onChange={(e) => {
-              setFilter(e.target.value);
+              search.setDraft(e.target.value);
             }}
           />
         </div>
         {props.extraControls}
         <span className="count" aria-live="polite">
-          {t.common.countOf(rows.length, props.data.length)}
+          {formatNumber(rows.length)}
+          {props.hasMore ? "+" : ""}
         </span>
       </div>
       <div className="table-scroll glass-panel">
@@ -144,13 +187,13 @@ export function DataTable<TData>(props: DataTableProps<TData>): ReactNode {
             {rows.length === 0 ? (
               <tr>
                 <td colSpan={props.columns.length} className="muted empty">
-                  {filter === ""
+                  {search.applied === ""
                     ? (props.emptyText ?? t.common.nothingYet)
                     : t.common.nothingMatches}
                 </td>
               </tr>
             ) : (
-              visible.map((row) => (
+              rows.map((row) => (
                 <tr key={row.id} className={props.rowClassName?.(row.original)}>
                   {row.getVisibleCells().map((cell) => (
                     <td key={cell.id}>
@@ -163,7 +206,16 @@ export function DataTable<TData>(props: DataTableProps<TData>): ReactNode {
           </tbody>
         </table>
       </div>
-      {more}
+      {props.hasMore ? (
+        <button
+          type="button"
+          className="button show-more"
+          disabled={props.loadingMore}
+          onClick={props.onMore}
+        >
+          {t.common.loadMore}
+        </button>
+      ) : null}
     </div>
   );
 }

@@ -674,7 +674,7 @@ fieldset.inline {
   gap: 16px;
 }
 
-/* "Show 200 more" under a long table or card grid. */
+/* "Show more" under a long table or card grid. */
 .show-more {
   align-self: center;
   margin: 0 auto;

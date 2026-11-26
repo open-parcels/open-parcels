@@ -1,14 +1,27 @@
 import { Package, Plus } from "lucide-react";
 import { useState, type ReactNode } from "react";
-import { useParcels } from "../api/queries";
+import { useParcelCounts, useParcels } from "../api/queries";
+import type { GetApiV1ParcelsSort } from "../api/generated";
 import { useIsAdmin } from "../auth/session";
+import { useTableSearch, useTableSort } from "../components/DataTable";
 import { ErrorNotice, Spinner } from "../components/ui";
+import { formatNumber } from "../lib/locale";
 import { AddParcelDialog } from "./AddParcelDialog";
 import { flag, pickOne, useUrlParam } from "../lib/urlState";
-import { PARCEL_FILTERS, ParcelTable, type ParcelFilter } from "./ParcelTable";
+import {
+  PARCEL_DEFAULT_SORT,
+  PARCEL_FILTERS,
+  PARCEL_SORT_COLUMNS,
+  ParcelTable,
+  type ParcelFilter,
+} from "./ParcelTable";
 import { t } from "../i18n";
 
-/** Linkable: `?status=active|delivered|all`, `?archived=1`, `?carrier=dhl`, `?q=…`, `?sort=-updated_at`. */
+/**
+ * Linkable: `?status=active|delivered|all`, `?archived=1`, `?carrier=dhl`, `?q=…`,
+ * `?sort=-updated_at`. The server filters, searches, sorts and pages; "Show more" loads the next
+ * page.
+ */
 export function ParcelsPage(): ReactNode {
   const [archivedParam, setArchivedParam] = useUrlParam("archived");
   const [statusParam, setStatusParam] = useUrlParam("status");
@@ -20,9 +33,22 @@ export function ParcelsPage(): ReactNode {
   const setFilter = (value: ParcelFilter): void => {
     setStatusParam(value === "active" ? null : value);
   };
+  const [carrierParam, setCarrierParam] = useUrlParam("carrier");
+  const carrier = carrierParam?.toLowerCase() ?? "";
+  const [sorting, setSorting] = useTableSort("sort", PARCEL_SORT_COLUMNS, PARCEL_DEFAULT_SORT);
+  const search = useTableSearch("q");
   const [adding, setAdding] = useState(false);
   const admin = useIsAdmin();
-  const parcels = useParcels(archived);
+  const sort = sorting[0] ?? { id: "updated_at", desc: true };
+  const parcels = useParcels({
+    archived,
+    active: filter === "all" ? undefined : filter === "active",
+    carrier,
+    search: search.applied,
+    sort: `${sort.desc ? "-" : ""}${sort.id}` as GetApiV1ParcelsSort,
+  });
+  const carriers = useParcelCounts().data?.carriers.map((entry) => entry.carrier) ?? [];
+  const list = parcels.data?.pages.flat();
 
   return (
     <section aria-labelledby="parcels-title" className="stack">
@@ -30,8 +56,11 @@ export function ParcelsPage(): ReactNode {
         <div className="page-title-row">
           <Package size={22} className="page-icon" aria-hidden="true" />
           <h1 id="parcels-title">{t.parcels.title}</h1>
-          {parcels.data === undefined ? null : (
-            <span className="page-count">{parcels.data.length}</span>
+          {list === undefined ? null : (
+            <span className="page-count">
+              {formatNumber(list.length)}
+              {parcels.hasNextPage ? "+" : ""}
+            </span>
           )}
         </div>
         <label className="checkbox">
@@ -59,10 +88,32 @@ export function ParcelsPage(): ReactNode {
         ) : null}
       </div>
       <ErrorNotice error={parcels.error} />
-      {parcels.data === undefined ? (
-        <Spinner />
+      {list === undefined ? (
+        parcels.isPending ? (
+          <Spinner />
+        ) : null
       ) : (
-        <ParcelTable parcels={parcels.data} filter={filter} onFilterChange={setFilter} />
+        <ParcelTable
+          parcels={list}
+          hasMore={parcels.hasNextPage}
+          loadingMore={parcels.isFetchingNextPage}
+          onMore={() => {
+            void parcels.fetchNextPage();
+          }}
+          filter={filter}
+          onFilterChange={setFilter}
+          carrier={carrier}
+          // The carrier in the address stays choosable while no parcel of it is left.
+          carriers={
+            carrier === "" || carriers.includes(carrier) ? carriers : [...carriers, carrier]
+          }
+          onCarrierChange={(value) => {
+            setCarrierParam(value === "" ? null : value);
+          }}
+          sorting={sorting}
+          onSortingChange={setSorting}
+          search={search}
+        />
       )}
       <AddParcelDialog
         open={adding}

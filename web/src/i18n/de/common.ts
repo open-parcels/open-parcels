@@ -1,4 +1,3 @@
-import { formatNumber } from "../../lib/locale";
 import type { Messages } from "../messages";
 
 export const common: Messages["common"] = {
@@ -13,8 +12,6 @@ export const common: Messages["common"] = {
   label: "Bezeichnung",
   search: "Suchen",
   yes: "Ja",
-  countOf: (shown, total) => `${formatNumber(shown)} von ${formatNumber(total)}`,
-  showMore: (count) => `${formatNumber(count)} weitere anzeigen`,
   loadMore: "Mehr anzeigen",
   nothingYet: "Noch nichts hier.",
   nothingMatches: "Keine Treffer.",

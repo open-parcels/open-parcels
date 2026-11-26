@@ -21,6 +21,9 @@ function mockAll(): void {
     "GET /api/v1/consumers": () => ({ body: [] }),
     "GET /api/v1/consumers/available": () => ({ body: [] }),
     "GET /api/v1/parcels": () => ({ body: [PARCEL] }),
+    "GET /api/v1/parcels/counts": () => ({
+      body: { active: 1, delivered: 0, archived: 0, carriers: [], connections: [] },
+    }),
     [`GET /api/v1/parcels/${PARCEL.id}`]: () => ({ body: PARCEL }),
     "GET /api/v1/orders": () => ({ body: [] }),
     "GET /api/v1/returns": () => ({ body: [] }),

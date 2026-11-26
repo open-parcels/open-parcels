@@ -1,5 +1,3 @@
-import { formatNumber } from "../../lib/locale";
-
 /** English texts: shared words. The German file must have the same keys (the type enforces it). */
 export const common = {
   somethingWentWrong: "Something went wrong.",
@@ -13,8 +11,6 @@ export const common = {
   label: "Label",
   search: "Search",
   yes: "Yes",
-  countOf: (shown: number, total: number) => `${formatNumber(shown)} of ${formatNumber(total)}`,
-  showMore: (count: number) => `Show ${formatNumber(count)} more`,
   loadMore: "Show more",
   nothingYet: "Nothing here yet.",
   nothingMatches: "Nothing matches.",

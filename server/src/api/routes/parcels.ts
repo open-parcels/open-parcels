@@ -1,7 +1,12 @@
 import { z } from "zod";
 import { DIRECTIONS, parcelSchema, parcelStatusSchema } from "../../domain/parcel.js";
 import { detectCarrier } from "../../engine/detect.js";
-import { PARCEL_PAGE_DEFAULT } from "../../parcels/repository.js";
+import {
+  PARCEL_PAGE_DEFAULT,
+  PARCEL_SORT_KEYS,
+  parcelCounts,
+  type ParcelSortKey,
+} from "../../parcels/list-query.js";
 import { DuplicateParcelError } from "../../parcels/service.js";
 import type { Services } from "../../services.js";
 import type { TypedApp } from "../app.js";
@@ -13,6 +18,16 @@ import { idParams, markNextPage, pageQuery } from "../schemas.js";
 const trackingNumberField = z.string().trim().min(4).max(64);
 
 const booleanQuery = z.enum(["true", "false"]).transform((value) => value === "true");
+
+/** `name` sorts ascending, `-name` descending. */
+const sortQuery = z
+  .enum([...PARCEL_SORT_KEYS, ...PARCEL_SORT_KEYS.map((key) => `-${key}` as const)])
+  .transform((value) => ({
+    key: value.replace(/^-/, "") as ParcelSortKey,
+    desc: value.startsWith("-"),
+  }));
+
+const countSchema = z.number().int().nonnegative();
 
 export function registerParcelRoutes(app: TypedApp, services: Services): void {
   const read = requireScope("read");
@@ -27,13 +42,21 @@ export function registerParcelRoutes(app: TypedApp, services: Services): void {
         summary: "List parcels, newest change first.",
         description:
           "Pages of `limit` parcels (default 500), from `offset`. A full page carries the " +
-          "`X-Next-Offset` header with the offset of the next page; the last page has none.",
+          "`X-Next-Offset` header with the offset of the next page; the last page has none. " +
+          "`q` keeps parcels in which every word appears in the tracking number, label, " +
+          "carrier, status, the carrier's status text, an item name, or the order's shop, " +
+          "number or name. `sort` (default `-updated_at`): `updated_at`, `name` (label, else " +
+          "item names in that label mode, else tracking number), `status`, `lookup`, " +
+          "`carrier` or `expected`; a leading `-` sorts descending, parcels without a value " +
+          "come last.",
         querystring: z.object({
           active: booleanQuery.optional(),
           status: parcelStatusSchema.optional(),
           carrier: z.string().max(64).optional(),
           include_archived: booleanQuery.optional(),
           include_history: booleanQuery.optional(),
+          q: z.string().max(200).optional(),
+          sort: sortQuery.optional(),
           ...pageQuery(1000),
         }),
         response: { 200: z.array(parcelSchema) },
@@ -51,6 +74,8 @@ export function registerParcelRoutes(app: TypedApp, services: Services): void {
           ...(query.include_archived === undefined
             ? {}
             : { includeArchived: query.include_archived }),
+          ...(query.q === undefined ? {} : { search: query.q }),
+          ...(query.sort === undefined ? {} : { sort: query.sort }),
           // One more than asked tells whether another page follows.
           limit: limit + 1,
           offset,
@@ -61,6 +86,8 @@ export function registerParcelRoutes(app: TypedApp, services: Services): void {
       return parcels.slice(0, limit);
     },
   );
+
+  registerParcelCountRoute(app, services);
 
   app.get(
     "/api/v1/parcels/:id",
@@ -184,5 +211,41 @@ export function registerParcelRoutes(app: TypedApp, services: Services): void {
       }
       return reply.code(204).send(null);
     },
+  );
+}
+
+/** `GET /api/v1/parcels/counts`: what the Connections page and the parcel filters show. */
+function registerParcelCountRoute(app: TypedApp, services: Services): void {
+  app.get(
+    "/api/v1/parcels/counts",
+    {
+      preHandler: requireScope("read"),
+      schema: {
+        tags: ["parcels"],
+        summary: "How many parcels there are, per carrier and per connection.",
+        description:
+          "Visible parcels, archived ones included. `active`: not delivered and not archived; " +
+          "`delivered`: delivered, archived or not; `archived`: archived. `carriers`: parcels " +
+          "per carrier. `connections`: per connection that reported parcels, each parcel " +
+          "counted once.",
+        response: {
+          200: z.object({
+            active: countSchema,
+            delivered: countSchema,
+            archived: countSchema,
+            carriers: z.array(z.object({ carrier: z.string(), parcels: countSchema })),
+            connections: z.array(
+              z.object({
+                connection_id: z.string(),
+                active: countSchema,
+                delivered: countSchema,
+                total: countSchema,
+              }),
+            ),
+          }),
+        },
+      },
+    },
+    () => parcelCounts(services.db),
   );
 }

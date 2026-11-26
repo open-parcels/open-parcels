@@ -52,6 +52,9 @@ describe("10,000 parcels and 5,000 orders", () => {
     "/api/v1/parcels?include_archived=true&limit=100&offset=5000",
     "/api/v1/parcels?include_archived=true&carrier=dhl&limit=100",
     "/api/v1/parcels?status=in_transit&limit=100",
+    "/api/v1/parcels?include_archived=true&q=SC0000&sort=name&limit=200&offset=4000",
+    "/api/v1/parcels?include_archived=true&sort=-expected&limit=200",
+    "/api/v1/parcels/counts",
     "/api/v1/orders?limit=100",
     "/api/v1/orders?view=all&limit=100&offset=2000",
     "/api/v1/returns",
@@ -61,6 +64,57 @@ describe("10,000 parcels and 5,000 orders", () => {
     expect(Array.isArray(body) ? body.length : 1).toBeGreaterThan(0);
     expect(ms).toBeLessThan(BUDGET_MS);
   });
+});
+
+describe("parcel counts at scale", () => {
+  it("match the full list, per carrier and per connection", async () => {
+    interface Listed {
+      readonly carrier: string;
+      readonly delivered: boolean;
+      readonly archived_at: string | null;
+      readonly connections: readonly { readonly connection_id: string }[];
+    }
+    const all: Listed[] = [];
+    for (let offset = 0; ; offset += 1000) {
+      const { body } = await timed(
+        `/api/v1/parcels?include_archived=true&limit=1000&offset=${String(offset)}`,
+      );
+      const page = body as Listed[];
+      all.push(...page);
+      if (page.length < 1000) break;
+    }
+    const isActive = (parcel: Listed) => !parcel.delivered && parcel.archived_at === null;
+    const perCarrier = new Map<string, number>();
+    const perConnection = new Map<string, { active: number; delivered: number; total: number }>();
+    for (const parcel of all) {
+      perCarrier.set(parcel.carrier, (perCarrier.get(parcel.carrier) ?? 0) + 1);
+      for (const id of new Set(parcel.connections.map((entry) => entry.connection_id))) {
+        const current = perConnection.get(id) ?? { active: 0, delivered: 0, total: 0 };
+        perConnection.set(id, {
+          active: current.active + (isActive(parcel) ? 1 : 0),
+          delivered: current.delivered + (parcel.delivered ? 1 : 0),
+          total: current.total + 1,
+        });
+      }
+    }
+    const { body } = await timed("/api/v1/parcels/counts");
+    const counts = body as {
+      active: number;
+      delivered: number;
+      archived: number;
+      carriers: { carrier: string; parcels: number }[];
+      connections: { connection_id: string; active: number; delivered: number; total: number }[];
+    };
+    expect(counts.active).toBe(all.filter(isActive).length);
+    expect(counts.delivered).toBe(all.filter((parcel) => parcel.delivered).length);
+    expect(counts.archived).toBe(all.filter((parcel) => parcel.archived_at !== null).length);
+    expect(new Map(counts.carriers.map((entry) => [entry.carrier, entry.parcels]))).toEqual(
+      perCarrier,
+    );
+    expect(
+      new Map(counts.connections.map(({ connection_id: id, ...rest }) => [id, rest] as const)),
+    ).toEqual(perConnection);
+  }, 60_000);
 });
 
 describe("query plans at scale", () => {
