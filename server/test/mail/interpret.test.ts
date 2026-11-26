@@ -8,6 +8,7 @@ import {
   subjectAsStatus,
 } from "../../src/mail/interpret.js";
 import { DHL_EMAIL_RULES } from "../../src/carriers/dhl/email-rules.js";
+import { TO_FALLBACK_SERVICE } from "../../src/mail/types.js";
 
 const rules = loadRules();
 /** DHL emails are read with the DHL provider's email rules, as the inbox routes them. */
@@ -26,6 +27,24 @@ describe("mail interpretation with email rules", () => {
     });
     expect(snapshots.map((s) => [s.carrier, s.trackingNumber])).toEqual([
       ["dhl", "00340434000000000017"],
+    ]);
+  });
+
+  it("files a shop's number of a carrier no rule knows for the fallback service", () => {
+    const snapshots = createMailInterpreter(
+      rules,
+      "Europe/Berlin",
+    )({
+      messageId: null,
+      authentication: null,
+      from: "versandinfo@reichelt.de",
+      subject: "Ihre Bestellung wurde versandt",
+      text: "I-Net Nummer 123456\nIhre Sendungsnummer lautet QX7KW2PL9M\n",
+      html: null,
+      date: new Date("2026-11-18T07:00:00Z"),
+    });
+    expect(snapshots.map((s) => [s.carrier, s.trackingNumber, s.order?.orderNumber])).toEqual([
+      [TO_FALLBACK_SERVICE, "QX7KW2PL9M", "123456"],
     ]);
   });
 

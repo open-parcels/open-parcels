@@ -173,6 +173,9 @@ function registerCarrierRoutes(app: TypedApp, services: Services): void {
             provider: z.literal(MAIL_PROVIDER),
             config_schema: z.unknown().describe("JSON Schema of the inbox configuration form."),
             secret_schema: z.unknown().describe("JSON Schema of the inbox sign-in data."),
+            actions: z
+              .array(actionSchema)
+              .describe('The inbox\'s actions ("Read old emails again").'),
           }),
         },
       },
@@ -181,10 +184,15 @@ function registerCarrierRoutes(app: TypedApp, services: Services): void {
       const language = requestLanguage(request.headers["accept-language"]);
       const schema = (zod: z.ZodType): unknown =>
         localizeSchema(language, z.toJSONSchema(zod, { io: "input" }));
+      const inbox = services.jobs.sourceOf(MAIL_PROVIDER);
       return {
         provider: MAIL_PROVIDER,
         config_schema: schema(mailConfigSchema),
         secret_schema: schema(mailSecretSchema),
+        actions:
+          inbox === undefined
+            ? []
+            : inbox.actions.map((action) => actionBody(language, inbox, action)),
       };
     },
   );

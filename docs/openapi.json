@@ -9997,7 +9997,8 @@
                                 "enum": [
                                   "account",
                                   "tracking",
-                                  "shop"
+                                  "shop",
+                                  "mail"
                                 ]
                               }
                             },
@@ -10118,12 +10119,116 @@
                     },
                     "secret_schema": {
                       "description": "JSON Schema of the inbox sign-in data."
+                    },
+                    "actions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "kind": {
+                            "type": "string",
+                            "enum": [
+                              "task",
+                              "link"
+                            ],
+                            "description": "A task runs as a job; a link only opens an address."
+                          },
+                          "label": {
+                            "type": "string"
+                          },
+                          "description": {
+                            "nullable": true,
+                            "type": "string"
+                          },
+                          "connection_kinds": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "account",
+                                "tracking",
+                                "shop",
+                                "mail"
+                              ]
+                            }
+                          },
+                          "when_state": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "ok",
+                                "idle",
+                                "needs_sign_in",
+                                "error"
+                              ]
+                            },
+                            "description": "Connection states in which the action may start."
+                          },
+                          "weight": {
+                            "type": "string",
+                            "enum": [
+                              "light",
+                              "heavy"
+                            ],
+                            "description": "Heavy jobs run one at a time per server."
+                          },
+                          "confirm": {
+                            "nullable": true,
+                            "description": "Ask the user this before starting, when set.",
+                            "type": "string"
+                          },
+                          "destructive": {
+                            "type": "boolean",
+                            "description": "Have the connection's label typed to confirm; never an HA button."
+                          },
+                          "expose_to_ha": {
+                            "type": "boolean",
+                            "description": "Offered as an HA button when it needs no input."
+                          },
+                          "cooldown_minutes": {
+                            "type": "integer",
+                            "minimum": -9007199254740991,
+                            "maximum": 9007199254740991,
+                            "description": "Earliest re-run after a finished job."
+                          },
+                          "input_schema": {
+                            "nullable": true,
+                            "description": "JSON Schema of the task's input form; null for a link or a task without input."
+                          },
+                          "input_required": {
+                            "type": "boolean",
+                            "description": "Some input field has no default: ask before starting."
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "kind",
+                          "label",
+                          "description",
+                          "connection_kinds",
+                          "when_state",
+                          "weight",
+                          "confirm",
+                          "destructive",
+                          "expose_to_ha",
+                          "cooldown_minutes",
+                          "input_schema",
+                          "input_required"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "description": "The inbox's actions (\"Read old emails again\")."
                     }
                   },
                   "required": [
                     "provider",
                     "config_schema",
-                    "secret_schema"
+                    "secret_schema",
+                    "actions"
                   ],
                   "additionalProperties": false
                 }
@@ -11693,7 +11798,8 @@
                           "enum": [
                             "account",
                             "tracking",
-                            "shop"
+                            "shop",
+                            "mail"
                           ]
                         }
                       },

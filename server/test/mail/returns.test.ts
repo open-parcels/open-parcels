@@ -1,7 +1,6 @@
 import { loadRules, withEmailRules } from "open-parcels-rules";
 import { describe, expect, it } from "vitest";
 import { AMAZON_EMAIL_RULES } from "../../src/carriers/amazon/email-rules.js";
-import { mailLines, readMoney } from "../../src/mail/return-details.js";
 import { createReturnInterpreter } from "../../src/mail/returns.js";
 import type { MailInput } from "../../src/mail/types.js";
 
@@ -162,18 +161,58 @@ describe("return mails", () => {
   });
 });
 
-describe("return mail details", () => {
-  it("reads amounts in either notation", () => {
-    expect(readMoney("EUR 1.234,56")).toEqual({ amount: 1234.56, currency: "EUR" });
-    expect(readMoney("£1,234.56")).toEqual({ amount: 1234.56, currency: "GBP" });
-    expect(readMoney("12,50 €")).toEqual({ amount: 12.5, currency: "EUR" });
-    expect(readMoney("no money here")).toBeNull();
+describe("return emails of other shops and payment services", () => {
+  const shared = createReturnInterpreter(loadRules(), "Europe/Berlin");
+
+  it("files a shop's return email under the sender's domain and the subject's order", () => {
+    const [report] = shared(
+      mail({
+        from: "Example Store <notice@store.example.com>",
+        subject: "Return requested for order #3100042",
+        text: "Your return request was sent and is being reviewed.\nItem: Example battery pack",
+      }),
+    );
+    expect(report).toMatchObject({
+      order: { shop: "store.example.com", orderNumber: "3100042" },
+      status: "requested",
+      items: ["Example battery pack"],
+      mayCreate: true,
+    });
   });
 
-  it("splits HTML at block ends and drops styles", () => {
-    expect(mailLines(null, "<style>p{}</style><p>One</p><p>Two &amp; three</p>")).toEqual([
-      "One",
-      "Two & three",
-    ]);
+  it("matches a PayPal refund without a reference by the purchase total and the payee", () => {
+    const [report] = shared(
+      mail({
+        from: '"service@paypal.de" <service@paypal.de>',
+        subject: "Your refund from Example Market is on the way",
+        text: [
+          "Summary",
+          "You originally paid Example Market 18,20 € EUR on 14 May 2026. View receipt",
+          "Refund total",
+          "4,62 € EUR",
+        ].join("\n"),
+      }),
+    );
+    expect(report).toMatchObject({
+      order: {
+        payee: "Example Market",
+        total: { amount: 18.2, currency: "EUR" },
+        paidBefore: "2026-11-18T09:00:00.000Z",
+      },
+      status: "refunded",
+      refund: { amount: 4.62, currency: "EUR", status: "issued" },
+      mayCreate: false,
+    });
+  });
+
+  it("files a PayPal refund with the shop's invoice id under that reference", () => {
+    const [report] = shared(
+      mail({
+        from: '"service@paypal.de" <service@paypal.de>',
+        subject: "You have a refund from www.example-games.com",
+        text: "Total purchase amount\n13,99 € EUR\nAmount refunded\n13,99 € EUR\nInvoice ID: 712345678901234567",
+      }),
+    );
+    expect(report?.order).toEqual({ shop: "paypal", orderNumber: "712345678901234567" });
   });
 });

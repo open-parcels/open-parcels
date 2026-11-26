@@ -1,15 +1,14 @@
 import { z } from "zod";
 import { requestLanguage, type Language } from "../../i18n/language.js";
 import { localizeSchema, providerText } from "../../i18n/translate.js";
-import type { RegisteredProvider } from "../../engine/registry.js";
-import { JobError, type ConnectionAction } from "../../jobs/service.js";
+import { JobError, type ConnectionAction, type DeclaredAction } from "../../jobs/service.js";
 import { jobBody, JOB_STATES } from "../../jobs/store.js";
-import type { ManifestAction } from "../../provider/manifest.js";
 import type { Services } from "../../services.js";
 import type { TypedApp } from "../app.js";
 import { requireScope } from "../auth-plugin.js";
 import { ApiError, errorBodySchema, notFound } from "../errors.js";
-import { idParams, providerKindSchema } from "../schemas.js";
+import { connectionKindSchema } from "../../domain/parcel.js";
+import { idParams } from "../schemas.js";
 
 /** Connection actions and jobs (`docs/connection-actions-and-jobs.md` §4). */
 
@@ -18,7 +17,7 @@ export const actionSchema = z.object({
   kind: z.enum(["task", "link"]).describe("A task runs as a job; a link only opens an address."),
   label: z.string(),
   description: z.string().nullable(),
-  connection_kinds: z.array(providerKindSchema),
+  connection_kinds: z.array(connectionKindSchema),
   when_state: z
     .array(z.enum(["ok", "idle", "needs_sign_in", "error"]))
     .describe("Connection states in which the action may start."),
@@ -39,12 +38,12 @@ export const actionSchema = z.object({
 /** One action as the API shows it, its texts in the request's language. */
 export function actionBody(
   language: Language,
-  provider: RegisteredProvider,
-  action: ManifestAction,
+  source: { actionInput(actionId: string): z.ZodType | undefined },
+  action: DeclaredAction,
 ): z.infer<typeof actionSchema> {
   const text = (value: string | undefined): string | null =>
     value === undefined ? null : providerText(language, value);
-  const input = action.kind === "task" ? provider.actionInput(action.id) : undefined;
+  const input = action.kind === "task" ? source.actionInput(action.id) : undefined;
   const schema = input === undefined ? null : z.toJSONSchema(input, { io: "input" });
   const fields =
     schema !== null && typeof schema.properties === "object" ? Object.keys(schema.properties) : [];
@@ -140,14 +139,13 @@ export function registerJobRoutes(app: TypedApp, services: Services): void {
     async (request) => {
       const language = requestLanguage(request.headers["accept-language"]);
       const connection = await services.connections.get(request.params.id);
-      const provider =
-        connection === undefined ? undefined : services.registry.get(connection.provider);
+      const source = connection === undefined ? undefined : jobs.sourceOf(connection.provider);
       const actions = await jobs.actionsOf(request.params.id);
       if (actions === undefined) throw notFound("connection");
-      return provider === undefined
+      return source === undefined
         ? []
         : actions.map((entry: ConnectionAction) => ({
-            ...actionBody(language, provider, entry.action),
+            ...actionBody(language, source, entry.action),
             available: entry.available,
             cooldown_until: entry.cooldownUntil,
           }));

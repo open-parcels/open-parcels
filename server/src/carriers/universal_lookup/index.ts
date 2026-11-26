@@ -32,6 +32,13 @@ const configSchema = z.object({
     .url({ protocol: /^https?$/ })
     .describe("Address of the universal-lookup service, for example https://lookup.example.com")
     .meta({ title: "Address" }),
+  allow_private_network: z
+    .boolean()
+    .default(false)
+    .describe(
+      "On: the address may be on your own network (a LAN address). Off, such an address is refused.",
+    )
+    .meta({ title: "Allow an address on your own network" }),
 });
 type Config = z.infer<typeof configSchema>;
 

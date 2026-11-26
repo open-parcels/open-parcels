@@ -91,8 +91,18 @@ export interface ParcelSnapshot {
  * What a connection knows about one return of an order. Unknown values are null and never erase what
  * another report said; `dropOff` replaces the stored options only when it lists some.
  */
+/**
+ * A payment service's refund that names no order: the order is the one that cost `total`, paid
+ * to `payee` (as the email names it) before `paidBefore`. Such a report never starts an order.
+ */
+export interface PaymentRef {
+  readonly payee: string | null;
+  readonly total: { readonly amount: number; readonly currency: string };
+  readonly paidBefore: string | null;
+}
+
 export interface ReturnSnapshot {
-  readonly order: { readonly shop: string; readonly orderNumber: string };
+  readonly order: { readonly shop: string; readonly orderNumber: string } | PaymentRef;
   /**
    * The shop's own id for the return, when it gives one. Without it the report updates the
    * order's newest open return, or starts one.

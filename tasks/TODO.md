@@ -127,29 +127,39 @@ image are shipped (see `DONE.md`). Left:
 
 ## 4. Returns follow-ups
 
-- [ ] Return mails of other shops (generic rules), PayPal refunds matched to orders
-- [ ] Move return detail reading (deadline, drop-off, cost) from the server into the rules/providers
-- [ ] Verify the Amazon return-window parsing on a live account run
-- [ ] Re-read old emails on demand so past returns appear (part of "Clear data" / history import)
-- [ ] PayPal refund emails name no order number (rule `return-paypal`): match them to orders by
-      amount and payee, or have the rules extract the shop's reference
-- [ ] Order emails whose shipping part has a tracking number but no carrier the rules detect are
-      dropped; with a fallback service they could become parcels filed under it
+- [x] Return mails of other shops (generic rules), PayPal refunds matched to orders (rules
+      2.0.0-dev.17: `generic-return`; refunds by invoice id, else by purchase total and payee)
+- [x] Move return detail reading (deadline, drop-off, cost) from the server into the rules/providers
+      (`EmailParseResult.return`, rules `src/mail/returns.ts`)
+- [ ] Verify the Amazon return-window parsing on a live account run (needs a live account run and
+      the owner's go-ahead)
+- [x] Re-read old emails on demand so past returns appear: the inbox job "Read old emails again"
+      (`docs/connection-actions-and-jobs.md` §8)
+- [x] PayPal refund emails name no order number (rule `return-paypal`): match them to orders by
+      amount and payee, or have the rules extract the shop's reference (both)
+- [x] Order emails whose shipping part has a tracking number but no carrier the rules detect are
+      filed under the first fallback service (dropped without one)
 
 ## 5. New connections (from the email backup inventory)
 
-- [ ] Berrybase, sertronics.shop: order history where offered, else email rules
-- [ ] Banggood: needs sample emails before rules can be written
-- [ ] Fallback services on a private network: the HTTP layer refuses non-public addresses, so a
-      universal-lookup service on the LAN cannot be used; decide on an opt-in per connection
+- [x] Berrybase, sertronics.shop: email rules (orders, shipping, delivery; sertronics.shop is
+      BerryBase's sender). Its credit notes ("Gutschrift GU-…") carry no order number in the
+      text (PDF only), so they cannot be filed
+- [ ] Banggood: needs sample emails before rules can be written. The live mail (2026-11-26) has
+      only Banggood newsletters, no order email
+- [x] Fallback services on a private network: per-connection opt-in "Allow an address on your
+      own network" (universal lookup; manifest `private_network_opt_in`)
 - [ ] Unkeyed fingerprints of Home Assistant import markers (written before keyed ones) are still
       recognised (`legacyFingerprint`); they cannot be migrated without the HA credentials, so
       drop the fallback once no install has such markers
 
 ## 6. Home Assistant integration (open-parcels-ha)
 
-- [ ] Source actions as buttons/services once the server has them
-- [ ] HA-032 (the other lows shipped in 0.5.0)
+- [x] Source actions as buttons/services once the server has them (HA integration 0.9.0)
+- [x] HA-032 (fixed in open-parcels-ha 966da56, released with 0.5.0)
+- [ ] Buttons for the inbox's "Read old emails again": the integration builds buttons from
+      `GET /api/v1/carriers`, inbox actions come from `GET /api/v1/inbox-form` (the service
+      `open_parcels.run_action` already works)
 
 ## 7. Home Assistant app (open-parcels-ha-apps)
 

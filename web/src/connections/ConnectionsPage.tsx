@@ -3,6 +3,7 @@ import { useMemo, useState, type ReactNode } from "react";
 import {
   connectionDataCounts,
   useCarriers,
+  useInboxForm,
   useClearConnection,
   useDeleteConnection,
   useParcels,
@@ -264,6 +265,7 @@ export function ConnectionsPage(): ReactNode {
   const admin = useIsAdmin();
   const connections = useConnections();
   const carriers = useCarriers();
+  const inboxActions = useInboxForm().data?.actions;
   const parcels = useParcels(true);
   const jobs = useJobs();
   const newest = useMemo(() => newestJobs(jobs.data ?? []), [jobs.data]);
@@ -324,8 +326,10 @@ export function ConnectionsPage(): ReactNode {
               connection={connection}
               stats={stats.get(connection.id)}
               actions={
-                carriers.data?.find((carrier) => carrier.id === connection.provider)?.actions ??
-                NO_ACTIONS
+                (connection.provider === INBOX_PROVIDER
+                  ? inboxActions
+                  : carriers.data?.find((carrier) => carrier.id === connection.provider)
+                      ?.actions) ?? NO_ACTIONS
               }
               job={newest.get(connection.id)}
               signIn={canSignIn(connection, carriers.data)}

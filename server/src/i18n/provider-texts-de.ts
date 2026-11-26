@@ -12,6 +12,17 @@ export const PROVIDER_TEXTS_DE: Readonly<Record<string, string>> = Object.fromEn
   ["Sign in", "Anmelden"],
   // Actions
   ["Import history", "Verlauf importieren"],
+  ["Read old emails again", "Alte E-Mails erneut lesen"],
+  [
+    "Reads this inbox's emails of the chosen number of days again, so past orders, parcels and returns appear.",
+    "Liest die E-Mails dieses Postfachs der gewählten Anzahl Tage erneut, damit frühere Bestellungen, Pakete und Rücksendungen erscheinen.",
+  ],
+  [
+    "This reads many emails again, slowly. Parcels it finds are stored as history.",
+    "Dies liest viele E-Mails erneut, langsam. Gefundene Pakete werden als Verlauf gespeichert.",
+  ],
+  ["Days to read again", "Tage, die erneut gelesen werden"],
+  ["How far back emails are read again.", "Wie weit zurück E-Mails erneut gelesen werden."],
   [
     "Reads the demo parcels again, one page at a time.",
     "Liest die Demo-Pakete erneut, Seite für Seite.",
@@ -74,6 +85,11 @@ export const PROVIDER_TEXTS_DE: Readonly<Record<string, string>> = Object.fromEn
   ["Client ID", "Client-ID"],
   ["Client secret", "Client-Secret"],
   ["Address", "Adresse"],
+  ["Allow an address on your own network", "Adresse im eigenen Netzwerk erlauben"],
+  [
+    "On: the address may be on your own network (a LAN address). Off, such an address is refused.",
+    "An: Die Adresse darf im eigenen Netzwerk liegen (eine LAN-Adresse). Aus wird eine solche Adresse abgelehnt.",
+  ],
   ["Addresses", "Adressen"],
   ["Device ID", "Geräte-ID"],
   ["Device serial number", "Geräte-Seriennummer"],

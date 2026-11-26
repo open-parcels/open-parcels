@@ -54,7 +54,11 @@ parsed into the same schema then. The schema moves to the engine package with th
   - `network`: every host the provider may reach, each with a reason. `host` is exact
     (`api.example.com`) or a leading-dot suffix (`.example.com`: the domain and its subdomains).
     `{ "config": "<field>", "reason": … }` allows the host of a URL the user typed into that
-    config field (the universal lookup's server). There is no `*`.
+    config field (the universal lookup's server). There is no `*`. Every request to a
+    non-public address (loopback, private, link-local) is refused, at the URL and again at
+    connect time; such an entry may add `"private_network_opt_in": "<boolean field>"`, and a
+    connection whose config turns that field on may reach that one host on the user's own
+    network (the universal lookup's "Allow an address on your own network", off by default).
   - `image_hosts`: what the image proxy may fetch for this provider (as today's `imageHosts`).
   - `secrets`: the secret kinds its sign-in flows produce: `credentials`, `api_key`, `token`
     (interactive).

@@ -131,7 +131,10 @@ describe("universal lookup", () => {
 
   it("needs the service's address", () => {
     expect(() => world().provider.validateConfig({})).toThrow();
-    expect(world().provider.validateConfig(CONFIG)).toEqual(CONFIG);
+    expect(world().provider.validateConfig(CONFIG)).toEqual({
+      ...CONFIG,
+      allow_private_network: false,
+    });
     expect(world().provider.info.fallback).toBe(true);
   });
 });

@@ -406,3 +406,36 @@ describe("mail watcher", () => {
     expect(response.statusCode).toBe(400);
   });
 });
+
+describe("reading old emails again (inbox job)", () => {
+  it("is offered on the inbox and reads the chosen days again, paced and resumable", async () => {
+    mailbox.add(1, "2026-09-01T10:00:00Z", "Old FP0001");
+    mailbox.add(2, "2026-11-10T10:00:00Z", "Recent FP0002");
+    const id = await addMailbox();
+    const form = await app.inject({ url: "/api/v1/inbox-form", headers });
+    expect(form.json<{ actions: { id: string }[] }>().actions.map((a) => a.id)).toEqual([
+      "reread_emails",
+    ]);
+    const offered = await app.inject({ url: `/api/v1/connections/${id}/actions`, headers });
+    expect(offered.json<{ id: string; available: boolean }[]>()).toMatchObject([
+      { id: "reread_emails", available: true },
+    ]);
+    const started = await app.inject({
+      method: "POST",
+      url: `/api/v1/connections/${id}/actions/reread_emails`,
+      headers,
+      payload: { input: { days: 120 } },
+    });
+    expect(started.statusCode).toBe(202);
+    await context.services.jobs.settled();
+    const job = await context.services.jobs.store.get(
+      started.json<{ job: { id: string } }>().job.id,
+    );
+    expect(job).toMatchObject({
+      state: "done",
+      summary: "2 emails: 2 parcels, 0 orders, 0 returns",
+    });
+    const parcels = await context.services.parcels.repository.list({}, false);
+    expect(parcels.map((parcel) => parcel.tracking_number).sort()).toEqual(["FP0001", "FP0002"]);
+  });
+});

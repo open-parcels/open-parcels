@@ -25,6 +25,7 @@ import {
   type MailReturnInterpreter,
   type MailProgress,
   type MailSecret,
+  TO_FALLBACK_SERVICE,
   isGenericInboxLabel,
   inboxLabel,
 } from "./types.js";
@@ -51,6 +52,15 @@ export interface MailWatcherDeps {
   readonly interpretOrders?: MailOrderInterpreter;
   /** Links parcels found in mail to their carrier's tracking connection, so they get polled. */
   readonly followUp: (connectionId: string) => Promise<void>;
+  /** The user's first fallback service, for parcels whose carrier no rule knows. */
+  readonly fallbackCarrier: () => Promise<string | undefined>;
+}
+
+/** What one email gave. */
+export interface MailReading {
+  readonly snapshots: readonly ParcelSnapshot[];
+  readonly returns: readonly ReturnSnapshot[];
+  readonly orders: readonly OrderSnapshot[];
 }
 
 /** What the status page shows of one inbox. */
@@ -369,27 +379,16 @@ export class MailWatcher {
           message.receivedAt ?? null,
           this.deps.clock.now(),
         );
-        const routed = await this.deps.router.read(
-          connectionId,
-          mail,
-          connection.config.checkSenders,
-        );
-        if (routed !== null) {
-          // Read by its providers: the shared rules must not read it again (no parcel twice).
-          snapshots.push(...routed.snapshots);
-          returns.push(...routed.returns);
-          orders.push(...routed.orders);
-          continue;
-        }
-        snapshots.push(...this.#interpret(connectionId, mail, this.deps.interpret));
-        returns.push(...this.#interpret(connectionId, mail, this.deps.interpretReturns));
-        orders.push(...this.#interpret(connectionId, mail, this.deps.interpretOrders));
+        const read = await this.read(connectionId, mail, connection.config.checkSenders);
+        snapshots.push(...read.snapshots);
+        returns.push(...read.returns);
+        orders.push(...read.orders);
       }
       progress = { ...progress, [folder]: { uidValidity, lastUid } };
     }
     if (snapshots.length > 0 || returns.length > 0 || orders.length > 0) {
       await this.deps.reconciler.ingest(connectionId, {
-        snapshots,
+        snapshots: await this.withFallbackCarrier(snapshots),
         returns,
         orders,
         complete: false,
@@ -410,6 +409,36 @@ export class MailWatcher {
     // drops it straight away must not be reconnected to every 30 seconds.
     this.#retries.delete(connectionId);
     await this.deps.connections.setState(connectionId, "ok", NO_CAUSE);
+  }
+
+  /**
+   * What one email says: read by the providers of its sender's domain, else by the shared rules
+   * (never both, so no parcel twice). Parcels of carriers no rule knows are still unresolved
+   * (`withFallbackCarrier`).
+   */
+  async read(connectionId: string, mail: MailInput, checkSenders: boolean): Promise<MailReading> {
+    const routed = await this.deps.router.read(connectionId, mail, checkSenders);
+    if (routed !== null) return routed;
+    return {
+      snapshots: this.#interpret(connectionId, mail, this.deps.interpret),
+      returns: this.#interpret(connectionId, mail, this.deps.interpretReturns),
+      orders: this.#interpret(connectionId, mail, this.deps.interpretOrders),
+    };
+  }
+
+  /** Files parcels without a known carrier under the first fallback service; drops them without. */
+  async withFallbackCarrier(
+    snapshots: readonly ParcelSnapshot[],
+  ): Promise<readonly ParcelSnapshot[]> {
+    if (!snapshots.some((parcel) => parcel.carrier === TO_FALLBACK_SERVICE)) return snapshots;
+    const fallback = await this.deps.fallbackCarrier();
+    return snapshots.flatMap((parcel) =>
+      parcel.carrier !== TO_FALLBACK_SERVICE
+        ? [parcel]
+        : fallback === undefined
+          ? []
+          : [{ ...parcel, carrier: fallback }],
+    );
   }
 
   #interpret<T>(

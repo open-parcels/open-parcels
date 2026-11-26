@@ -45,6 +45,21 @@ const NULL_BODY = new Set([101, 103, 204, 205, 304]);
 export type FetchLike = (input: URL, init: RequestInit) => Promise<Response>;
 
 export async function guardedFetch(input: URL, init: RequestInit): Promise<Response> {
+  return fetchThrough(guardedAgent, input, init);
+}
+
+/**
+ * The connection pool for the few hosts the user allowed on their own network (a fallback
+ * service on the LAN): no address check, everything else as `guardedFetch`.
+ */
+const privateNetworkAgent = new Agent();
+
+/** `guardedFetch` for a host the user allowed to be on their own network. */
+export async function privateNetworkFetch(input: URL, init: RequestInit): Promise<Response> {
+  return fetchThrough(privateNetworkAgent, input, init);
+}
+
+async function fetchThrough(agent: Agent, input: URL, init: RequestInit): Promise<Response> {
   const body = init.body ?? undefined;
   if (body !== undefined && typeof body !== "string" && !(body instanceof URLSearchParams)) {
     throw new TypeError("Only text and form bodies are sent through the guarded fetch.");
@@ -55,7 +70,7 @@ export async function guardedFetch(input: URL, init: RequestInit): Promise<Respo
     ...(body === undefined ? {} : { body }),
     redirect: "manual",
     ...(init.signal === undefined || init.signal === null ? {} : { signal: init.signal }),
-    dispatcher: guardedAgent,
+    dispatcher: agent,
   });
   return new Response(NULL_BODY.has(response.status) ? null : response.body, {
     status: response.status,

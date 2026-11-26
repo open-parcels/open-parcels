@@ -4,6 +4,7 @@ import { addMs, isoNow, realSleep, type Clock, type Sleep } from "../clock.js";
 import { DecryptionError, type SecretBox } from "../crypto/secrets.js";
 import type { ConnectionRow, Database, JobRow } from "../db/schema.js";
 import type { Kysely } from "kysely";
+import type { z } from "zod";
 import type { EventBus } from "../events/bus.js";
 import {
   CaptchaError,
@@ -79,12 +80,40 @@ export class JobError extends Error {
 
 /** One of a connection's actions, with whether it may start now. */
 export interface ConnectionAction {
-  readonly action: ManifestAction;
+  readonly action: DeclaredAction;
   readonly available: boolean;
   readonly cooldownUntil: string | null;
 }
 
 export type StartOutcome = { readonly job: JobRow } | { readonly url: string };
+
+/** A task the core declares for connections of its own (inboxes): a manifest task for `mail`. */
+export type CoreAction = Omit<Extract<ManifestAction, { kind: "task" }>, "connection_kinds"> & {
+  readonly connection_kinds: readonly ConnectionRow["kind"][];
+};
+
+/** An action as a provider's manifest or the core declares it. */
+export type DeclaredAction = ManifestAction | CoreAction;
+
+/**
+ * Task actions of connections the core serves itself, not a provider (the inbox's "Read old
+ * emails again"): declared like a manifest's, run in the server.
+ */
+export interface CoreActions {
+  readonly actions: readonly CoreAction[];
+  actionInput(actionId: string): z.ZodType | undefined;
+  /** Runs one leg, like a provider's `runAction`; requests and errors are its own. */
+  run(row: ConnectionRow, call: ActionCall, log: Logger): Promise<ActionResult>;
+}
+
+/** Whoever declares and runs a connection's actions: its provider, or the core. */
+export interface ActionSource {
+  readonly actions: readonly DeclaredAction[];
+  actionInput(actionId: string): z.ZodType | undefined;
+  /** Set for a provider: links are filled from its manifest, tasks run through its runtime. */
+  readonly provider?: RegisteredProvider;
+  readonly core?: CoreActions;
+}
 
 export interface JobDeps {
   readonly db: Kysely<Database>;
@@ -97,6 +126,8 @@ export interface JobDeps {
   readonly logger: Logger;
   /** How a job rests between pages (`ActionContext.wait`); tests pass a fast one. */
   readonly sleep?: Sleep;
+  /** Actions the core runs itself, by the connections' provider id (`imap`). */
+  readonly coreActions?: Readonly<Record<string, CoreActions>>;
 }
 
 interface Running {
@@ -110,13 +141,13 @@ interface Running {
   grace?: NodeJS.Timeout;
 }
 
-/** The action of `provider` with this id that applies to connections of `kind`. */
+/** The action of `source` with this id that applies to connections of `kind`. */
 function actionOf(
-  provider: RegisteredProvider | undefined,
+  source: ActionSource | undefined,
   kind: string,
   actionId: string,
-): ManifestAction | undefined {
-  return provider?.manifest.actions.find(
+): DeclaredAction | undefined {
+  return source?.actions.find(
     (action) =>
       action.id === actionId && (action.connection_kinds as readonly string[]).includes(kind),
   );
@@ -178,6 +209,24 @@ export class JobService {
     }
   }
 
+  /** Who declares and runs the actions of a provider id's connections. */
+  sourceOf(providerId: string): ActionSource | undefined {
+    const core = Object.hasOwn(this.deps.coreActions ?? {}, providerId)
+      ? this.deps.coreActions?.[providerId]
+      : undefined;
+    if (core !== undefined) {
+      return { actions: core.actions, actionInput: (id) => core.actionInput(id), core };
+    }
+    const provider = this.deps.registry.get(providerId);
+    return provider === undefined
+      ? undefined
+      : {
+          actions: provider.manifest.actions,
+          actionInput: (id) => provider.actionInput(id),
+          provider,
+        };
+  }
+
   async #connection(connectionId: string): Promise<ConnectionRow | undefined> {
     return this.deps.db
       .selectFrom("connections")
@@ -186,7 +235,7 @@ export class JobService {
       .executeTakeFirst();
   }
 
-  async #cooldownUntil(row: ConnectionRow, action: ManifestAction): Promise<string | null> {
+  async #cooldownUntil(row: ConnectionRow, action: DeclaredAction): Promise<string | null> {
     if (action.kind !== "task" || action.cooldown_minutes === 0) return null;
     const last = await this.store.lastDone(row.id, action.id);
     if (last === undefined) return null;
@@ -198,9 +247,10 @@ export class JobService {
   async actionsOf(connectionId: string): Promise<ConnectionAction[] | undefined> {
     const row = await this.#connection(connectionId);
     if (row === undefined) return undefined;
-    const provider = this.deps.registry.get(row.provider);
+    const source = this.sourceOf(row.provider);
+    const provider = source?.provider;
     const active = await this.store.active(row.id);
-    const actions = (provider?.manifest.actions ?? []).filter((action) =>
+    const actions = (source?.actions ?? []).filter((action) =>
       (action.connection_kinds as readonly string[]).includes(row.kind),
     );
     return Promise.all(
@@ -225,13 +275,16 @@ export class JobService {
   ): Promise<StartOutcome> {
     const row = await this.#connection(connectionId);
     if (row === undefined) throw new JobError("connection_not_found", "No such connection.");
-    const provider = this.deps.registry.get(row.provider);
-    const action = actionOf(provider, row.kind, actionId);
-    if (provider === undefined || action === undefined) {
+    const source = this.sourceOf(row.provider);
+    const action = actionOf(source, row.kind, actionId);
+    if (source === undefined || action === undefined) {
       throw new JobError("no_such_action", `This connection has no action ${actionId}.`);
     }
     if (action.kind === "link") {
-      const url = linkUrl(provider.manifest, action.url, JSON.parse(row.config));
+      const url =
+        source.provider === undefined
+          ? undefined
+          : linkUrl(source.provider.manifest, action.url, JSON.parse(row.config));
       if (url === undefined) {
         throw new JobError("action_unavailable", "This connection's settings give no address.");
       }
@@ -244,7 +297,7 @@ export class JobService {
       throw new JobError("job_running", "This connection has a job already.");
     }
     await this.#checkCooldown(row, action);
-    const input = this.#validInput(provider, action.id, rawInput);
+    const input = this.#validInput(source, action.id, rawInput);
     const now = isoNow(this.deps.clock);
     const job = await this.store.insert(
       {
@@ -271,7 +324,7 @@ export class JobService {
     return { job };
   }
 
-  async #checkCooldown(row: ConnectionRow, action: ManifestAction): Promise<void> {
+  async #checkCooldown(row: ConnectionRow, action: DeclaredAction): Promise<void> {
     const until = await this.#cooldownUntil(row, action);
     if (until === null) return;
     const seconds = Math.max(
@@ -281,8 +334,8 @@ export class JobService {
     throw new JobError("action_cooldown", "This action ran a short while ago.", seconds);
   }
 
-  #validInput(provider: RegisteredProvider, actionId: string, raw: unknown): unknown {
-    const schema = provider.actionInput(actionId);
+  #validInput(source: ActionSource, actionId: string, raw: unknown): unknown {
+    const schema = source.actionInput(actionId);
     const parsed = schema?.safeParse(raw ?? {});
     if (parsed?.success !== true) {
       const fields = parsed?.error.issues.map((issue) => issue.path.join(".") || "(root)");
@@ -326,7 +379,7 @@ export class JobService {
       throw new JobError("job_running", "This connection has another job.");
     }
     const row = await this.#connection(job.connection_id);
-    const action = actionOf(this.deps.registry.get(job.provider), row?.kind ?? "", job.action);
+    const action = actionOf(this.sourceOf(job.provider), row?.kind ?? "", job.action);
     if (row !== undefined && action !== undefined && job.state === "done") {
       await this.#checkCooldown(row, action);
     }
@@ -378,10 +431,10 @@ export class JobService {
       let heavyBusy = [...this.#running.values()].some((running) => running.heavy);
       for (const job of await this.store.queued()) {
         if (this.#stopped || this.#running.has(job.id)) continue;
-        const provider = this.deps.registry.get(job.provider);
+        const source = this.sourceOf(job.provider);
         const row = await this.#connection(job.connection_id);
-        const action = actionOf(provider, row?.kind ?? "", job.action);
-        if (provider === undefined || action?.kind !== "task") {
+        const action = actionOf(source, row?.kind ?? "", job.action);
+        if (source === undefined || action?.kind !== "task") {
           await this.store.update(
             job.id,
             { state: "failed", reason: "action_missing", finished_at: isoNow(this.deps.clock) },
@@ -392,7 +445,7 @@ export class JobService {
         const heavy = action.weight === "heavy";
         if (heavy && heavyBusy) continue;
         heavyBusy ||= heavy;
-        this.#launch(job, provider, heavy);
+        this.#launch(job, source, heavy);
       }
       this.#schedule(next);
     } while (this.#wokenMeanwhile());
@@ -417,7 +470,7 @@ export class JobService {
     this.#timer.unref();
   }
 
-  #launch(job: JobRow, provider: RegisteredProvider, heavy: boolean): void {
+  #launch(job: JobRow, source: ActionSource, heavy: boolean): void {
     const controller = new AbortController();
     let finish: () => void = () => undefined;
     const running: Running = {
@@ -433,7 +486,7 @@ export class JobService {
       this.#abort(job.id, running, "ceiling");
     }, LEG_CEILING_MS);
     ceiling.unref();
-    void this.#execute(job, provider, running)
+    void this.#execute(job, source, running)
       .catch((error: unknown) => {
         this.deps.logger.error({ err: error, job: job.id }, "A job could not be recorded.");
       })
@@ -447,7 +500,7 @@ export class JobService {
       });
   }
 
-  async #execute(job: JobRow, provider: RegisteredProvider, running: Running): Promise<void> {
+  async #execute(job: JobRow, source: ActionSource, running: Running): Promise<void> {
     const started = await this.store.update(
       job.id,
       { state: "running", started_at: job.started_at ?? isoNow(this.deps.clock) },
@@ -460,14 +513,6 @@ export class JobService {
     try {
       const row = await this.#connection(job.connection_id);
       if (row === undefined) return;
-      const context = this.deps.runner.contextFor(row, provider, log);
-      const { config, secret } = context;
-      // A cancel drops the request in flight and refuses every further one at once.
-      const signal = running.controller.signal;
-      const base = {
-        ...context.base,
-        http: new ProviderHttp(abortableTransport(context.base.http.transport, signal)),
-      };
       const call = this.#call(started, running, {
         release: () => {
           release();
@@ -478,7 +523,7 @@ export class JobService {
       });
       let outcome: unknown;
       try {
-        outcome = await provider.runAction(base, config, secret, call.hooks);
+        outcome = await this.#run(source, row, call.hooks, running.controller.signal, log);
       } catch (error) {
         outcome = error;
       }
@@ -488,6 +533,26 @@ export class JobService {
     } finally {
       release();
     }
+  }
+
+  /** One leg: in the provider's runtime, or the core's own action. */
+  async #run(
+    source: ActionSource,
+    row: ConnectionRow,
+    hooks: ActionCall,
+    signal: AbortSignal,
+    log: Logger,
+  ): Promise<ActionResult> {
+    if (source.core !== undefined) return source.core.run(row, hooks, log);
+    const provider = source.provider;
+    if (provider === undefined) throw new Error("An action without a runtime.");
+    const context = this.deps.runner.contextFor(row, provider, log);
+    // A cancel drops the request in flight and refuses every further one at once.
+    const base = {
+      ...context.base,
+      http: new ProviderHttp(abortableTransport(context.base.http.transport, signal)),
+    };
+    return provider.runAction(base, context.config, context.secret, hooks);
   }
 
   /** The job's side of the action context: checkpoint, progress and results. */
@@ -558,6 +623,7 @@ export class JobService {
           {
             snapshots: batch.snapshots ?? [],
             ...(batch.orders === undefined ? {} : { orders: batch.orders }),
+            ...(batch.returns === undefined ? {} : { returns: batch.returns }),
             complete: false,
           },
           [],

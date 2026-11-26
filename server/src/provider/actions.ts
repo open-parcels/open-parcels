@@ -1,6 +1,6 @@
 import type { z } from "zod";
 import type { ProviderContext } from "./api.js";
-import type { OrderSnapshot, ParcelSnapshot } from "./snapshot.js";
+import type { OrderSnapshot, ParcelSnapshot, ReturnSnapshot } from "./snapshot.js";
 
 /**
  * Connection actions that run provider code as a job (`docs/connection-actions-and-jobs.md` §2).
@@ -20,6 +20,7 @@ export interface JobProgress {
 export interface ActionBatch {
   readonly snapshots?: readonly ParcelSnapshot[];
   readonly orders?: readonly OrderSnapshot[];
+  readonly returns?: readonly ReturnSnapshot[];
 }
 
 /** The job's resumable state: what the last leg saved, encrypted, at most 256 KB as JSON. */

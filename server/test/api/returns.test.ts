@@ -133,6 +133,43 @@ describe("returns API", () => {
     expect(orders.json<Order[]>()).toEqual([]);
   });
 
+  it("finds the order of a refund without a reference by its total and payee", async () => {
+    const paid = { amount: 18.2, currency: "EUR" };
+    const at = "2026-11-17T10:00:00.000Z";
+    await context.services.reconciler.ingest(connectionId, {
+      snapshots: [],
+      orders: [
+        { order: ORDER, status: "ordered", at, items: [], total: paid, payment: false },
+        {
+          order: { shop: "other-shop.de", orderNumber: "RET-0002" },
+          status: "ordered",
+          at,
+          items: [],
+          total: paid,
+          payment: false,
+        },
+      ],
+      complete: false,
+    });
+    const refund = (payee: string | null) =>
+      returnSnapshot({
+        order: { payee, total: paid, paidBefore: "2026-11-18T09:00:00.000Z" },
+        status: "refunded",
+        refund: { amount: 4.62, currency: "EUR", status: "issued" },
+        mayCreate: false,
+      });
+    // Two orders of that total and a payee naming neither: nothing is touched.
+    await report(refund("Someone Else Ltd"));
+    const statuses = async () =>
+      (await app.inject({ url: "/api/v1/orders?view=all", headers }))
+        .json<Order[]>()
+        .map((order) => [order.order_number, order.status]);
+    expect(await statuses()).not.toContainEqual(["RET-0001", "refunded"]);
+    await report(refund("Example-Shop GmbH"));
+    expect(await statuses()).toContainEqual(["RET-0001", "refunded"]);
+    expect(await statuses()).not.toContainEqual(["RET-0002", "refunded"]);
+  });
+
   it("reads a return past its deadline as expired", async () => {
     await report(requested);
     context.clock.advance(8 * 24 * 60 * 60_000);

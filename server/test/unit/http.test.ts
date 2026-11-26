@@ -86,6 +86,43 @@ describe("provider HTTP client", () => {
     expect(requested).not.toContain("www.partner.example");
   });
 
+  it("reaches a configured host on the user's network only when the connection opts in", async () => {
+    const manifest = testManifest("lan", {
+      permissions: {
+        network: [
+          {
+            config: "url",
+            reason: "The user's own server.",
+            private_network_opt_in: "allow_private_network",
+          },
+        ],
+      },
+    });
+    const answer: FetchLike = () => Promise.resolve(new Response("{}", { status: 200 }));
+    const clock = new FakeClock();
+    const http = (config: Record<string, unknown>) =>
+      coreHttp(
+        { limits: {} },
+        networkAllowList(manifest, config),
+        new HostLimiter(clock, () => Promise.resolve()),
+        clock,
+        answer,
+      );
+    const url = new URL("http://192.168.2.20:8080/api/parcel/1");
+    await expect(http({ url: "http://192.168.2.20:8080/api" }).request(url)).rejects.toThrow(
+      "non-public",
+    );
+    await expect(
+      http({ url: "http://192.168.2.20:8080/api", allow_private_network: true }).request(url),
+    ).resolves.toMatchObject({ status: 200 });
+    // The opt-in covers that one host, never another inward address.
+    await expect(
+      http({ url: "http://192.168.2.20:8080/api", allow_private_network: true }).request(
+        new URL("http://192.168.2.21/"),
+      ),
+    ).rejects.toThrow();
+  });
+
   it("lets a burst through, then paces requests per host", async () => {
     const { http, waits } = setup(ok);
     const url = new URL("https://carrier.example.invalid/api");

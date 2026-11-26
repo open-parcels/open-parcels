@@ -6,7 +6,7 @@ import { appendEvent } from "../events/bus.js";
 import { snapshot, type ParcelSnapshot, type ReturnSnapshot } from "../provider/snapshot.js";
 import { loadReturns, localDay } from "../returns/repository.js";
 import { safeUrl } from "./links.js";
-import { createOrder, findOrder } from "./order-rows.js";
+import { createOrder, findOrder, findOrderByPayment } from "./order-rows.js";
 import { markRefunded, type OrderEnv } from "./orders.js";
 
 type Trx = Transaction<Database>;
@@ -29,13 +29,19 @@ async function orderFor(
   report: ReturnSnapshot,
   now: string,
 ): Promise<{ id: string } | null> {
-  const existing = await findOrder(trx, report.order);
+  const key = report.order;
+  if (!("orderNumber" in key)) {
+    // A refund matched by what was paid never starts an order.
+    const paid = await findOrderByPayment(trx, key);
+    return paid === undefined ? null : { id: paid.id };
+  }
+  const existing = await findOrder(trx, key);
   if (existing !== undefined) {
     // The owner deleted the order: what belonged to it is not brought back.
     return existing.deleted_at === null ? { id: existing.id } : null;
   }
   if (!report.mayCreate) return null;
-  return { id: await createOrder(trx, report.order, now) };
+  return { id: await createOrder(trx, key, now) };
 }
 
 /**

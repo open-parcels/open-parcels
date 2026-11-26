@@ -19,7 +19,7 @@ import { trackingConnectionIn } from "./engine/linking.js";
 import { Reconciler } from "./engine/reconciler.js";
 import { ProviderRegistry, type RegisteredProvider } from "./engine/registry.js";
 import { ConnectionRunner } from "./engine/runner.js";
-import { JobService } from "./jobs/service.js";
+import { JobService, type JobDeps } from "./jobs/service.js";
 import type { Sandbox } from "./sandbox/host.js";
 import { builtinProviders, sandboxFilesIn } from "./sandbox/providers.js";
 import { SignInService } from "./engine/sign-in.js";
@@ -36,10 +36,12 @@ import { imapClientFactory } from "./mail/imap-client.js";
 import { createMailInterpreter, createOrderInterpreter } from "./mail/interpret.js";
 import { createReturnInterpreter } from "./mail/returns.js";
 import { ReturnService } from "./returns/service.js";
-import type { MailboxClientFactory, MailInterpreter } from "./mail/types.js";
+import { MAIL_PROVIDER, type MailboxClientFactory, type MailInterpreter } from "./mail/types.js";
 import { EmailRuleReader } from "./mail/rule-reader.js";
 import { EmailRouter } from "./mail/routing.js";
 import { MailWatcher } from "./mail/watcher.js";
+import { inboxActions } from "./mail/reread.js";
+import { fallbackCarrier } from "./engine/fallback.js";
 import type { Presentation } from "./parcels/repository.js";
 import { ParcelService } from "./parcels/service.js";
 import { OrderService } from "./orders/service.js";
@@ -254,6 +256,25 @@ async function consumerServices(
   return { consumerCatalog, consumers, notifications };
 }
 
+/** The job service, with the inbox's own actions ("Read old emails again"). */
+function jobService(
+  deps: ServiceDeps,
+  parts: Pick<JobDeps, "registry" | "runner" | "reconciler" | "bus"> & { mail: MailWatcher },
+): JobService {
+  return new JobService({
+    ...deps,
+    ...parts,
+    coreActions: {
+      [MAIL_PROVIDER]: inboxActions({
+        secrets: deps.secrets,
+        clock: deps.clock,
+        clientFactory: deps.mailClientFactory ?? imapClientFactory,
+        watcher: parts.mail,
+      }),
+    },
+  });
+}
+
 export async function createServices(deps: ServiceDeps): Promise<Services> {
   const { db, clock, logger } = deps;
   // First: values saved in the UI change `deps.config` in place before anything reads it.
@@ -393,6 +414,7 @@ export async function createServices(deps: ServiceDeps): Promise<Services> {
         scheduler.wake();
       }
     },
+    fallbackCarrier: () => fallbackCarrier(db, registry),
   });
   const access = await AccessControl.create(auth, logins, deps.config, configSettings, logger);
   const returns = new ReturnService(db, clock, deps.config.timeZone);
@@ -417,7 +439,7 @@ export async function createServices(deps: ServiceDeps): Promise<Services> {
     reconciler,
     runner,
     scheduler,
-    jobs: new JobService({ ...deps, registry, runner, reconciler, bus }),
+    jobs: jobService(deps, { registry, runner, reconciler, bus, mail }),
     live,
     calendar: new CalendarService(db, clock, deps.config.timeZone, presentation, returns),
     signIn: new SignInService({

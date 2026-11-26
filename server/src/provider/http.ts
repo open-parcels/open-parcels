@@ -2,7 +2,7 @@ import { isIP } from "node:net";
 import { getPublicSuffix, type CookieJar } from "tough-cookie";
 import type { Clock, Sleep } from "../clock.js";
 import { isNonPublicHostLiteral } from "../net/address.js";
-import { guardedFetch, type FetchLike } from "../net/guarded-fetch.js";
+import { guardedFetch, privateNetworkFetch, type FetchLike } from "../net/guarded-fetch.js";
 import { userAgent } from "../version.js";
 import { RateLimitedError, RequestTimeoutError, TransientError } from "./errors.js";
 import type { HostAllowList } from "./manifest.js";
@@ -298,13 +298,17 @@ export function coreTransport(
   clock: Clock,
   fetchImpl: FetchLike = guardedFetch,
 ): HopTransport {
+  // For a host the user allowed on their own network; a test's own fetch serves both.
+  const privateFetchImpl = fetchImpl === guardedFetch ? privateNetworkFetch : fetchImpl;
   return async (hop) => {
     const url = hop.url;
     if (!hosts.allows(url.hostname)) {
       throw new HostNotAllowedError(`${url.hostname} is not in the provider's manifest.`);
     }
-    // Providers build some URLs from carrier data (links, redirects); none may point inward.
-    if (isNonPublicHostLiteral(url.hostname)) {
+    // Providers build some URLs from carrier data (links, redirects); none may point inward,
+    // except the host the user allowed on their own network.
+    const inward = hosts.allowsPrivate?.(url.hostname) === true;
+    if (!inward && isNonPublicHostLiteral(url.hostname)) {
       throw new TransientError("Refusing a request to a non-public address.");
     }
     const paused = limiter.pausedFor(url.hostname);
@@ -328,7 +332,7 @@ export function coreTransport(
     }
     let response: Response;
     try {
-      response = await fetchImpl(url, {
+      response = await (inward ? privateFetchImpl : fetchImpl)(url, {
         method: hop.method,
         headers,
         ...(hop.body === undefined ? {} : { body: hop.body }),

@@ -180,3 +180,24 @@ still applies. **Trouble:** a captcha pauses the job (6 h), a sign-in page pause
 a minute later; the second time the job fails (`OrdersPageChangedError`), keeping its checkpoint.
 Digital orders are not on the orders page and are not imported. The manifest also has the link
 "Your orders" (`https://www.{storefront}/your-orders/orders`).
+
+## 8. Inbox "Read old emails again"
+
+Inboxes are no provider: the core declares and runs their actions itself (`CoreActions` in
+`server/src/jobs/service.ts`, the job service's `coreActions`), with the same jobs, states, API
+and live events. `GET /api/v1/inbox-form` lists them as `actions`.
+
+`server/src/mail/reread.ts`: `reread_emails`, on inboxes, heavy, a 60-minute cooldown, with the
+input `days` (1–3650, default 365). It opens a connection of its own (the watcher's stays in
+IDLE), and for each of the inbox's folders searches the emails since then and reads them, oldest
+first, exactly as the watcher reads new ones (providers' routing, the shared rules, the fallback
+service for unknown carriers):
+
+1. **Batches** of 25 emails: what they gave is emitted (parcels, orders, returns: history, §6),
+   then the checkpoint `{folder, uidValidity, afterUid, emails, parcels, orders, returns}` is
+   saved, so a resume never reads an email twice; a folder whose UIDVALIDITY changed is read
+   again from its start.
+2. **Pacing:** a 2 s rest after every batch; after 2,000 emails the leg ends with
+   `{status: "pause", seconds: 300}`.
+3. **Trouble:** a refused sign-in pauses the job (`needs_sign_in`), a network or protocol
+   failure retries (`TransientError`), a sign-in that no longer decrypts pauses it as well.

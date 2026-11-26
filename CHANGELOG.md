@@ -2,6 +2,33 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Added: returns of other shops, PayPal refunds matched to orders (rules 2.0.0-dev.17)
+
+What a return or refund email says about the return (return-by day, drop-off options, cost,
+refund, label link, the shop's return id and reason, how far it is) is now read by the rules
+(`EmailParseResult.return`), for every return rule and every provider's rules; the server's own
+readers are gone. Return emails of shops no rule knows ("Return requested for order #1042") start
+or update that order's return under the sender's domain. PayPal refunds that quote the shop's
+invoice id join that order; those that name none are matched by the purchase's total and the
+payee, and touch nothing when that is ambiguous. BerryBase delivery emails mark the order
+delivered. A shop's order email whose tracking number belongs to a carrier no rule knows now
+files the parcel under the first fallback service (dropped as before without one).
+
+### Added: "Read old emails again" on inboxes
+
+Every inbox has the action "Read old emails again" (input: days, default 365): a heavy,
+resumable job that reads the inbox's emails of those days again in paced batches, so past
+orders, parcels and returns appear (after "Clear data", or for an inbox added with a short first
+sync). What it finds is stored as history, like an import. `GET /api/v1/inbox-form` gains
+`actions`; `GET /api/v1/connections/{id}/actions` lists it for inboxes. Job batches may now carry
+returns (`ActionBatch.returns`).
+
+### Added: fallback services on your own network
+
+The universal lookup's new setting "Allow an address on your own network" (off by default) lets
+that connection reach its server at a LAN address; every other non-public address stays refused.
+A manifest's `config` network entry declares such an opt-in with `private_network_opt_in`.
+
 ### Added: consumers and notification rules
 
 Consumers send notifications about parcels to a service the user chooses

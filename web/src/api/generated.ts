@@ -4919,7 +4919,8 @@ export type GetApiV1Carriers200ItemSignInFlowsItem = {
  * A task runs as a job; a link only opens an address.
  */
 export type GetApiV1Carriers200ItemActionsItemKind = "task" | "link";
-export type GetApiV1Carriers200ItemActionsItemConnectionKindsItem = "account" | "tracking" | "shop";
+export type GetApiV1Carriers200ItemActionsItemConnectionKindsItem =
+  "account" | "tracking" | "shop" | "mail";
 export type GetApiV1Carriers200ItemActionsItemWhenStateItem =
   "ok" | "idle" | "needs_sign_in" | "error";
 /**
@@ -4986,12 +4987,59 @@ export type GetApiV1Carriers200Item = {
 };
 
 export type GetApiV1InboxForm200Provider = "imap";
+/**
+ * A task runs as a job; a link only opens an address.
+ */
+export type GetApiV1InboxForm200ActionsItemKind = "task" | "link";
+export type GetApiV1InboxForm200ActionsItemConnectionKindsItem =
+  "account" | "tracking" | "shop" | "mail";
+export type GetApiV1InboxForm200ActionsItemWhenStateItem =
+  "ok" | "idle" | "needs_sign_in" | "error";
+/**
+ * Heavy jobs run one at a time per server.
+ */
+export type GetApiV1InboxForm200ActionsItemWeight = "light" | "heavy";
+export type GetApiV1InboxForm200ActionsItem = {
+  id: string;
+  /** A task runs as a job; a link only opens an address. */
+  kind: GetApiV1InboxForm200ActionsItemKind;
+  label: string;
+  /** @nullable */
+  description: string | null;
+  connection_kinds: GetApiV1InboxForm200ActionsItemConnectionKindsItem[];
+  /** Connection states in which the action may start. */
+  when_state: GetApiV1InboxForm200ActionsItemWhenStateItem[];
+  /** Heavy jobs run one at a time per server. */
+  weight: GetApiV1InboxForm200ActionsItemWeight;
+  /**
+   * Ask the user this before starting, when set.
+   * @nullable
+   */
+  confirm: string | null;
+  /** Have the connection's label typed to confirm; never an HA button. */
+  destructive: boolean;
+  /** Offered as an HA button when it needs no input. */
+  expose_to_ha: boolean;
+  /**
+   * Earliest re-run after a finished job.
+   * @minimum -9007199254740991
+   * @maximum 9007199254740991
+   */
+  cooldown_minutes: number;
+  /** JSON Schema of the task's input form; null for a link or a task without input. */
+  input_schema: unknown;
+  /** Some input field has no default: ask before starting. */
+  input_required: boolean;
+};
+
 export type GetApiV1InboxForm200 = {
   provider: GetApiV1InboxForm200Provider;
   /** JSON Schema of the inbox configuration form. */
   config_schema: unknown;
   /** JSON Schema of the inbox sign-in data. */
   secret_schema: unknown;
+  /** The inbox's actions ("Read old emails again"). */
+  actions: GetApiV1InboxForm200ActionsItem[];
 };
 
 export type GetApiV1Connections200ItemKind = "account" | "tracking" | "shop" | "mail";
@@ -5848,7 +5896,7 @@ export type PostApiV1ConnectionsIdClear404 = {
  */
 export type GetApiV1ConnectionsIdActions200ItemKind = "task" | "link";
 export type GetApiV1ConnectionsIdActions200ItemConnectionKindsItem =
-  "account" | "tracking" | "shop";
+  "account" | "tracking" | "shop" | "mail";
 export type GetApiV1ConnectionsIdActions200ItemWhenStateItem =
   "ok" | "idle" | "needs_sign_in" | "error";
 /**

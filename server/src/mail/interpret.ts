@@ -19,7 +19,12 @@ import {
 import type { ParcelStatus } from "../domain/parcel.js";
 import { redactText } from "../log/redact.js";
 import { snapshot, type OrderSnapshot, type ParcelSnapshot } from "../provider/snapshot.js";
-import type { MailInput, MailInterpreter, MailOrderInterpreter } from "./types.js";
+import {
+  TO_FALLBACK_SERVICE,
+  type MailInput,
+  type MailInterpreter,
+  type MailOrderInterpreter,
+} from "./types.js";
 
 /**
  * The order an email belongs to. A rule's shop is trusted only when the order number fits that
@@ -169,7 +174,11 @@ export function createMailInterpreter(rules: Rules, timeZone: string): MailInter
         orderOf(result.ruleId, result.orderNumbers[0], domain, senderName(mail.from)) ??
         fromOrderEmail;
       for (const trackingNumber of result.trackingNumbers) {
-        const carrier = carrierFor(rules, result, trackingNumber, domain);
+        // A shop's order email may name a number of a carrier the rules do not know: it is filed
+        // under the user's fallback service (the inbox resolves the placeholder, or drops it).
+        const carrier =
+          carrierFor(rules, result, trackingNumber, domain) ??
+          (order !== null && shopOfRule(result.ruleId) !== null ? TO_FALLBACK_SERVICE : null);
         if (carrier === null) {
           continue;
         }

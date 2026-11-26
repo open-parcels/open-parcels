@@ -15,7 +15,18 @@ const reason = z.string().trim().min(3).max(200);
 const networkEntry = z.union([
   z.strictObject({ host: z.string().regex(HOST_PATTERN), reason }),
   /** The host of a URL the user typed into this config field (a self-hosted server). */
-  z.strictObject({ config: z.string().regex(/^[a-z][a-z0-9_]*$/), reason }),
+  z.strictObject({
+    config: z.string().regex(/^[a-z][a-z0-9_]*$/),
+    reason,
+    /**
+     * A boolean config field: when the user turns it on, that host may be an address on their
+     * own network (refused otherwise, like every non-public address).
+     */
+    private_network_opt_in: z
+      .string()
+      .regex(/^[a-z][a-z0-9_]*$/)
+      .optional(),
+  }),
 ]);
 
 const SECRET_KINDS = ["credentials", "api_key", "token"] as const;
@@ -189,6 +200,8 @@ export function hostMatches(pattern: string, hostname: string): boolean {
 /** The hosts a provider may reach: the manifest's patterns plus those its config names. */
 export interface HostAllowList {
   allows(hostname: string): boolean;
+  /** Whether this host may be a non-public address (the user opted in); false when unset. */
+  allowsPrivate?(hostname: string): boolean;
 }
 
 /**
@@ -197,18 +210,26 @@ export interface HostAllowList {
  */
 export function networkAllowList(manifest: ProviderManifest, config: unknown): HostAllowList {
   const patterns: string[] = [];
+  const privateHosts = new Set<string>();
+  const field = (name: string): unknown =>
+    config !== null && typeof config === "object"
+      ? (config as Record<string, unknown>)[name]
+      : undefined;
   for (const entry of manifest.permissions.network) {
     if ("host" in entry) {
       patterns.push(entry.host);
       continue;
     }
-    const value: unknown =
-      config !== null && typeof config === "object"
-        ? (config as Record<string, unknown>)[entry.config]
-        : undefined;
+    const value = field(entry.config);
     if (typeof value === "string" && URL.canParse(value)) {
-      patterns.push(new URL(value).hostname);
+      const hostname = new URL(value).hostname;
+      patterns.push(hostname);
+      const optIn = entry.private_network_opt_in;
+      if (optIn !== undefined && field(optIn) === true) privateHosts.add(hostname);
     }
   }
-  return { allows: (hostname) => patterns.some((pattern) => hostMatches(pattern, hostname)) };
+  return {
+    allows: (hostname) => patterns.some((pattern) => hostMatches(pattern, hostname)),
+    allowsPrivate: (hostname) => privateHosts.has(hostname),
+  };
 }

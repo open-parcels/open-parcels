@@ -4,6 +4,12 @@ import type { OrderSnapshot, ParcelSnapshot, ReturnSnapshot } from "../provider/
 /** Provider id of inbox connections. Mail is handled by the core, not by a carrier provider. */
 export const MAIL_PROVIDER = "imap" as const;
 
+/**
+ * The carrier of a parcel an email names without one the rules know: filed under the user's
+ * first fallback service before it is stored, or dropped when there is none.
+ */
+export const TO_FALLBACK_SERVICE = "<fallback service>";
+
 /** The inbox form's fields; the titles and descriptions are translated like a provider's. */
 export const mailConfigSchema = z.object({
   host: z
