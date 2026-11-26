@@ -19,6 +19,7 @@ import {
 import type { TrustProxy } from "../config.js";
 import type { Services } from "../services.js";
 import { registerAuth } from "./auth-plugin.js";
+import { accountNames, registerAccountMasking } from "./privacy.js";
 import { registerCors } from "./cors.js";
 import { ApiError, routeNotFound, type ErrorBody } from "./errors.js";
 import { registerCalendarRoutes } from "./routes/calendar.js";
@@ -196,6 +197,7 @@ export async function buildApp(services: Services, options: BuildAppOptions = {}
     access: services.access,
     trustedIngressAddress: options.trustedIngressAddress,
   });
+  registerAccountMasking(app, accountNames(services));
 
   const typed = app.withTypeProvider<ZodTypeProvider>();
   registerHealthRoutes(typed, services);

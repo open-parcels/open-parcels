@@ -104,7 +104,8 @@ describe("health and status", () => {
     expect(status.json<{ connections: unknown[] }>().connections).toEqual([
       expect.objectContaining({
         id: connection.id,
-        label: "Demo tracking",
+        // Read without a login: the provider's name, not the connection's own label.
+        label: "Demo courier",
         state: "error",
         state_reason: "update_failed",
         carrier_message: "Demo answered HTTP 500.",

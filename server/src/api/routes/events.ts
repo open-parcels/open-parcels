@@ -4,6 +4,7 @@ import { EVENT_TYPES, type OutboxEvent } from "../../events/types.js";
 import type { Services } from "../../services.js";
 import type { TypedApp } from "../app.js";
 import { credentialCheck, requireScope } from "../auth-plugin.js";
+import { accountNames, maskerFor, type Masker } from "../privacy.js";
 
 /** Comment lines keep proxies (and Home Assistant ingress) from closing an idle stream. */
 const HEARTBEAT_MS = 25_000;
@@ -18,9 +19,10 @@ const streamMessageSchema = z.object({
   data: z.unknown(),
 });
 
-/** One live event as an SSE message. */
-function formatEvent(event: OutboxEvent): string {
-  return `id: ${event.seq}\nevent: ${event.type}\ndata: ${JSON.stringify(event.payload)}\n\n`;
+/** One live event as an SSE message; `mask` hides accounts from a caller without a login. */
+function formatEvent(event: OutboxEvent, mask: Masker | null): string {
+  const payload = mask === null ? event.payload : mask(event.payload);
+  return `id: ${event.seq}\nevent: ${event.type}\ndata: ${JSON.stringify(payload)}\n\n`;
 }
 
 function parseLastEventId(
@@ -67,6 +69,7 @@ export function registerEventRoutes(app: TypedApp, services: Services): void {
       },
     },
     async (request, reply) => {
+      const mask = maskerFor(request, accountNames(services));
       const headerValue = request.headers["last-event-id"];
       const since = parseLastEventId(
         typeof headerValue === "string" ? headerValue : undefined,
@@ -141,7 +144,7 @@ export function registerEventRoutes(app: TypedApp, services: Services): void {
           return;
         }
         lastSent = event.seq;
-        write(formatEvent(event));
+        write(formatEvent(event, mask));
       };
       cleanups.push(services.bus.subscribe(send));
       // Courier positions: no `id`, so they are never part of a replay.
@@ -176,7 +179,7 @@ export function registerEventRoutes(app: TypedApp, services: Services): void {
       });
 
       try {
-        lastSent = await catchUp(services, since, write, drained);
+        lastSent = await catchUp(services, since, write, drained, mask);
       } catch (error) {
         services.logger.error({ err: error }, "Replaying events failed.");
         close();
@@ -207,6 +210,7 @@ async function catchUp(
   since: number | undefined,
   write: (chunk: string) => void,
   drained: () => Promise<void>,
+  mask: Masker | null,
 ): Promise<number> {
   const { bus } = services;
   const head = bus.head;
@@ -225,7 +229,7 @@ async function catchUp(
   for (;;) {
     const page = await bus.replayPage(cursor);
     for (const event of page.events) {
-      write(formatEvent(event));
+      write(formatEvent(event, mask));
     }
     cursor = page.last;
     if (!page.more) {
