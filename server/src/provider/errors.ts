@@ -44,6 +44,15 @@ export class InvalidConfigError extends ProviderError {
   override readonly name = "InvalidConfigError";
 }
 
+/**
+ * A page the provider reads no longer has the shape it knows, even when read once more: the
+ * carrier changed it and the provider needs an update. Not retried; a job fails with
+ * `page_changed` and keeps its checkpoint.
+ */
+export class PageChangedError extends ProviderError {
+  override readonly name = "PageChangedError";
+}
+
 /** A temporary failure: network error, timeout, 5xx, unexpected page. Retried with backoff. */
 export class TransientError extends ProviderError {
   override readonly name: string = "TransientError";

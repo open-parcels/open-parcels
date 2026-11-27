@@ -1,6 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import type { App } from "../../src/api/app.js";
-import { RateLimitedError, SignInRejectedError, TransientError } from "../../src/provider/api.js";
+import {
+  PageChangedError,
+  RateLimitedError,
+  SignInRejectedError,
+  TransientError,
+} from "../../src/provider/api.js";
 import { fakeJobs, JobWorld } from "../fakes/jobs.js";
 import { createTestContext, signIn, type TestContext } from "../helpers.js";
 
@@ -213,6 +218,17 @@ describe("jobs", () => {
     expect((await job(started.id)).state).toBe("done");
     expect(world.pages).toEqual([0, 1, 2]);
     expect(await outboxTypes()).toContain("job.paused");
+  });
+
+  it("fails with page_changed when a page changed its shape, keeping the checkpoint", async () => {
+    const id = await connection();
+    world.script = [undefined, new PageChangedError("no years")];
+    const started = await start(id);
+    expect(await job(started.id)).toMatchObject({ state: "failed", reason: "page_changed" });
+    world.script = [];
+    await post(`/api/v1/jobs/${started.id}/resume`);
+    expect((await job(started.id)).state).toBe("done");
+    expect(world.pages).toEqual([0, 1, 2]);
   });
 
   it("waits for a sign-in by hand, never starting one, and retries transient failures", async () => {

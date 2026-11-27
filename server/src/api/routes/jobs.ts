@@ -75,7 +75,8 @@ const jobSchema = z.object({
     .nullable()
     .describe(
       "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, " +
-        "waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+        "waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or " +
+        "unexpected.",
     ),
   progress: z.object({
     done: z.number().nullable(),

@@ -93,7 +93,8 @@ States: `queued` → `running` → `done` | `partial` | `failed` | `cancelled`, 
 - **Errors keep their meaning** (never a new sign-in):
   `RateLimitedError` pauses (`rate_limited`) until its `Retry-After` (15 min without one);
   `CaptchaError` pauses (`captcha`) for 6 h; `SignInRejectedError` pauses (`needs_sign_in`)
-  until resumed by hand; `TransientError` retries after 1, 5 and 15 min, then pauses
+  until resumed by hand; `PageChangedError` (a page the provider reads changed its shape) fails
+  the job as `page_changed`, keeping its checkpoint; `TransientError` retries after 1, 5 and 15 min, then pauses
   (`waiting_for_carrier`) for 1 h; anything else fails the job (`failed`) and keeps its
   checkpoint. A paused job with `resume_at` is queued again when that time comes.
 - **Resumable.** The checkpoint is saved by the provider after every batch. Resume (from
@@ -163,23 +164,31 @@ plus:
 `server/src/carriers/amazon/history.ts` (0002 §2.13), on shop connections, heavy, a 24 h
 cooldown, with the input `since_year` (optional: the oldest year to read).
 
-1. **Plan:** the orders page's time filter (`year-2026`, `year-2025`, …) gives the years, newest
-   first; `total` is the number of years and `phase` reads "2023: page 4".
-2. **Walk** each year page by page (`?timeFilter=year-<y>&startIndex=<n>`, the next page's index
-   read from the page's links). Each page's orders are emitted from the page alone (order
+1. **Plan:** the orders page's time filter (`<select id="time-filter" name="timeFilter">`, its
+   options read by value: `year-2026`, `year-2025`, …; the labels follow the page's language)
+   gives the years, newest first; `total` is the number of years and `phase` reads
+   "2023: page 4". The provider reads with a mobile browser's User-Agent, and a page without the
+   filter does not stop the job: it reads the current year and goes back one year at a time,
+   until a year shows no order on its first page (the current year may be empty and is passed),
+   down to `since_year`; `total` is then null. The default listing is not paged instead: it shows
+   only the past three months. A page with neither years, orders nor paging is of an unexpected
+   shape.
+2. **Walk** each year page by page (`?timeFilter=year-<y>`, then the path the page's "next" link
+   names: `/-/<lang>/your-orders/orders?timeFilter=year-<y>&page=<n>`, 0-based). Each page's orders are emitted from the page alone (order
    number, placed date, total, item titles, and where the order stands: `delivered` when every
    line still a parcel says so, `shipped` when one is on its way, `cancelled` when every line
    is). Shipments
    placed within 90 days and not delivered long ago are queued; their tracking pages are read
    afterwards, at most 8 per batch, and emitted as parcels.
-3. **Checkpoint** after every batch: `{years, year, startIndex, yearPage, pending, orders,
-   parcels}`; a resume never reads a page twice.
+3. **Checkpoint** after every batch: `{years, year, page, probing, oldest, yearPage, pending,
+   orders, parcels}`; a resume never reads a page twice.
 
 **Pacing:** 6–10 s (jittered) before every page, a 2-minute break every 25 pages, and after 300
 pages the leg ends with `{status: "pause", seconds: 3600}`; the host bucket (one request per 5 s)
 still applies. **Trouble:** a captcha pauses the job (6 h), a sign-in page pauses it as
 `needs_sign_in` (never a new sign-in), and an orders page of an unexpected shape is read once more
-a minute later; the second time the job fails (`OrdersPageChangedError`), keeping its checkpoint.
+a minute later; the second time the job fails (`PageChangedError`, reason `page_changed`),
+keeping its checkpoint.
 Digital orders are not on the orders page and are not imported.
 
 **Polling run and older orders:** every poll reads the first two orders pages (the newest

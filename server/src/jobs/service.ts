@@ -8,6 +8,7 @@ import type { z } from "zod";
 import type { EventBus } from "../events/bus.js";
 import {
   CaptchaError,
+  PageChangedError,
   RateLimitedError,
   SignInRejectedError,
   TransientError,
@@ -707,6 +708,9 @@ export class JobService {
       await paused("needs_sign_in", null);
     } else if (error instanceof InvalidConnectionConfigError) {
       await finished("failed", { reason: "invalid_config" });
+    } else if (error instanceof PageChangedError) {
+      log.warn({ error: error.message }, "A job stopped: a page changed its shape.");
+      await finished("failed", { reason: "page_changed" });
     } else if (error instanceof TransientError) {
       const attempt = retries + 1;
       const wait = RETRY_MINUTES[attempt - 1];

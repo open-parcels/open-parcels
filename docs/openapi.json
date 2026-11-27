@@ -12260,7 +12260,7 @@
                         },
                         "reason": {
                           "nullable": true,
-                          "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+                          "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.",
                           "type": "string"
                         },
                         "progress": {
@@ -12764,7 +12764,7 @@
                       },
                       "reason": {
                         "nullable": true,
-                        "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+                        "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.",
                         "type": "string"
                       },
                       "progress": {
@@ -12896,7 +12896,7 @@
                     },
                     "reason": {
                       "nullable": true,
-                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.",
                       "type": "string"
                     },
                     "progress": {
@@ -13115,7 +13115,7 @@
                     },
                     "reason": {
                       "nullable": true,
-                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.",
                       "type": "string"
                     },
                     "progress": {
@@ -13595,7 +13595,7 @@
                     },
                     "reason": {
                       "nullable": true,
-                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.",
                       "type": "string"
                     },
                     "progress": {
@@ -14075,7 +14075,7 @@
                     },
                     "reason": {
                       "nullable": true,
-                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.",
+                      "description": "Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.",
                       "type": "string"
                     },
                     "progress": {

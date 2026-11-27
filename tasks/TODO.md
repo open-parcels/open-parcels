@@ -147,6 +147,10 @@ image are shipped (see `DONE.md`). Left:
       2.0.0-dev.17: `generic-return`; refunds by invoice id, else by purchase total and payee)
 - [x] Move return detail reading (deadline, drop-off, cost) from the server into the rules/providers
       (`EmailParseResult.return`, rules `src/mail/returns.ts`)
+- [ ] Verify Amazon "Import history" on the live account after deploying providers 1.0.3: the
+      job runs past the plan, which years it reads (time filter or year by year,
+      `history_no_year_filter` in the unknown reports) and that the "next" link pages
+      (`page=<n>`); check whether the mobile page lists the years some other way
 - [ ] Verify the Amazon return-window parsing on a live account run (needs a live account run and
       the owner's go-ahead). Providers 1.0.2 reads the order cards of the current orders page
       ("Return window closed on …", "Eligible through …", EN/DE) from synthetic fixtures; tick

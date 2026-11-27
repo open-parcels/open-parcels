@@ -6155,7 +6155,7 @@ export type PostApiV1ConnectionsIdActionsAction202Job = {
   action: string;
   state: PostApiV1ConnectionsIdActionsAction202JobState;
   /**
-   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.
+   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.
    * @nullable
    */
   reason: string | null;
@@ -6465,7 +6465,7 @@ export type GetApiV1Jobs200Item = {
   action: string;
   state: GetApiV1Jobs200ItemState;
   /**
-   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.
+   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.
    * @nullable
    */
   reason: string | null;
@@ -6511,7 +6511,7 @@ export type GetApiV1JobsId200 = {
   action: string;
   state: GetApiV1JobsId200State;
   /**
-   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.
+   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.
    * @nullable
    */
   reason: string | null;
@@ -6620,7 +6620,7 @@ export type PostApiV1JobsIdCancel200 = {
   action: string;
   state: PostApiV1JobsIdCancel200State;
   /**
-   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.
+   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.
    * @nullable
    */
   reason: string | null;
@@ -6918,7 +6918,7 @@ export type PostApiV1JobsIdResume200 = {
   action: string;
   state: PostApiV1JobsIdResume200State;
   /**
-   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.
+   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.
    * @nullable
    */
   reason: string | null;
@@ -7216,7 +7216,7 @@ export type PostApiV1JobsIdRestart200 = {
   action: string;
   state: PostApiV1JobsIdRestart200State;
   /**
-   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, action_missing or unexpected.
+   * Why it is paused or failed: rate_limited, captcha, needs_sign_in, retrying, waiting_for_carrier, resting, ceiling, invalid_config, page_changed, action_missing or unexpected.
    * @nullable
    */
   reason: string | null;

@@ -34,6 +34,8 @@ export const jobs = {
     resting: "Taking a planned break.",
     ceiling: "Ran for twelve hours; resume to continue.",
     invalid_config: "The connection's settings cannot work.",
+    page_changed:
+      "The carrier changed a page the provider reads; update the providers, then resume.",
     action_missing: "The provider no longer offers this action.",
     unexpected: "Something went wrong; resume to try again from where it stopped.",
   } as Readonly<Record<string, string | undefined>>,

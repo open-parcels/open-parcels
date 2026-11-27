@@ -2,6 +2,20 @@
 
 ## Unreleased (2.0.0-dev)
 
+### Fixed: Amazon "Import history" stopped at once (providers 1.0.3)
+
+The job failed right after it started with "Amazon's orders page lists no years", recorded as
+`unexpected`. The provider reads the orders page with a mobile browser's User-Agent, and that
+page has no time filter (`select#time-filter`), from which the job took its years. Without the
+filter the job now reads the current year and goes back one year at a time until a year shows no
+order (an empty current year is passed), down to "Oldest year". Paging followed `startIndex`
+links the page no longer has (it pages with `page=<n>`); polling runs and the import follow the
+"next" link now, so the poll reads its second orders page again. A page that changed its shape
+now fails a job with the reason `page_changed` ("The carrier changed a page the provider reads")
+through the new provider API error `PageChangedError`, instead of `unexpected`. Manual step:
+resume or restart the failed "Import history" job after the update; it starts over (its
+checkpoint changed shape).
+
 ### Fixed: Amazon reads the current orders page (providers 1.0.2)
 
 Amazon's orders page now lists each order as an order card (order placed, total, order number,

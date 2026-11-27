@@ -33,6 +33,8 @@ export const jobs: Messages["jobs"] = {
     resting: "Geplante Pause.",
     ceiling: "Lief zwölf Stunden; zum Weitermachen fortsetzen.",
     invalid_config: "Die Einstellungen der Verbindung können nicht funktionieren.",
+    page_changed:
+      "Der Paketdienst hat eine Seite geändert, die der Provider liest; Provider aktualisieren, dann fortsetzen.",
     action_missing: "Der Provider bietet diese Aktion nicht mehr an.",
     unexpected: "Etwas ist schiefgegangen; fortsetzen versucht es ab der Stelle erneut.",
   },

@@ -2,6 +2,7 @@ import { InvalidConnectionConfigError, type InvalidConnectionReason } from "../e
 import {
   CaptchaError,
   InvalidConfigError,
+  PageChangedError,
   ProviderError,
   RateLimitedError,
   RequestTimeoutError,
@@ -107,6 +108,7 @@ const PLAIN: Readonly<Record<string, new (message: string) => Error>> = {
   SignInRejectedError,
   CaptchaError,
   InvalidConfigError,
+  PageChangedError,
   TransientError,
   UnexpectedResponseError,
   RequestTimeoutError,
@@ -125,6 +127,7 @@ const KNOWN: readonly (readonly [string, abstract new (...args: never[]) => Erro
   ["SignInRejectedError", SignInRejectedError],
   ["CaptchaError", CaptchaError],
   ["InvalidConfigError", InvalidConfigError],
+  ["PageChangedError", PageChangedError],
   ["TransientError", TransientError],
   ["ProviderError", ProviderError],
   ["HostNotAllowedError", HostNotAllowedError],
