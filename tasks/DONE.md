@@ -4,6 +4,11 @@ Shipped work, newest first, with the commit that shipped it.
 
 ## 2026-11-28
 
+- Release 2.0.0 (`ea86927`, tag `2.0.0`): images `2.0.0`, `2.0`, `latest` (and `dev`) for amd64
+  and arm64 on Docker Hub, `ghcr.io/open-parcels/open-parcels` and `ghcr.io/bluscream/open-parcels`
+  (whose `latest` was version 1); GitHub release with `openapi-2.0.0.json`; HA app 2.0.0.1
+  (open-parcels-ha-apps `a5fb994`); website `0d0d895`; the NAS runs `:latest` (status: 2.0.0,
+  ea86927, healthy)
 - TODO §2: the scale benchmark run on the Pi 4 (`docs/performance.md`, with how to repeat it
   there); peak 292 MB; four endpoints are over 200 ms p95 there (commit "docs: performance on
   the Pi")
