@@ -100,6 +100,42 @@ Same seed and runs, load 4–5. The web UI's parcel page is now 200 parcels on t
 
 Server memory: 247 MB after start, 245 MB after all runs (peak 263 MB).
 
+### Measured on the Pi (Raspberry Pi 4 Model B, 4 GB, 2 CPUs, 2026-11-28)
+
+Same seed and runs, commit `fbd6d6b` (the `sha-fbd6d6b-arm64` image with the tools built from the
+same commit mounted in). The Pi was busy with its other containers (load 3–7). Its kernel has no
+memory cgroup, so Docker dropped the 384 MB cap; the server stayed below it anyway. The Pi is
+three to four times slower than the NAS. Four endpoints are over the 200 ms p95 the target set
+for the NAS (marked); the parcel and order lists people open every day stay under it.
+
+| Endpoint | p50 / p95 / max ms | KB |
+| --- | --- | --- |
+| parcels, first page (100) | 88 / 153 / 193 | 203 |
+| parcels, web UI page (200 on the way) | 45 / 72 / 108 | 91 |
+| parcels + archived, search and sort by name (200) | 108 / 136 / 206 | 400 |
+| parcels + archived, sort by expected, page at offset 4000 | 219 / **362** / 402 | 397 |
+| parcel counts | 98 / **300** / 320 | 1 |
+| parcels + archived, page at offset 5000 | 56 / 82 / 104 | 204 |
+| parcels, status filter | 26 / 46 / 58 | 21 |
+| parcels + archived, carrier filter | 72 / 131 / 197 | 202 |
+| parcels, active (map) | 39 / 71 / 94 | 91 |
+| orders, open (100) | 158 / **214** / 258 | 101 |
+| orders, web UI page (500) | 129 / 176 / 191 | 101 |
+| orders, all, page at offset 2000 | 155 / **228** / 245 | 178 |
+| returns, open | 24 / 40 / 77 | 3 |
+| calendar, six weeks | 124 / 193 / 751 | 80 |
+| status | 11 / 24 / 56 | 2 |
+| sync from the start (one page) | 102 / 134 / 159 | 228 |
+| sync since a cursor | 99 / 137 / 145 | 220 |
+
+Server memory: 271 MB after start, 282 MB after all runs (peak 292 MB).
+
+To repeat it on the Pi, the image alone is not enough: it carries the bundled server without the
+`seed-scale` and `bench-scale` tools. Build the server on another machine, copy `server/dist` and
+`server/package.json` over, install the production dependencies for arm64 (`npm install
+--omit=dev --ignore-scripts`, then copy `better-sqlite3`, `sharp` and `@img` out of the image),
+and mount them over `/app/server` in the image with `-w /app/server`.
+
 ## What changed
 
 - **Visibility check** (`db/visibility.ts`): "shown unless every connection is disabled" was two
@@ -126,9 +162,9 @@ Server memory: 247 MB after start, 245 MB after all runs (peak 263 MB).
   database; only the page is built. Not stored: a stored status would have to follow every parcel
   write, connection toggle and the 30-day rule for orders without parcels. A test holds the SQL
   and `order-lifecycle.ts` to the same answers on 300 generated orders. Re-measured on
-  2026-11-26 (above): 48–67 ms p95. Not yet measured on the Pi.
-- The map still loads every parcel on the way (about 100 at this scale, 91 KB). Not yet measured
-  on the Pi.
+  2026-11-26 (above): 48–67 ms p95; 176–228 ms on the Pi (2026-11-28).
+- The map still loads every parcel on the way (about 100 at this scale, 91 KB): 71 ms p95
+  on the Pi (2026-11-28).
 
 ## Regression test
 

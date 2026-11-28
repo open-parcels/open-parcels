@@ -4,6 +4,9 @@ Shipped work, newest first, with the commit that shipped it.
 
 ## 2026-11-28
 
+- TODO §2: the scale benchmark run on the Pi 4 (`docs/performance.md`, with how to repeat it
+  there); peak 292 MB; four endpoints are over 200 ms p95 there (commit "docs: performance on
+  the Pi")
 - TODO §1: `web/src/styles.css` split per feature into 22 partials in `web/src/styles/`, imported
   from `styles.css` in the old order, so the cascade is unchanged (the partials together are the
   old file line for line); a test checks every partial is imported once (commit "refactor(web):

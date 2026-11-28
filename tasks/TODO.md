@@ -32,9 +32,11 @@ Groups 1–24 are shipped (see `DONE.md`). Left, optional:
       phone: the parcels table (scrolls, maybe cards), the split map/list pages and Leaflet's
       controls, FullCalendar's week/day views, the sign-in dialog's steps, the Settings place
       picker map, and Safari's dialog height (`100dvh`)
-- [ ] Performance follow-ups (`docs/performance.md`, "Left as it is"): the parcel list is
+- [x] Performance follow-ups (`docs/performance.md`, "Left as it is"): the parcel list is
       searched, sorted, counted and paged in SQL, the map and the Connections page read only what
-      they show (NAS, 2026-11-26). Left: measure on the Pi
+      they show (NAS, 2026-11-26). Measured on the Pi 4 (2026-11-28): everyday lists 71–176 ms
+      p95; four endpoints at 214–362 ms p95 (sort by expected at offset 4000, parcel counts,
+      orders open and at offset 2000), over the NAS target of 200 ms
 - [ ] Release 2.0.0: changelog, tags `2.0.0`, `2.0`, `latest` on Docker Hub and GHCR, website and
       Unraid template switched from `:dev` to `:latest`, HA app on the release
 - [x] GHCR: `ghcr.io/open-parcels/open-parcels` is public; owner decision 2026-11-26: Docker Hub
