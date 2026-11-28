@@ -1,6 +1,19 @@
 # Changelog
 
-## Unreleased (2.0.0-dev)
+## 2.0.0 (2026-11-28)
+
+The first release of the rewrite. The tags `2.0.0`, `2.0` and `latest` point to it on Docker Hub
+(`bluscream1/open-parcels`) and on GHCR (`ghcr.io/open-parcels/open-parcels`, the mirror, and
+`ghcr.io/bluscream/open-parcels`, where `latest` was version 1 until now).
+
+**Upgrading from version 1:** version 2 does not read version 1's database on its own. A container
+on `ghcr.io/bluscream/open-parcels:latest` starts version 2 with an empty database next to the old
+`data.db`, which stays as it is. Carry the data over once with the legacy import (README,
+"Migrating": copy `data.db` to `old.db` in the data volume, run `import-legacy.js` with `--dry-run`,
+then without it), and sign in to Amazon and AliExpress again. To stay on version 1 for now, pin the
+image to `ghcr.io/bluscream/open-parcels:1.0.10`, the last version 1 release.
+
+The sections below list what changed during the 2.0.0 development builds (`2.0.0-dev.<date>`).
 
 ### Fixed: Amazon "Import history" stopped at once (providers 1.0.3)
 

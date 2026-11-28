@@ -3,7 +3,7 @@
  * Do not edit manually.
  * open-parcels
  * Self-hosted parcel and order tracking. API version 1: every path starts with /api/v1. `info.version` is the server release this document belongs to; each release publishes its document, and clients are generated from a released one.
- * OpenAPI spec version: 2.0.0-dev.20261125
+ * OpenAPI spec version: 2.0.0
  */
 import { apiFetch } from "./fetcher";
 export type GetApiV1HealthLive200Status = "ok" | "unavailable";

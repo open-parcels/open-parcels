@@ -18,7 +18,7 @@
 carriers, signs in to carrier and shop accounts, reads shipping emails, shows the courier live on a
 map and keeps a delivery calendar (also as an ICS feed).
 
-> **Status:** early development, `2.0.0-dev`. Expect breaking changes.
+> **Status:** `2.0.0`, the first release of the rewrite.
 
 This repository holds the server and the web UI: carrier providers, email parsing, the scheduler,
 the REST API with its event stream, the Docker image and the Unraid template.

@@ -3,7 +3,7 @@
   "info": {
     "title": "open-parcels",
     "description": "Self-hosted parcel and order tracking. API version 1: every path starts with /api/v1. `info.version` is the server release this document belongs to; each release publishes its document, and clients are generated from a released one.",
-    "version": "2.0.0-dev.20261125"
+    "version": "2.0.0"
   },
   "components": {
     "securitySchemes": {
