@@ -1,0 +1,126 @@
+/*
+ * The default theme: dark glass panels over a soft blue/violet glow, the Outfit typeface (when
+ * installed; no font is fetched from a third party), pill navigation and pill status tags.
+ *
+ * Every colour, shadow, font, radius and spacing below is a design token; the rules in the other
+ * partials use only these (`var(--…)`, tints through `color-mix`), never a literal colour, so a theme can
+ * replace them all. The default theme's manifest (`server/themes/default/open-parcels-theme.json`)
+ * holds the same values, and a test keeps both equal. An installed theme sets its tokens on the
+ * page's root element. Dark by default; light follows the device unless the user picked a mode
+ * (`data-mode`).
+ */
+:root {
+  color-scheme: dark;
+  --bg: #0f172a;
+  --glow-1: rgba(59, 130, 246, 0.15);
+  --glow-2: rgba(139, 92, 246, 0.15);
+  --panel: rgba(30, 41, 59, 0.7);
+  --panel-solid: #1e293b;
+  --panel-border: rgba(255, 255, 255, 0.1);
+  --tint: rgba(255, 255, 255, 0.05);
+  --tint-strong: rgba(255, 255, 255, 0.1);
+  --field: rgba(0, 0, 0, 0.2);
+  --backdrop: rgba(15, 23, 42, 0.6);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --shadow-raised: 0 4px 20px rgba(0, 0, 0, 0.2);
+  --shadow-overlay: 0 20px 50px rgba(0, 0, 0, 0.5);
+  --text: #f8fafc;
+  --text-soft: #cbd5e1;
+  --muted: #94a3b8;
+  --accent: #2563eb;
+  --accent-hover: #60a5fa;
+  --accent-soft: rgba(59, 130, 246, 0.18);
+  --accent-line: rgba(59, 130, 246, 0.3);
+  --accent-text: #ffffff;
+  --monogram-text: #ffffff;
+  --violet: #a78bfa;
+  --focus: #93c5fd;
+  --danger: #f87171;
+  --ok: #4ade80;
+  --warn: #fb923c;
+  --yellow: #facc15;
+  --info: #22d3ee;
+  --purple: #c084fc;
+  --rose: #fb7185;
+  --map-filter: invert(1) hue-rotate(180deg) brightness(0.95) contrast(0.9);
+  --map-route: #a78bfa;
+  --map-route-reached: #3b82f6;
+  --map-marker-shadow: rgba(0, 0, 0, 0.6);
+  --map-home: #10b981;
+  --map-parcel: #818cf8;
+  --map-truck: #ea580c;
+  --map-van: #f59e0b;
+  --map-plane: #60a5fa;
+  --map-ship: #3b82f6;
+  --map-train: #a855f7;
+  --map-heli: #06b6d4;
+  --map-bike: #22c55e;
+  --map-start: #ef4444;
+  --map-stop: #9ca3af;
+  --radius: 16px;
+  --space: 20px;
+  --font: "Outfit", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --mono: "SF Mono", "Fira Mono", ui-monospace, "Cascadia Code", Consolas, monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-mode="dark"]) {
+    color-scheme: light;
+    --bg: #eef2f9;
+    --glow-1: rgba(59, 130, 246, 0.14);
+    --glow-2: rgba(139, 92, 246, 0.12);
+    --panel: rgba(255, 255, 255, 0.78);
+    --panel-solid: #ffffff;
+    --panel-border: rgba(15, 23, 42, 0.12);
+    --tint: rgba(15, 23, 42, 0.04);
+    --tint-strong: rgba(15, 23, 42, 0.08);
+    --field: rgba(255, 255, 255, 0.9);
+    --shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+    --text: #0f172a;
+    --text-soft: #1e293b;
+    --muted: #475569;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
+    --accent-soft: rgba(37, 99, 235, 0.12);
+    --accent-line: rgba(37, 99, 235, 0.3);
+    --violet: #7c3aed;
+    --focus: #1d4ed8;
+    --danger: #b91c1c;
+    --ok: #166534;
+    --warn: #c2410c;
+    --yellow: #854d0e;
+    --info: #0e7490;
+    --purple: #7e22ce;
+    --rose: #be123c;
+  }
+}
+
+:root[data-mode="light"] {
+  color-scheme: light;
+  --bg: #eef2f9;
+  --glow-1: rgba(59, 130, 246, 0.14);
+  --glow-2: rgba(139, 92, 246, 0.12);
+  --panel: rgba(255, 255, 255, 0.78);
+  --panel-solid: #ffffff;
+  --panel-border: rgba(15, 23, 42, 0.12);
+  --tint: rgba(15, 23, 42, 0.04);
+  --tint-strong: rgba(15, 23, 42, 0.08);
+  --field: rgba(255, 255, 255, 0.9);
+  --shadow: 0 8px 28px rgba(15, 23, 42, 0.1);
+  --text: #0f172a;
+  --text-soft: #1e293b;
+  --muted: #475569;
+  --accent: #2563eb;
+  --accent-hover: #1d4ed8;
+  --accent-soft: rgba(37, 99, 235, 0.12);
+  --accent-line: rgba(37, 99, 235, 0.3);
+  --violet: #7c3aed;
+  --focus: #1d4ed8;
+  --danger: #b91c1c;
+  --ok: #166534;
+  --warn: #c2410c;
+  --yellow: #854d0e;
+  --info: #0e7490;
+  --purple: #7e22ce;
+  --rose: #be123c;
+}

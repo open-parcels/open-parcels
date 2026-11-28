@@ -2,6 +2,13 @@
 
 Shipped work, newest first, with the commit that shipped it.
 
+## 2026-11-28
+
+- TODO §1: `web/src/styles.css` split per feature into 22 partials in `web/src/styles/`, imported
+  from `styles.css` in the old order, so the cascade is unchanged (the partials together are the
+  old file line for line); a test checks every partial is imported once (commit "refactor(web):
+  styles.css per feature")
+
 ## 2026-11-26
 
 - Owner decisions: "Provider" and "Consumer" stay English in German texts (glossary, web UI,

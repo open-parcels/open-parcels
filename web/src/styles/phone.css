@@ -1,0 +1,190 @@
+/*
+ * Phones (360–480 px wide). Every page keeps a 12 px gutter and never scrolls sideways: the nav
+ * gets its own row, tables scroll inside their card, cards and dialogs use less padding, and the
+ * calendar toolbar wraps.
+ */
+@media (max-width: 480px) {
+  .topbar {
+    padding: 10px 12px;
+    gap: 8px 12px;
+  }
+
+  .brand {
+    font-size: 20px;
+  }
+
+  .brand-logo {
+    width: 26px;
+    height: 26px;
+  }
+
+  /* The nav takes a full row below the brand and the tools, icons spread across it. */
+  .topbar > nav {
+    order: 3;
+    width: 100%;
+  }
+
+  .nav {
+    justify-content: space-between;
+  }
+
+  .nav a,
+  .nav a.active {
+    padding: 8px 9px;
+  }
+
+  /* Icons only, also for the current page: there is no room for its label. */
+  .nav a.active span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  /*
+   * One compact row: logo, the live dot, the role badge and the menu button; Theme, Mode and
+   * Log in/out move into the menu, labels stay for screen readers.
+   */
+  .topbar-tools {
+    gap: 10px;
+    flex-wrap: nowrap;
+  }
+
+  .topbar-inline {
+    display: none;
+  }
+
+  .header-menu {
+    display: block;
+  }
+
+  .live-text,
+  .header-add-text {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .live::before {
+    content: "●";
+    color: var(--muted);
+  }
+
+  .live-live::before {
+    color: var(--ok);
+  }
+
+  .live-offline::before {
+    color: var(--danger);
+  }
+
+  .role-badge {
+    padding: 2px 6px;
+    font-size: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .page-header {
+    padding: 12px 14px;
+  }
+
+  .card,
+  .order-card {
+    padding: 14px;
+  }
+
+  .panel {
+    padding: 12px;
+  }
+
+  .table-toolbar {
+    padding: 8px 10px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+  }
+
+  .detail-head {
+    gap: 10px;
+  }
+
+  .connection-stat-value {
+    font-size: 1.15rem;
+  }
+
+  .dialog,
+  .dialog-wide {
+    width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 1rem);
+  }
+
+  .dialog > :not(.dialog-header) {
+    margin: 14px 14px 16px;
+  }
+
+  /* The picker fills the phone's screen; its list scrolls, the search stays on top. */
+  .dialog:has(.picker) {
+    height: calc(100dvh - 1rem);
+  }
+
+  .dialog:has(.picker) .picker-results {
+    max-height: calc(100dvh - 12rem);
+  }
+
+  .dialog-header {
+    padding: 12px 14px;
+  }
+
+  .calendar {
+    padding: 10px 8px;
+  }
+
+  .calendar .fc .fc-toolbar.fc-header-toolbar {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .calendar .fc .fc-toolbar-chunk {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .calendar .fc .fc-toolbar-title {
+    font-size: 1.1rem;
+  }
+
+  .calendar .fc .fc-button {
+    padding: 0.3em 0.5em;
+    font-size: 0.85rem;
+  }
+
+  /* Map style menu and Leaflet's zoom buttons keep clear of each other on a narrow map. */
+  .map-layer-control {
+    top: 8px;
+    right: 8px;
+  }
+
+  .map-layer-menu {
+    max-width: calc(100vw - 4rem);
+  }
+
+  .inline-title-input {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .return-facts dd,
+  .facts dd {
+    overflow-wrap: anywhere;
+  }
+}

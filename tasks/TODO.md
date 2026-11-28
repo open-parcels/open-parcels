@@ -9,7 +9,7 @@ Assistant integration, `AP-` Home Assistant app, `EX-` extension, `WS-` website,
 
 Groups 1–24 are shipped (see `DONE.md`). Left, optional:
 
-- [ ] `styles.css` per feature (2,343 lines; CSS is outside the line limits)
+- [x] `styles.css` per feature: 22 partials in `web/src/styles/`, imported in cascade order (2026-11-28)
 
 ## 2. Production readiness
 

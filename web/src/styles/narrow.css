@@ -1,0 +1,33 @@
+/* No animations when the device asks for less motion; tighter spacing below 720 px. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    padding: 14px 16px;
+  }
+
+  .content {
+    padding: 0 12px 24px;
+  }
+
+  .nav a {
+    padding: 6px 10px;
+  }
+
+  .facts > div {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+
+  .timeline-row {
+    flex-direction: column;
+    gap: 2px;
+  }
+}

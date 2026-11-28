@@ -1,0 +1,33 @@
+/* Calendar */
+.calendar {
+  --fc-border-color: var(--panel-border);
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: var(--tint);
+  --fc-list-event-hover-bg-color: var(--tint);
+  --fc-today-bg-color: var(--accent-soft);
+  --fc-event-bg-color: var(--accent);
+  --fc-event-border-color: var(--accent);
+  --fc-button-bg-color: var(--tint);
+  --fc-button-border-color: var(--panel-border);
+  --fc-button-text-color: var(--text);
+  --fc-button-active-bg-color: var(--accent);
+  --fc-button-hover-bg-color: var(--tint-strong);
+  padding: 20px 24px;
+}
+
+.cal-delivered {
+  --fc-event-bg-color: var(--ok);
+  background: var(--ok);
+  border-color: var(--ok);
+}
+
+.cal-return_by {
+  background: var(--tint-strong);
+  border-color: var(--accent);
+  color: var(--text);
+}
+
+.cal-late {
+  background: var(--warn);
+  border-color: var(--warn);
+}

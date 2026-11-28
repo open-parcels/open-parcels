@@ -1,0 +1,94 @@
+/* "Add a connection" picker (like Home Assistant's "Add integration") */
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+
+.picker-search {
+  width: 100%;
+}
+
+.picker-status {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.picker-results {
+  max-height: min(60vh, 32rem);
+  overflow-y: auto;
+}
+
+.picker-heading {
+  margin: 12px 0 4px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--muted);
+}
+
+.picker-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.picker-row,
+.picker-chosen {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 10px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--text);
+  font: inherit;
+  text-align: left;
+}
+
+.picker-row {
+  cursor: pointer;
+}
+
+.picker-row:hover,
+.picker-row:focus-visible {
+  background: var(--tint-strong);
+}
+
+.picker-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+}
+
+.picker-badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.picker-badge {
+  padding: 1px 6px;
+  border: 1px solid var(--panel-border);
+  border-radius: 6px;
+  background: var(--tint);
+  color: var(--text-soft);
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+.picker-chevron {
+  color: var(--muted);
+  font-size: 1.3rem;
+  line-height: 1;
+}
+
+.carrier-logo-image {
+  object-fit: contain;
+  box-shadow: none;
+}

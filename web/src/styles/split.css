@@ -1,0 +1,69 @@
+/* Split views */
+.split-page {
+  flex: none;
+  overflow: hidden;
+  min-height: 560px;
+  height: calc(100vh - 130px);
+}
+
+.split-page.with-bar {
+  height: calc(100vh - 185px);
+}
+
+.panel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space);
+  overflow: hidden;
+}
+
+.panel-scroll {
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+  padding-right: 4px;
+}
+
+.split-handle {
+  width: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.split-handle::after {
+  content: "";
+  width: 4px;
+  height: 24px;
+  border-radius: 2px;
+  background: var(--tint-strong);
+}
+
+.split-handle:focus-visible::after,
+.split-handle:hover::after {
+  background: var(--accent);
+}
+
+.stacked {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stacked .map-panel {
+  height: 360px;
+}
+
+.stacked .panel {
+  height: auto;
+  max-height: none;
+}
+
+@media (max-width: 900px) {
+  .split-page,
+  .split-page.with-bar {
+    height: auto;
+    min-height: 0;
+  }
+}

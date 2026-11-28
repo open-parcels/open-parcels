@@ -1,0 +1,74 @@
+/* Parcel route map. */
+.route-map {
+  position: relative;
+  height: 100%;
+}
+
+/* Edit in place: a value with a small pencil, swapped for an input or picker while editing. */
+.inline-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+.icon-button.pencil {
+  width: 26px;
+  height: 26px;
+  opacity: 0.55;
+}
+
+.inline-edit:hover .icon-button.pencil,
+.icon-button.pencil:focus-visible {
+  opacity: 1;
+}
+
+.inline-title-input {
+  font-size: 20px;
+  font-weight: 600;
+  min-width: 14rem;
+}
+
+.inline-status-select {
+  font-size: 13px;
+  padding: 4px 8px;
+}
+
+.detail-head-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  justify-content: flex-end;
+}
+
+/* Item lists: price on the right, a note (which parcel) under the title. */
+.items li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.item-text {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.item-note {
+  font-size: 12px;
+}
+
+.item-price {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-soft);
+  white-space: nowrap;
+}
+
+.items-subtitle {
+  font-size: 14px;
+  margin: 12px 0 6px;
+  color: var(--text-soft);
+}

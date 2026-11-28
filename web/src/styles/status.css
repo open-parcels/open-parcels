@@ -1,0 +1,123 @@
+/* Status tags */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 9px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  color: var(--muted);
+  background: var(--tint);
+  border: 1px solid var(--panel-border);
+}
+
+.status-registered {
+  color: var(--accent-hover);
+  background: color-mix(in srgb, var(--accent-hover) 15%, transparent);
+  border-color: color-mix(in srgb, var(--accent-hover) 25%, transparent);
+}
+
+.status-in_transit {
+  color: var(--yellow);
+  background: color-mix(in srgb, var(--yellow) 15%, transparent);
+  border-color: color-mix(in srgb, var(--yellow) 25%, transparent);
+}
+
+.status-out_for_delivery,
+.lookup-not_found,
+.connection-needs_sign_in,
+.check-degraded {
+  color: var(--warn);
+  background: color-mix(in srgb, var(--warn) 15%, transparent);
+  border-color: color-mix(in srgb, var(--warn) 25%, transparent);
+}
+
+.status-at_pickup_point {
+  color: var(--purple);
+  background: color-mix(in srgb, var(--purple) 15%, transparent);
+  border-color: color-mix(in srgb, var(--purple) 25%, transparent);
+}
+
+.status-delivered,
+.lookup-found,
+.connection-ok,
+.check-ok {
+  color: var(--ok);
+  background: color-mix(in srgb, var(--ok) 15%, transparent);
+  border-color: color-mix(in srgb, var(--ok) 25%, transparent);
+}
+
+.status-returning {
+  color: var(--rose);
+  background: color-mix(in srgb, var(--rose) 15%, transparent);
+  border-color: color-mix(in srgb, var(--rose) 25%, transparent);
+}
+
+.status-problem,
+.connection-error,
+.check-unavailable {
+  color: var(--danger);
+  background: color-mix(in srgb, var(--danger) 15%, transparent);
+  border-color: color-mix(in srgb, var(--danger) 25%, transparent);
+}
+
+.lookup-pending,
+.connection-disabled,
+.connection-pending,
+.status-unknown,
+.badge.archived {
+  color: var(--muted);
+}
+
+.not-found {
+  max-width: 32rem;
+  margin: 3rem auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.not-found .empty-state {
+  gap: 1rem;
+}
+
+.lookup-pending {
+  animation: pulse-syncing 2s ease-in-out infinite;
+}
+
+@keyframes pulse-syncing {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.live {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.live-live::before {
+  content: "● ";
+  color: var(--ok);
+}
+
+.live-offline::before {
+  content: "● ";
+  color: var(--danger);
+}
+
+/* Who is signed in: the admin may change things, everyone else only reads. */
+.role-badge {
+  white-space: nowrap;
+}
+
+.role-admin {
+  color: var(--accent);
+}
+
+.read-only-hint {
+  font-style: italic;
+}

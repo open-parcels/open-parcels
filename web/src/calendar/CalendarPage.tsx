@@ -38,7 +38,7 @@ function viewName(fullCalendarId: string): ViewName {
   return VIEW_NAMES.find((name) => VIEWS[name] === fullCalendarId) ?? "month";
 }
 
-/** Phone width, as in `styles.css`: a month grid has no room there, so the list is the default. */
+/** Phone width, as in `styles/phone.css`: a month grid has no room there, so the list is the default. */
 const PHONE_QUERY = "(max-width: 480px)";
 
 function defaultView(): ViewName {

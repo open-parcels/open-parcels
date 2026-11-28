@@ -1,0 +1,290 @@
+/* Glass panels */
+.glass-panel,
+.card,
+.page-header {
+  background: var(--panel);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.card {
+  padding: var(--space) calc(var(--space) * 1.2);
+  margin-bottom: 1rem;
+}
+
+/* Header and navigation */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.topbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  padding: var(--space) calc(var(--space) * 2);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  text-decoration: none;
+  background: linear-gradient(135deg, var(--accent-hover) 0%, var(--violet) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.brand-logo {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 4px;
+  background: var(--tint);
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+}
+
+.nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.nav a:hover {
+  color: var(--text);
+  background: var(--tint);
+}
+
+.nav a.active {
+  color: var(--text);
+  background: var(--accent-soft);
+  border-color: var(--accent-line);
+}
+
+/* On mid-size screens the nav shows icons only; the labels stay for screen readers. */
+@media (max-width: 1500px) {
+  .nav a span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .nav a {
+    padding: 8px 11px;
+  }
+
+  .nav a.active span {
+    position: static;
+    width: auto;
+    height: auto;
+    clip: auto;
+  }
+}
+
+.topbar-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.header-link:hover {
+  color: var(--text);
+}
+
+.theme-picker select {
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+/* The phone header's menu (Theme, Mode, Log in/out); wider screens show those controls inline. */
+.header-menu {
+  display: none;
+  position: relative;
+}
+
+.header-menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--panel-border);
+  border-radius: 10px;
+  background: var(--tint);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.header-menu-list {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 1000;
+  min-width: 13rem;
+  padding: 6px;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+}
+
+.header-menu-heading {
+  padding: 6px 10px 2px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.header-menu-separator {
+  height: 1px;
+  margin: 6px 4px;
+  background: var(--panel-border);
+}
+
+.header-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 40px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 8px;
+  background: none;
+  color: var(--text);
+  font: inherit;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.header-menu-item:hover,
+.header-menu-item:focus-visible {
+  background: var(--accent-soft);
+}
+
+.header-menu-item[aria-disabled="true"] {
+  color: var(--muted);
+  cursor: default;
+}
+
+.header-menu-mark {
+  display: inline-flex;
+  width: 16px;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  padding: 0 calc(var(--space) * 2) calc(var(--space) * 2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space);
+}
+
+/* Page headers in a glass strip, as on the original table pages. */
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  padding: 16px 24px;
+}
+
+.page-header > h1 {
+  margin-right: auto;
+}
+
+.page-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-right: auto;
+}
+
+.page-icon {
+  color: var(--accent-hover);
+  flex-shrink: 0;
+}
+
+.page-count {
+  background: var(--accent-soft);
+  color: var(--accent-hover);
+  border: 1px solid var(--accent-line);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 10px;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.plain-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.plain-list > li {
+  margin-bottom: 0.5rem;
+}

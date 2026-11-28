@@ -43,7 +43,7 @@ Every theme is a folder with `open-parcels-theme.json` and the files it names. T
   pictures come from this server (`/api/v1/themes/<id>/files/<file>`).
 - **Variants:** `light`, `dark` or both. Tokens a variant leaves out take the default theme's value
   for the same mode, as do unset `font`, `mono`, `radius` and `space`.
-- **Tokens:** the custom properties at the top of `web/src/styles.css`, by name without `--`:
+- **Tokens:** the custom properties in `web/src/styles/tokens.css`, by name without `--`:
   surfaces, text, accents, status colours, shadows, and the map style (`map-filter` for the tiles
   in dark mode, `map-route*` for lines, `map-*` for markers). The web UI's rules use nothing else.
 - **Checked on load** (`server/src/themes/loader.ts`); a theme that fails is not loaded and the

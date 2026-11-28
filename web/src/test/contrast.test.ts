@@ -6,7 +6,7 @@ import { readFileSync } from "node:fs";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-const styles = readFileSync(path.join(import.meta.dirname, "../styles.css"), "utf8");
+const styles = readFileSync(path.join(import.meta.dirname, "../styles/tokens.css"), "utf8");
 
 type Rgba = readonly [number, number, number, number];
 

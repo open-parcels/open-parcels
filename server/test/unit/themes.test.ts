@@ -5,7 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { loadBuiltInThemes } from "../../src/builtin-themes.js";
 import { loadTheme, loadThemeRepo, type Theme } from "../../src/themes/loader.js";
 
-const STYLES = readFileSync(new URL("../../../web/src/styles.css", import.meta.url), "utf8");
+const STYLES = readFileSync(new URL("../../../web/src/styles/tokens.css", import.meta.url), "utf8");
 
 /** The custom properties a rule of the web UI's stylesheet sets. */
 function cssTokens(selector: string): Record<string, string> {
